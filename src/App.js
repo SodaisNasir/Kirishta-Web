@@ -1,8 +1,12 @@
-import "./App.css";
-import Routing from "./routes";
+import Router from "./routes";
+import { ContextProvider } from "./context";
 
 function App() {
-  return <Routing />;
+  return (
+    <ContextProvider>
+      <Router />
+    </ContextProvider>
+  );
 }
 
 export default App;
