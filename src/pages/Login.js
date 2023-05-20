@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../context";
 import Logo from "../assets/images/krista_main.png";
 import Eye from "../assets/images/Eye.png";
-import Bg from "../assets/images/login_bg.png";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState({ isVisible: false, value: "" });
+  const { user, setUser } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) =>
@@ -13,17 +16,26 @@ const Login = () => {
   const togglePassword = () =>
     setPassword((prev) => ({ ...prev, isVisible: !prev.isVisible }));
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      setUser({ email, password });
+      navigate("/dashboard");
+    }
+  };
+
   return (
     <div className="w-screen h-screen bg bg-[#EEF2F5] overflow-hidden">
-      <img className="w-full -z-10" src={Bg} alt="background" />
-      <div className="flex justify-center items-center w-full h-full font-poppins">
+      {/* <img className="w-full -z-10" src={Bg} alt="background" /> */}
+      <div className="flex justify-center items-center bg-[url('../src/assets/images/login_bg.png')] bg-cover bg-top w-full h-full font-poppins">
         <main className="w-full max-w-sm">
           <img className="mb-10 w-48 mx-auto" src={Logo} alt="kirista logo" />
           <section className="w-full bg-white rounded-xl px-6 pt-8 pb-10">
             <h1 className="text-xl text-center font-[700] mb-8">
               Welcome Back, Admin.
             </h1>
-            <form className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
                 <input
                   type="email"
