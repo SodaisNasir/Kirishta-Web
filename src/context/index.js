@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
 export const AppContext = createContext();
 

@@ -1,21 +1,58 @@
-export const DropdownContainer = ({ arr, extraStyles = "" }) => {
+import React from "react";
+import { FaChevronUp } from "react-icons/fa";
+
+export const DropdownContainer = ({ extraStyles = "", children }) => {
   return (
     <ul
-      className={`absolute top-[140%] right-0 flex flex-col max-w-max text-xs bg-white rounded-xl px-4 py-1 shadow-2xl shadow-gray-300 border ${extraStyles}`}
+      className={`absolute top-[140%] right-0 flex flex-col max-w-max text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}
     >
-      {arr.map((elem, indx) => (
-        <li
-          onClick={elem.clickHandler}
-          className={`${
-            arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
-          } flex py-2 ${
-            !elem.markAsRead ? "font-semibold" : ""
-          } cursor-pointer text-gray-600 hover:text-black`}
-        >
-          {elem.icon}
-          <span className="ml-2 whitespace-nowrap">{elem.title}</span>
-        </li>
-      ))}
+      {children}
     </ul>
+  );
+};
+
+export const DropdownFilter = ({
+  toggle,
+  setToggle,
+  curFilter,
+  title,
+  arr,
+  handleClick,
+}) => {
+  return (
+    <button
+      onClick={setToggle}
+      className={`relative flex items-center text-black ${
+        curFilter.filter === title
+          ? "bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300"
+          : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600"
+      } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center`}
+    >
+      {curFilter.filter === title ? curFilter.value : title}
+      <FaChevronUp className={`${toggle ? "" : "rotate-180"} ml-1`} />
+      {toggle && (
+        <DropdownContainer extraStyles="text-black font-medium text-xs text-left">
+          <li
+            onClick={() => handleClick(null)}
+            role="option"
+            className={`border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+          >
+            All
+          </li>
+          {arr.map((elem, indx) => (
+            <li
+              key={elem + indx}
+              onClick={() => handleClick(elem)}
+              role="option"
+              className={`${
+                indx !== arr.length - 1 ? "border-b" : ""
+              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
+              {elem}
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
+    </button>
   );
 };

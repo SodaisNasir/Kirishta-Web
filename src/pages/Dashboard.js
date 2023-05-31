@@ -10,7 +10,6 @@ import {
   feedbackListItems,
   notifications,
 } from "../constants/data";
-import { HiUser } from "react-icons/hi";
 
 const Dashboard = () => {
   const initialState = { notifications: false, account: false };
@@ -31,76 +30,10 @@ const Dashboard = () => {
           <Account {...{ toggle, setSingleToggle }} />
         </div>
       </header>
-      <main className="grid grid-cols-2 gap-3 gap-x-8 bg-[#EEF2F5] p-8">
-        {dashboardCards.map((card) => (
-          <Card key={card.title} {...card} />
-        ))}
-
-        {/* Contacts list */}
-        <div className="col-span-1 flex flex-col mt-5 p-2 px-4 rounded-xl bg-white">
-          <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
-            <HiUser className="text-lg text-blue-500 mr-2" />
-            Contacts ({contactListItems.length})
-          </div>
-
-          {contactListItems.map((elem, indx) => (
-            <div
-              className={`${
-                contactListItems.length - 1 !== indx
-                  ? "border-b border-[#F2F2F2]"
-                  : ""
-              } flex flex-col items-start py-3`}
-            >
-              <div className="flex">
-                <img
-                  className="rounded-full"
-                  src={elem.photoUrl}
-                  alt="profile"
-                />
-                <p className="flex flex-col text-xs font-medium ml-2">
-                  {elem.title}
-                  <span className="text-[10px] font-light">
-                    {elem.subtitle}
-                  </span>
-                </p>
-              </div>
-              <p className="mt-2 text-xs ml-10">{elem.text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Contacts list */}
-        <div className="col-span-1 flex flex-col mt-5 p-2 px-4 rounded-xl bg-white">
-          <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
-            <MdFeedback className="text-lg text-blue-500 mr-2" />
-            Contacts ({feedbackListItems.length})
-          </div>
-
-          {feedbackListItems.map((elem, indx) => (
-            <div
-              className={`${
-                feedbackListItems.length - 1 !== indx
-                  ? "border-b border-[#F2F2F2]"
-                  : ""
-              } flex flex-col items-start py-3`}
-            >
-              <div className="flex">
-                <img
-                  className="rounded-full"
-                  src={elem.photoUrl}
-                  alt="profile"
-                />
-                <p className="flex flex-col text-xs font-medium ml-2">
-                  {elem.title}
-                  <span className="text-[10px] font-light">
-                    {elem.subtitle}
-                  </span>
-                </p>
-              </div>
-              <p className="mt-2 text-xs ml-10">{elem.text}</p>
-            </div>
-          ))}
-        </div>
+      <main className="grid grid-cols-2 gap-3 gap-x-4 sm:gap-x-8 bg-[#EEF2F5] p-8">
+        <DashboardCards arr={dashboardCards} />
+        <ContactList />
+        <FeedbackList />
       </main>
     </>
   );
@@ -149,7 +82,24 @@ const Account = ({ toggle, setSingleToggle }) => {
         className={`text-xs ${toggle.account ? "rotate-180" : ""}`}
       />
 
-      {toggle.account && <DropdownContainer arr={arr} />}
+      {toggle.account && (
+        <DropdownContainer>
+          {arr.map((elem, indx) => (
+            <li
+              key={elem.title}
+              onClick={elem.clickHandler}
+              className={`${
+                arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
+              } flex py-2 ${
+                !elem.markAsRead ? "font-semibold" : ""
+              } cursor-pointer text-gray-600 hover:text-black`}
+            >
+              {elem.icon}
+              <span className="ml-2 whitespace-nowrap">{elem.title}</span>
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
     </div>
   );
 };
@@ -174,21 +124,177 @@ const Notifications = ({ toggle, setSingleToggle }) => {
         />
       </svg>
 
-      {toggle.notifications && <DropdownContainer arr={notifications} />}
+      {toggle.notifications && (
+        <DropdownContainer>
+          {notifications.map((elem, indx) => (
+            <li
+              key={elem.title + indx}
+              onClick={elem.clickHandler}
+              className={`${
+                notifications.length - 1 !== indx
+                  ? "border-b border-[#efefef]"
+                  : ""
+              } flex py-2 ${
+                !elem.markAsRead ? "font-semibold" : ""
+              } cursor-pointer text-gray-600 hover:text-black`}
+            >
+              {elem.icon}
+              <span className="ml-2 whitespace-nowrap">{elem.title}</span>
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
     </button>
   );
 };
 
-const Card = ({ icon, title, num, colSpan }) => {
-  return (
+const DashboardCards = ({ arr }) => {
+  return arr.map(({ title, icon, num, colSpan }, indx) => (
     <div
+      key={title + indx}
       className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}
     >
       <div className="flex">
         {icon}
-        <span className="text-sm font-medium text-[#8B8B93] ml-2">{title}</span>
+        <span className="text-xs font-medium text-[#8B8B93] ml-2">{title}</span>
       </div>
-      <span className="text-xl font-semibold">{num}</span>
+      <span className="text-base font-semibold">{num}</span>
+    </div>
+  ));
+};
+
+const ContactList = () => {
+  const [toggleRead, setToggleRead] = useState([]);
+
+  return (
+    <div className="col-span-2 sm:col-span-1 flex flex-col mt-5 p-2 rounded-xl bg-white">
+      <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
+        <svg
+          className="h-4 w-4 text-blue-500 mr-2"
+          width="13"
+          height="16"
+          viewBox="0 0 13 16"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6.4 6.4C8.16731 6.4 9.6 4.96731 9.6 3.2C9.6 1.43269 8.16731 0 6.4 0C4.63269 0 3.2 1.43269 3.2 3.2C3.2 4.96731 4.63269 6.4 6.4 6.4Z"
+            fill="currentColor"
+          />
+          <path
+            d="M6.4 16C12.8 16 12.8 14.3882 12.8 12.4C12.8 10.4118 9.93462 8.8 6.4 8.8C2.86538 8.8 0 10.4118 0 12.4C0 14.3882 0 16 6.4 16Z"
+            fill="currentColor"
+          />
+        </svg>
+        Contacts ({contactListItems.length})
+      </div>
+
+      <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
+        {contactListItems.map((elem, indx) => (
+          <div
+            key={elem.title + indx}
+            className={`${
+              contactListItems.length - 1 !== indx
+                ? "border-b border-[#F2F2F2]"
+                : ""
+            } flex flex-col items-start py-3`}
+          >
+            <div className="flex">
+              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <p className="flex flex-col text-xs font-medium ml-2">
+                {elem.title}
+                <span className="text-[10px] font-light">{elem.subtitle}</span>
+              </p>
+            </div>
+            <p className="mt-2 text-xs ml-10">
+              {toggleRead.includes(indx) ? (
+                <>
+                  {elem.text}
+                  &nbsp;
+                  <em
+                    onClick={() =>
+                      setToggleRead((prev) => prev.filter((e) => e !== indx))
+                    }
+                    className="text-blue-500 hover:underline cursor-pointer"
+                  >
+                    read less
+                  </em>
+                </>
+              ) : (
+                <>
+                  {elem.text.slice(0, elem.text.length / 2) + "... "}
+                  <em
+                    onClick={() => setToggleRead((prev) => [...prev, indx])}
+                    className="text-blue-500 hover:underline cursor-pointer"
+                  >
+                    read more
+                  </em>
+                </>
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const FeedbackList = () => {
+  const [toggleRead, setToggleRead] = useState([]);
+
+  return (
+    <div className="col-span-2 sm:col-span-1 flex flex-col mt-5 p-2 rounded-xl bg-white">
+      <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
+        <MdFeedback className="text-lg text-blue-500 mr-2" />
+        Contacts ({feedbackListItems.length})
+      </div>
+
+      <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
+        {feedbackListItems.map((elem, indx) => (
+          <div
+            key={elem.title + indx}
+            className={`${
+              feedbackListItems.length - 1 !== indx
+                ? "border-b border-[#F2F2F2]"
+                : ""
+            } flex flex-col items-start py-3`}
+          >
+            <div className="flex">
+              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <p className="flex flex-col text-xs font-medium ml-2">
+                {elem.title}
+                <span className="text-[10px] font-light">{elem.subtitle}</span>
+              </p>
+            </div>
+            <p className="mt-2 text-xs ml-10">
+              {toggleRead.includes(indx) ? (
+                <>
+                  {elem.text}
+                  &nbsp;
+                  <em
+                    onClick={() =>
+                      setToggleRead((prev) => prev.filter((e) => e !== indx))
+                    }
+                    className="text-blue-500 hover:underline cursor-pointer"
+                  >
+                    read less
+                  </em>
+                </>
+              ) : (
+                <>
+                  {elem.text.slice(0, elem.text.length / 2) + "... "}
+                  <em
+                    onClick={() => setToggleRead((prev) => [...prev, indx])}
+                    className="text-blue-500 hover:underline cursor-pointer"
+                  >
+                    read more
+                  </em>
+                </>
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

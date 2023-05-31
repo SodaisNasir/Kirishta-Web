@@ -1,13 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Navbar } from "./";
+import { Navbar } from "./index";
 
 const AdminLayout = () => {
   return (
-    <div className="flex w-full h-full font-poppins">
+    <div className="relative flex font-poppins">
       <Navbar />
 
-      <div className="w-full border-l-2 border-[#EEF2F5]">
+      <div className="h-screen overflow-y-auto w-full border-l-2 border-[#EEF2F5]">
         <Outlet />
       </div>
     </div>

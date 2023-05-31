@@ -6,6 +6,9 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins"],
       },
+      screens: {
+        xs: "480px",
+      },
     },
   },
   plugins: [],
