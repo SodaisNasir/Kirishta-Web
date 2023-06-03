@@ -40,7 +40,7 @@ const PopupPromotion = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -72,7 +72,7 @@ const PopupPromotion = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: popups, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: popups }));
       setData(popups);
     }, 2000);
   }, []);
@@ -220,131 +220,102 @@ const EditModal = ({ editModal, setEditModal }) => {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="platform"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Platform
                   </label>
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="platform"
+                    id="platform"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Bonnie"
-                    required=""
+                    placeholder="iOS"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="title"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Last Name
+                    Title
                   </label>
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="title"
+                    id="title"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Green"
-                    required=""
+                    placeholder="Lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="email"
+                    htmlFor="tag"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@company.com"
-                    required=""
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="phone-number"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="number"
-                    name="phone-number"
-                    id="phone-number"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="e.g. +(12)3456 789"
-                    required=""
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="department"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Department
+                    Tag
                   </label>
                   <input
                     type="text"
-                    name="department"
-                    id="department"
+                    name="tag"
+                    id="tag"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Development"
-                    required=""
+                    placeholder="lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="company"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="book_image"
                   >
-                    Company
+                    Upload file
                   </label>
                   <input
-                    type="number"
-                    name="company"
-                    id="company"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="123456"
-                    required=""
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="book_image"
+                    id="book_image"
+                    type="file"
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="current-password"
+                    htmlFor="appPage"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Current Password
+                    App Page
                   </label>
                   <input
-                    type="password"
-                    name="current-password"
-                    id="current-password"
+                    type="text"
+                    name="appPage"
+                    id="appPage"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="••••••••"
-                    required=""
+                    placeholder="2"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="new-password"
+                    htmlFor="status"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    New Password
+                    Status
                   </label>
                   <input
-                    type="password"
-                    name="new-password"
-                    id="new-password"
+                    list="statuses"
+                    name="status"
+                    id="status"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="••••••••"
-                    required=""
+                    placeholder="Active"
+                    required={true}
                   />
+                  <datalist id="statuses">
+                    {["Active", "Inactive"].map((status, indx) => (
+                      <option key={status + indx} value={status} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
             </div>
@@ -416,131 +387,102 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="platform"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Platform
                   </label>
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="platform"
+                    id="platform"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Bonnie"
-                    required=""
+                    placeholder="iOS"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="title"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Last Name
+                    Title
                   </label>
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="title"
+                    id="title"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Green"
-                    required=""
+                    placeholder="Lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="email"
+                    htmlFor="tag"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@company.com"
-                    required=""
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="phone-number"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="number"
-                    name="phone-number"
-                    id="phone-number"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="e.g. +(12)3456 789"
-                    required=""
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="department"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Department
+                    Tag
                   </label>
                   <input
                     type="text"
-                    name="department"
-                    id="department"
+                    name="tag"
+                    id="tag"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Development"
-                    required=""
+                    placeholder="lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="company"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="book_image"
                   >
-                    Company
+                    Upload file
                   </label>
                   <input
-                    type="number"
-                    name="company"
-                    id="company"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="123456"
-                    required=""
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="book_image"
+                    id="book_image"
+                    type="file"
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="current-password"
+                    htmlFor="appPage"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Current Password
+                    App Page
                   </label>
                   <input
-                    type="password"
-                    name="current-password"
-                    id="current-password"
+                    type="text"
+                    name="appPage"
+                    id="appPage"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="••••••••"
-                    required=""
+                    placeholder="2"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="new-password"
+                    htmlFor="status"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    New Password
+                    Status
                   </label>
                   <input
-                    type="password"
-                    name="new-password"
-                    id="new-password"
+                    list="statuses"
+                    name="status"
+                    id="status"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="••••••••"
-                    required=""
+                    placeholder="Active"
+                    required={true}
                   />
+                  <datalist id="statuses">
+                    {["Active", "Inactive"].map((status, indx) => (
+                      <option key={status + indx} value={status} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { FaChevronUp } from "react-icons/fa";
+import { languages } from "../constants/data";
 
 export const DropdownContainer = ({ extraStyles = "", children }) => {
   return (
@@ -46,6 +47,34 @@ export const DropdownFilter = ({
               role="option"
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
+              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
+              {elem}
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
+    </button>
+  );
+};
+
+export const LanguageSelector = ({ language, setLanguage, handleClick }) => {
+  return (
+    <button
+      onClick={() => setLanguage((prev) => ({ ...prev, state: !prev.state }))}
+      className={`relative flex items-center text-black bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600 focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center`}
+    >
+      {language.value}
+      <FaChevronUp className={`${language.state ? "" : "rotate-180"} ml-1`} />
+      {language.state && (
+        <DropdownContainer extraStyles="text-black font-medium text-xs text-left">
+          {languages.map((elem, indx) => (
+            <li
+              key={elem + indx}
+              onClick={() => handleClick(elem)}
+              role="option"
+              className={`${
+                indx !== languages.length - 1 ? "border-b" : ""
               } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
             >
               {elem}

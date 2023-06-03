@@ -36,7 +36,7 @@ const FeedbackManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -70,7 +70,7 @@ const FeedbackManagement = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: feedbacks, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: feedbacks }));
       setData(feedbacks);
     }, 2000);
   }, []);
@@ -85,7 +85,7 @@ const FeedbackManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Edit", "Delete"],
+              actionCols: ["Reply", "Delete"],
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -241,7 +241,7 @@ const Actions = ({
 
   return (
     <>
-      {/* Edit user modal */}
+      {/* Reply modal */}
       {replyModal && <ReplyModal {...{ setReplyModal }} />}
 
       <td className="text-center text-base px-6 py-4">

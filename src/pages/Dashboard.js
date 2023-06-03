@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <header className="flex justify-between items-center p-4 px-6 pt-8">
+      <header className="flex justify-between items-center p-3 pt-0 md:px-6 md:pt-8">
         <h1 className="text-lg font-bold text-[#314156]">Dashboard</h1>
         <div className="flex items-center space-x-5">
           {/* Notifications dropdown */}

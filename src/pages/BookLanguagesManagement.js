@@ -37,7 +37,7 @@ const BookLanguagesManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -74,7 +74,7 @@ const BookLanguagesManagement = () => {
     }));
 
     setTimeout(() => {
-      setPaginatedData({ items: book_languages, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: book_languages }));
       setData(book_languages);
     }, 2000);
   }, []);

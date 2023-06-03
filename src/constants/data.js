@@ -74,7 +74,7 @@ export const navLinks = [
       </svg>
     ),
     items: [
-      { title: "Previleges", path: "/access/privileges" },
+      // { title: "Previleges", path: "/access/privileges" },
       { title: "Roles", path: "/access/roles" },
       { title: "Sub-Admin", path: "/access/sub-admin" },
     ],
@@ -839,7 +839,7 @@ export const banners = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "ndfyhidf.com",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -849,7 +849,7 @@ export const banners = [
     Platform: "iOS",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Inactive",
     "Expiry Date": "2/5/2023",
@@ -859,7 +859,7 @@ export const banners = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -869,7 +869,7 @@ export const banners = [
     Platform: "iOS",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -879,7 +879,7 @@ export const banners = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -893,7 +893,7 @@ export const popups = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "ndfyhidf.com",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -903,7 +903,7 @@ export const popups = [
     Platform: "iOS",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Inactive",
     "Expiry Date": "2/5/2023",
@@ -913,7 +913,7 @@ export const popups = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -923,7 +923,7 @@ export const popups = [
     Platform: "iOS",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -933,7 +933,7 @@ export const popups = [
     Platform: "Android",
     Title: "Lorem ipsum",
     Tag: "dfyhidf",
-    "Media File": "sdjhfsdgsdgflgs",
+    "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
     Status: "Active",
     "Expiry Date": "2/5/2023",
@@ -1329,17 +1329,271 @@ export const faqs = [
   },
 ];
 
+// Roles
+export const rolesData = [
+  // {
+  //   "S/N": 0,
+  //   Role: "Admin",
+  //   Privileges: {
+  //     Dashboard: true,
+  //     Access: {
+  //       state: false,
+  //       Roles: {
+  //         state: false,
+  //         edit: false,
+  //       },
+  //       "Sub-Admin": false,
+  //     },
+  //     "Users Management": false,
+  //     "Promotion Management": {
+  //       Banner: false,
+  //       "Pop-up": false,
+  //     },
+  //     "Books Management": false,
+  //     "Publish Book": false,
+  //     "Parish Management": false,
+  //     "Events Management": false,
+  //     "Feedback Management": false,
+  //     "Contact Management": false,
+  //     "Settings Management": {
+  //       "Admin Email": false,
+  //       Region: false,
+  //       Province: false,
+  //       "Book Category": false,
+  //       "Book Language": false,
+  //       "About Kirista": false,
+  //       "About RCCG": false,
+  //       "About RCCG Structure": false,
+  //       "About RCCG Continent 2": false,
+  //       Terms: false,
+  //       Privacy: false,
+  //       FAQ: false,
+  //     },
+  //   },
+  // },
+  {
+    "S/N": 0,
+    Role: "Editor",
+    Privileges: ["Dashboard", "Users Management", "Alerts"],
+  },
+  {
+    "S/N": 1,
+    Role: "Editor",
+    Privileges: ["Dashboard", "Users Management", "Alerts"],
+  },
+  {
+    "S/N": 2,
+    Role: "Moderator",
+    Privileges: ["Dashboard", "Users Management", "Alerts"],
+  },
+];
+
+export const privilegesStructure = {
+  Dashboard: false,
+  Access: {
+    Roles: {
+      Edit: false,
+      Delete: false,
+      Create: false,
+    },
+    "Sub-Admin": {
+      Edit: false,
+      Delete: false,
+      Create: false,
+    },
+  },
+  "Users Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Promotion Management": {
+    Banner: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "Pop-up": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+  },
+  "Books Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Publish Book": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Parish Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Events Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Feedback Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Contact Management": {
+    Create: false,
+    Edit: false,
+    Delete: false,
+  },
+  "Settings Management": {
+    "Admin Email": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    Region: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    Province: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "Book Category": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "Book Language": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "About Kirista": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "About RCCG": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "About RCCG Structure": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "About RCCG Continent 2": {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    Terms: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    Privacy: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    FAQ: {
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+  },
+};
+
+export const roles = ["Admin", "Editor", "Moderator"];
+
+// Sub-Admins
+export const subadmins = [
+  {
+    "S/N": 0,
+    Name: "Lorem ipsum",
+    Email: "example@gmail.com",
+    Password: "admin63586",
+    "Phone Number": "+92 678 6879 468",
+    Role: "Admin",
+  },
+  {
+    "S/N": 1,
+    Name: "Lorem ipsum",
+    Email: "example@gmail.com",
+    Password: "admin63586",
+    "Phone Number": "+92 678 6879 468",
+    Role: "Editor",
+  },
+  {
+    "S/N": 2,
+    Name: "Lorem jack",
+    Email: "example@gmail.com",
+    Password: "admin63586",
+    "Phone Number": "+92 678 6879 468",
+    Role: "Admin",
+  },
+  {
+    "S/N": 3,
+    Name: "Lorem ipsum",
+    Email: "example@gmail.com",
+    Password: "admin63586",
+    "Phone Number": "+92 678 6879 468",
+    Role: "Admin",
+  },
+  {
+    "S/N": 4,
+    Name: "Lorem ipsum",
+    Email: "example@gmail.com",
+    Password: "admin63586",
+    "Phone Number": "+92 678 6879 468",
+    Role: "Editor",
+  },
+];
+
 // Privacy Policy
-export const privacyPolicy =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.";
+export const privacyPolicy = {
+  English:
+    "The customer is very important, the customer will be followed by the customer. There should be no cars, no cars, no dirty beds, no dirty dishes. As an employee, he does not accept hatred or desire. It was a weekend. Even if the venomous Lacinia is great, let it be a lot of rhoncus arcu egestus ullamcorper. Each vehicle is not for sale. The price of the product is different. But the sad trigger and the great expectation, adorning the life of the real estate. No production and no sauce. Vivamus flatters the laughter of the male, it needs the vulputate before the investment of the cartoon. Everyone has to put the players. Until and even before the soft keyboard. Even that limits the pain, and it becomes a joke. Everyone and no one wants. There is no laughter in the valley. It is necessary to invest in the real estate, but the lacinia needs to be said. As the grief of the eros, but the ultricies itself, but the vehicles of the diam of the chocolate. \n\n Mauris needs an urn in hatred of tincidunt ultricies a sed dui. He takes care of himself but wants to invest in his homework. Sometimes the yeast is put on. Each one is targeted by a mass. It is convenient for pregnant women. Tomorrow, what will be the problem of pain, he said. He is said to have lived in this street. Morrow and mourning wise. There is no clinical interest, or sometimes from time to time. There is no poison, and no poison trigger. Each of them was a developer, layer by layer, and what kind of product was it. Children's playground, football as a football field, pregnant before that. Mauris ex tortor, saucement et eleifend et, euismod not before. Intrepid lorem nibh, the target and the target should be a lot, different in the elit. \n\n Duis malesuada dui quis lorem sad aliquam It's a soft salad, but neither is a bed of protein. Laughter in football. Until there is great publicity, the homework should be more important than the basketball sauce. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. For the sauce, the pain is not aimed at the ends, just the ugly bow of the tincidunt, it is important for the promotion and education. But the gate, the ligula of the Euismod hendrerit, was just a mass of property, and the makeup of life was not lent to the players. For the kids, I'm going to have a salad at the same time. No employee like Lacinia, football player, flatters the free. \n \n Tomorrow hendrerit fermentum nibh sed faucibus There is nothing easy. It's hate before, but the time is over, always Euismod now. In sed nisl a felis faucibus laoreet. There is no need to be pure in any sad moment or result. Everyone was the author, but the real estate, pure grief. Every one of my lions, be it soft or varied, takes care of itself. Until cartoon real estate developers. Everyone and Leo should be happy unless they are very busy.",
+  Latin:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.",
+  Afrikaans:
+    "Die kliënt is baie belangrik, die kliënt sal deur die kliënt gevolg word. Daar moet geen motors, geen motors, geen vuil beddens, geen vuil skottelgoed wees nie. As werknemer aanvaar hy nie haat of begeerte nie. Dit was 'n naweek. Selfs as die giftige Lacinia groot is, laat dit baie rhoncus arcu egestus ullamcorper wees. Elke voertuig is nie te koop nie. Die prys van die produk is anders. Maar die hartseer sneller en die groot verwagting, versier die lewe van die eiendom. Geen produksie en geen sous nie. Vivamus vlei die lag van die mannetjie, dit het die vulputaat nodig voor die belegging van die spotprent. Almal moet die spelers sit. Tot en selfs voor die sagte sleutelbord. Selfs dit beperk die pyn, en dit word 'n grap. Almal en niemand wil nie. Daar word nie gelag in die vallei nie. Dit is nodig om in die eiendom te belê, maar die lacinia moet gesê word. Soos die hartseer van die eros, maar die ultricies self, maar die voertuie van die diam van die sjokolade. \n\n Mauris het 'n urn nodig in haat van tincidunt ultricities a sed dui. Hy sorg vir homself maar wil in sy huiswerk belê. Soms word die gis opgesit. Elkeen word deur 'n massa geteiken. Dit is gerieflik vir swanger vroue. Môre, wat sal die probleem van pyn wees, het hy gesê. Daar word gesê dat hy in hierdie straat gewoon het. Môre en rou wys. Daar is geen kliniese belangstelling nie, of soms van tyd tot tyd. Daar is geen gif nie, en geen gifsneller nie. Elkeen van hulle was 'n ontwikkelaar, laag vir laag, en watter soort produk was dit. Kinderspeelgrond, sokker as 'n sokkerveld, voor dit swanger. Mauris ex tortor, saucement et eleifend et, euismod nie voor nie. Onverskrokke lorem nibh, die teiken en die teiken moet baie anders wees in die veld. \n\n Duis malesuada dui quis lorem sad aliquam Dit is 'n sagte slaai, maar ook nie 'n proteïenbed nie. Gelag in sokker. Totdat daar groot publisiteit is, behoort die huiswerk belangriker te wees as die basketbalsous. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Vir die sous is die pyn nie op die punte gerig nie, net die lelike boog van die tincidunt, dit is belangrik vir die bevordering en opvoeding. Maar die hek, die ligula van die Euismod-hendrerit, was net 'n massa eiendom, en die samestelling van die lewe is nie aan die spelers geleen nie. Vir die kinders gaan ek terselfdertyd 'n slaai eet. Geen werknemer soos Lacinia, sokkerspeler, vlei die vryes nie. \n \n Môre hendrerit fermentum nibh sed faucibus Daar is niks maklik nie. Dis haat voorheen, maar die tyd is verby, altyd Euismod nou. In sed nisl 'n felis faucibus laoreet. Dit is nie nodig om rein te wees in enige hartseer oomblik of resultaat nie. Almal was die skrywer, maar die eiendom, pure hartseer. Elkeen van my leeus, of dit nou sag of gevarieerd is, sorg vir homself. Tot spotprent eiendomsontwikkelaars. Almal en Leo behoort gelukkig te wees tensy hulle baie besig is.",
+  Spanish:
+    "El cliente es muy importante, el cliente será seguido por el cliente. No debe haber coches, ni coches, ni camas sucias, ni platos sucios. Como empleado, no acepta el odio ni el deseo. fue un fin de semana Incluso si la venenosa Lacinia es genial, que sea mucho rhoncus arcu egestus ullamcorper. Cada vehículo no está a la venta. El precio del producto es diferente. Pero el triste detonante y la gran expectación, adornan la vida de la inmobiliaria. Sin producción y sin salsa. Vivamus halaga la risa del varón, necesita la vulputación antes de la inversión de la caricatura. Todo el mundo tiene que poner los jugadores. Hasta e incluso antes del teclado virtual. Incluso eso limita el dolor y se convierte en una broma. Todos y nadie quiere. No hay risa en el valle. Hay que invertir en los inmuebles, pero hay que decir la lacinia. Como el dolor del eros, pero los ultricios mismos, pero los vehículos del diam del chocolate. \n\n Mauris necesita una urna por odio a las tincidunt ultricies a sed dui. Se cuida pero quiere invertir en su tarea. A veces se pone la levadura. Cada uno es el objetivo de una masa. Es conveniente para las mujeres embarazadas. Mañana, cuál será el problema del dolor, dijo. Se dice que vivió en esta calle. Mañana y luto sabio. No hay interés clínico, oa veces de vez en cuando. No hay veneno, ni disparador de veneno. Cada uno de ellos era un revelador, capa por capa, y qué tipo de producto era. Parque infantil, fútbol como campo de fútbol, ​​embarazada antes de eso. Mauris ex tortor, saucement et eleifend et, euismod no antes. Intrépido lorem nibh, el objetivo y el objetivo deben ser mucho, diferentes en el campo. \n\n Duis malesuada dui quis lorem sad aliquam Es una ensalada blanda, pero tampoco es un lecho de proteínas. La risa en el fútbol. Hasta que haya una gran publicidad, la tarea debería ser más importante que la salsa del baloncesto. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Para la salsa, el dolor no va dirigido a las puntas, solo el feo lazo del tincidunt, es importante para la promoción y educación. Pero la puerta, la ligula del Euismod hendrerit, no era más que una masa de propiedad, y la composición de la vida no se prestaba a los jugadores. Para los niños, voy a tener una ensalada al mismo tiempo. Ningún empleado como Lacinia, futbolista, halaga la libertad. \n \n Mañana hendrerit fermentum nibh sed faucibus No hay nada fácil. Es odio antes, pero el tiempo se acabó, siempre Euismod ahora. In sed nisl a felis faucibus laoreet. No hay necesidad de ser puro en ningún momento o resultado triste. Todo el mundo era autor, menos la inmobiliaria, pura pena. Cada uno de mis leones, ya sea suave o variado, se cuida solo. Hasta los desarrolladores de bienes raíces de dibujos animados. Todos y Leo deberían estar felices a menos que estén muy ocupados.",
+};
 
 // Terms
-export const terms =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.";
+export const terms = {
+  English:
+    "The customer is very important, the customer will be followed by the customer. There should be no cars, no cars, no dirty beds, no dirty dishes. As an employee, he does not accept hatred or desire. It was a weekend. Even if the venomous Lacinia is great, let it be a lot of rhoncus arcu egestus ullamcorper. Each vehicle is not for sale. The price of the product is different. But the sad trigger and the great expectation, adorning the life of the real estate. No production and no sauce. Vivamus flatters the laughter of the male, it needs the vulputate before the investment of the cartoon. Everyone has to put the players. Until and even before the soft keyboard. Even that limits the pain, and it becomes a joke. Everyone and no one wants. There is no laughter in the valley. It is necessary to invest in the real estate, but the lacinia needs to be said. As the grief of the eros, but the ultricies itself, but the vehicles of the diam of the chocolate. \n\n Mauris needs an urn in hatred of tincidunt ultricies a sed dui. He takes care of himself but wants to invest in his homework. Sometimes the yeast is put on. Each one is targeted by a mass. It is convenient for pregnant women. Tomorrow, what will be the problem of pain, he said. He is said to have lived in this street. Morrow and mourning wise. There is no clinical interest, or sometimes from time to time. There is no poison, and no poison trigger. Each of them was a developer, layer by layer, and what kind of product was it. Children's playground, football as a football field, pregnant before that. Mauris ex tortor, saucement et eleifend et, euismod not before. Intrepid lorem nibh, the target and the target should be a lot, different in the elit. \n\n Duis malesuada dui quis lorem sad aliquam It's a soft salad, but neither is a bed of protein. Laughter in football. Until there is great publicity, the homework should be more important than the basketball sauce. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. For the sauce, the pain is not aimed at the ends, just the ugly bow of the tincidunt, it is important for the promotion and education. But the gate, the ligula of the Euismod hendrerit, was just a mass of property, and the makeup of life was not lent to the players. For the kids, I'm going to have a salad at the same time. No employee like Lacinia, football player, flatters the free. \n \n Tomorrow hendrerit fermentum nibh sed faucibus There is nothing easy. It's hate before, but the time is over, always Euismod now. In sed nisl a felis faucibus laoreet. There is no need to be pure in any sad moment or result. Everyone was the author, but the real estate, pure grief. Every one of my lions, be it soft or varied, takes care of itself. Until cartoon real estate developers. Everyone and Leo should be happy unless they are very busy.",
+  Latin:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.",
+  Afrikaans:
+    "Die kliënt is baie belangrik, die kliënt sal deur die kliënt gevolg word. Daar moet geen motors, geen motors, geen vuil beddens, geen vuil skottelgoed wees nie. As werknemer aanvaar hy nie haat of begeerte nie. Dit was 'n naweek. Selfs as die giftige Lacinia groot is, laat dit baie rhoncus arcu egestus ullamcorper wees. Elke voertuig is nie te koop nie. Die prys van die produk is anders. Maar die hartseer sneller en die groot verwagting, versier die lewe van die eiendom. Geen produksie en geen sous nie. Vivamus vlei die lag van die mannetjie, dit het die vulputaat nodig voor die belegging van die spotprent. Almal moet die spelers sit. Tot en selfs voor die sagte sleutelbord. Selfs dit beperk die pyn, en dit word 'n grap. Almal en niemand wil nie. Daar word nie gelag in die vallei nie. Dit is nodig om in die eiendom te belê, maar die lacinia moet gesê word. Soos die hartseer van die eros, maar die ultricies self, maar die voertuie van die diam van die sjokolade. \n\n Mauris het 'n urn nodig in haat van tincidunt ultricities a sed dui. Hy sorg vir homself maar wil in sy huiswerk belê. Soms word die gis opgesit. Elkeen word deur 'n massa geteiken. Dit is gerieflik vir swanger vroue. Môre, wat sal die probleem van pyn wees, het hy gesê. Daar word gesê dat hy in hierdie straat gewoon het. Môre en rou wys. Daar is geen kliniese belangstelling nie, of soms van tyd tot tyd. Daar is geen gif nie, en geen gifsneller nie. Elkeen van hulle was 'n ontwikkelaar, laag vir laag, en watter soort produk was dit. Kinderspeelgrond, sokker as 'n sokkerveld, voor dit swanger. Mauris ex tortor, saucement et eleifend et, euismod nie voor nie. Onverskrokke lorem nibh, die teiken en die teiken moet baie anders wees in die veld. \n\n Duis malesuada dui quis lorem sad aliquam Dit is 'n sagte slaai, maar ook nie 'n proteïenbed nie. Gelag in sokker. Totdat daar groot publisiteit is, behoort die huiswerk belangriker te wees as die basketbalsous. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Vir die sous is die pyn nie op die punte gerig nie, net die lelike boog van die tincidunt, dit is belangrik vir die bevordering en opvoeding. Maar die hek, die ligula van die Euismod-hendrerit, was net 'n massa eiendom, en die samestelling van die lewe is nie aan die spelers geleen nie. Vir die kinders gaan ek terselfdertyd 'n slaai eet. Geen werknemer soos Lacinia, sokkerspeler, vlei die vryes nie. \n \n Môre hendrerit fermentum nibh sed faucibus Daar is niks maklik nie. Dis haat voorheen, maar die tyd is verby, altyd Euismod nou. In sed nisl 'n felis faucibus laoreet. Dit is nie nodig om rein te wees in enige hartseer oomblik of resultaat nie. Almal was die skrywer, maar die eiendom, pure hartseer. Elkeen van my leeus, of dit nou sag of gevarieerd is, sorg vir homself. Tot spotprent eiendomsontwikkelaars. Almal en Leo behoort gelukkig te wees tensy hulle baie besig is.",
+  Spanish:
+    "El cliente es muy importante, el cliente será seguido por el cliente. No debe haber coches, ni coches, ni camas sucias, ni platos sucios. Como empleado, no acepta el odio ni el deseo. fue un fin de semana Incluso si la venenosa Lacinia es genial, que sea mucho rhoncus arcu egestus ullamcorper. Cada vehículo no está a la venta. El precio del producto es diferente. Pero el triste detonante y la gran expectación, adornan la vida de la inmobiliaria. Sin producción y sin salsa. Vivamus halaga la risa del varón, necesita la vulputación antes de la inversión de la caricatura. Todo el mundo tiene que poner los jugadores. Hasta e incluso antes del teclado virtual. Incluso eso limita el dolor y se convierte en una broma. Todos y nadie quiere. No hay risa en el valle. Hay que invertir en los inmuebles, pero hay que decir la lacinia. Como el dolor del eros, pero los ultricios mismos, pero los vehículos del diam del chocolate. \n\n Mauris necesita una urna por odio a las tincidunt ultricies a sed dui. Se cuida pero quiere invertir en su tarea. A veces se pone la levadura. Cada uno es el objetivo de una masa. Es conveniente para las mujeres embarazadas. Mañana, cuál será el problema del dolor, dijo. Se dice que vivió en esta calle. Mañana y luto sabio. No hay interés clínico, oa veces de vez en cuando. No hay veneno, ni disparador de veneno. Cada uno de ellos era un revelador, capa por capa, y qué tipo de producto era. Parque infantil, fútbol como campo de fútbol, ​​embarazada antes de eso. Mauris ex tortor, saucement et eleifend et, euismod no antes. Intrépido lorem nibh, el objetivo y el objetivo deben ser mucho, diferentes en el campo. \n\n Duis malesuada dui quis lorem sad aliquam Es una ensalada blanda, pero tampoco es un lecho de proteínas. La risa en el fútbol. Hasta que haya una gran publicidad, la tarea debería ser más importante que la salsa del baloncesto. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Para la salsa, el dolor no va dirigido a las puntas, solo el feo lazo del tincidunt, es importante para la promoción y educación. Pero la puerta, la ligula del Euismod hendrerit, no era más que una masa de propiedad, y la composición de la vida no se prestaba a los jugadores. Para los niños, voy a tener una ensalada al mismo tiempo. Ningún empleado como Lacinia, futbolista, halaga la libertad. \n \n Mañana hendrerit fermentum nibh sed faucibus No hay nada fácil. Es odio antes, pero el tiempo se acabó, siempre Euismod ahora. In sed nisl a felis faucibus laoreet. No hay necesidad de ser puro en ningún momento o resultado triste. Todo el mundo era autor, menos la inmobiliaria, pura pena. Cada uno de mis leones, ya sea suave o variado, se cuida solo. Hasta los desarrolladores de bienes raíces de dibujos animados. Todos y Leo deberían estar felices a menos que estén muy ocupados.",
+};
 
 // About Kirista
-export const about =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.";
+export const about = {
+  English:
+    "The customer is very important, the customer will be followed by the customer. There should be no cars, no cars, no dirty beds, no dirty dishes. As an employee, he does not accept hatred or desire. It was a weekend. Even if the venomous Lacinia is great, let it be a lot of rhoncus arcu egestus ullamcorper. Each vehicle is not for sale. The price of the product is different. But the sad trigger and the great expectation, adorning the life of the real estate. No production and no sauce. Vivamus flatters the laughter of the male, it needs the vulputate before the investment of the cartoon. Everyone has to put the players. Until and even before the soft keyboard. Even that limits the pain, and it becomes a joke. Everyone and no one wants. There is no laughter in the valley. It is necessary to invest in the real estate, but the lacinia needs to be said. As the grief of the eros, but the ultricies itself, but the vehicles of the diam of the chocolate. \n\n Mauris needs an urn in hatred of tincidunt ultricies a sed dui. He takes care of himself but wants to invest in his homework. Sometimes the yeast is put on. Each one is targeted by a mass. It is convenient for pregnant women. Tomorrow, what will be the problem of pain, he said. He is said to have lived in this street. Morrow and mourning wise. There is no clinical interest, or sometimes from time to time. There is no poison, and no poison trigger. Each of them was a developer, layer by layer, and what kind of product was it. Children's playground, football as a football field, pregnant before that. Mauris ex tortor, saucement et eleifend et, euismod not before. Intrepid lorem nibh, the target and the target should be a lot, different in the elit. \n\n Duis malesuada dui quis lorem sad aliquam It's a soft salad, but neither is a bed of protein. Laughter in football. Until there is great publicity, the homework should be more important than the basketball sauce. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. For the sauce, the pain is not aimed at the ends, just the ugly bow of the tincidunt, it is important for the promotion and education. But the gate, the ligula of the Euismod hendrerit, was just a mass of property, and the makeup of life was not lent to the players. For the kids, I'm going to have a salad at the same time. No employee like Lacinia, football player, flatters the free. \n \n Tomorrow hendrerit fermentum nibh sed faucibus There is nothing easy. It's hate before, but the time is over, always Euismod now. In sed nisl a felis faucibus laoreet. There is no need to be pure in any sad moment or result. Everyone was the author, but the real estate, pure grief. Every one of my lions, be it soft or varied, takes care of itself. Until cartoon real estate developers. Everyone and Leo should be happy unless they are very busy.",
+  Latin:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet nulla aliquet, varius lectus venenatis, dapibus turpis. Ut molestie odio nec egestas suscipit. Aliquam erat volutpat. Etiam venenatis lacinia magna, sit amet rhoncus arcu egestas ullamcorper. Quisque vehicula luctus enim non scelerisque. Proin auctor pretium nisi ac varius. Sed tristique felis ac magna malesuada, vitae ornare augue mattis. Vestibulum ac condimentum nulla. Vivamus blandit malesuada risus, eget vulputate ante imperdiet viverra. Quisque ut posuere nisl. Donec ac enim nec ante mollis tincidunt. Etiam id finibus dolor, et efficitur mauris. Quisque nec nulla velit. Nullam sagittis risus quis congue convallis. Fusce placerat rutrum ipsum, eget lacinia velit dictum sed. Ut luctus eros sed ipsum ultricies, sed vehicula diam scelerisque. \n\n Mauris eget urna in odio tincidunt ultricies a sed dui. Suspendisse suscipit sed velit placerat congue. Mauris fermentum posuere interdum. Quisque vel iaculis massa. In faucibus gravida commodo. Cras consequat dolor quis dolor hendrerit, dictum varius nunc tincidunt. In hac habitasse platea dictumst. Cras ac luctus sapien. Nulla aliquet orci velit, vel interdum ex tempus at. Praesent ac venenatis nulla, nec venenatis felis. Quisque elit erat, accumsan at accumsan et, pellentesque vestibulum quam. Pellentesque ipsum diam, lobortis ut vestibulum eu, gravida id ante. Mauris ex tortor, condimentum et eleifend et, euismod non ante. Integer lorem nibh, iaculis ac iaculis sit amet, varius in elit. \n\n Duis malesuada dui quis lorem tristique aliquam. Suspendisse mollis sem est, sed dapibus lectus ultricies nec. In eu fringilla risus. Donec magna augue, congue sit amet quam at, ultrices condimentum eros. Donec massa massa, pharetra in augue a, imperdiet laoreet mauris. Nam condimentum, dolor non iaculis finibus, turpis arcu tincidunt justo, sit amet fringilla enim augue ac lectus. Sed porta, ligula a euismod hendrerit, lectus massa mattis justo, vitae rutrum neque lectus in nisl. Proin pellentesque tincidunt sem in tempor. Nullam molestie quam lacinia, dignissim elit eu, blandit libero. \n \n Cras hendrerit fermentum nibh sed faucibus. Nulla facilisi. Praesent odio ante, lobortis sed lectus tempus, semper euismod nunc. In sed nisl a felis faucibus laoreet. Nulla sit amet purus in nulla tristique interdum vel consequat eros. Quisque a erat auctor, mattis orci sed, luctus purus. Quisque leo mi, mollis vel varius sit amet, suscipit non eros. Donec viverra mattis tincidunt. Quisque et leo sit amet nisi ultricies mattis.",
+  Afrikaans:
+    "Die kliënt is baie belangrik, die kliënt sal deur die kliënt gevolg word. Daar moet geen motors, geen motors, geen vuil beddens, geen vuil skottelgoed wees nie. As werknemer aanvaar hy nie haat of begeerte nie. Dit was 'n naweek. Selfs as die giftige Lacinia groot is, laat dit baie rhoncus arcu egestus ullamcorper wees. Elke voertuig is nie te koop nie. Die prys van die produk is anders. Maar die hartseer sneller en die groot verwagting, versier die lewe van die eiendom. Geen produksie en geen sous nie. Vivamus vlei die lag van die mannetjie, dit het die vulputaat nodig voor die belegging van die spotprent. Almal moet die spelers sit. Tot en selfs voor die sagte sleutelbord. Selfs dit beperk die pyn, en dit word 'n grap. Almal en niemand wil nie. Daar word nie gelag in die vallei nie. Dit is nodig om in die eiendom te belê, maar die lacinia moet gesê word. Soos die hartseer van die eros, maar die ultricies self, maar die voertuie van die diam van die sjokolade. \n\n Mauris het 'n urn nodig in haat van tincidunt ultricities a sed dui. Hy sorg vir homself maar wil in sy huiswerk belê. Soms word die gis opgesit. Elkeen word deur 'n massa geteiken. Dit is gerieflik vir swanger vroue. Môre, wat sal die probleem van pyn wees, het hy gesê. Daar word gesê dat hy in hierdie straat gewoon het. Môre en rou wys. Daar is geen kliniese belangstelling nie, of soms van tyd tot tyd. Daar is geen gif nie, en geen gifsneller nie. Elkeen van hulle was 'n ontwikkelaar, laag vir laag, en watter soort produk was dit. Kinderspeelgrond, sokker as 'n sokkerveld, voor dit swanger. Mauris ex tortor, saucement et eleifend et, euismod nie voor nie. Onverskrokke lorem nibh, die teiken en die teiken moet baie anders wees in die veld. \n\n Duis malesuada dui quis lorem sad aliquam Dit is 'n sagte slaai, maar ook nie 'n proteïenbed nie. Gelag in sokker. Totdat daar groot publisiteit is, behoort die huiswerk belangriker te wees as die basketbalsous. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Vir die sous is die pyn nie op die punte gerig nie, net die lelike boog van die tincidunt, dit is belangrik vir die bevordering en opvoeding. Maar die hek, die ligula van die Euismod-hendrerit, was net 'n massa eiendom, en die samestelling van die lewe is nie aan die spelers geleen nie. Vir die kinders gaan ek terselfdertyd 'n slaai eet. Geen werknemer soos Lacinia, sokkerspeler, vlei die vryes nie. \n \n Môre hendrerit fermentum nibh sed faucibus Daar is niks maklik nie. Dis haat voorheen, maar die tyd is verby, altyd Euismod nou. In sed nisl 'n felis faucibus laoreet. Dit is nie nodig om rein te wees in enige hartseer oomblik of resultaat nie. Almal was die skrywer, maar die eiendom, pure hartseer. Elkeen van my leeus, of dit nou sag of gevarieerd is, sorg vir homself. Tot spotprent eiendomsontwikkelaars. Almal en Leo behoort gelukkig te wees tensy hulle baie besig is.",
+  Spanish:
+    "El cliente es muy importante, el cliente será seguido por el cliente. No debe haber coches, ni coches, ni camas sucias, ni platos sucios. Como empleado, no acepta el odio ni el deseo. fue un fin de semana Incluso si la venenosa Lacinia es genial, que sea mucho rhoncus arcu egestus ullamcorper. Cada vehículo no está a la venta. El precio del producto es diferente. Pero el triste detonante y la gran expectación, adornan la vida de la inmobiliaria. Sin producción y sin salsa. Vivamus halaga la risa del varón, necesita la vulputación antes de la inversión de la caricatura. Todo el mundo tiene que poner los jugadores. Hasta e incluso antes del teclado virtual. Incluso eso limita el dolor y se convierte en una broma. Todos y nadie quiere. No hay risa en el valle. Hay que invertir en los inmuebles, pero hay que decir la lacinia. Como el dolor del eros, pero los ultricios mismos, pero los vehículos del diam del chocolate. \n\n Mauris necesita una urna por odio a las tincidunt ultricies a sed dui. Se cuida pero quiere invertir en su tarea. A veces se pone la levadura. Cada uno es el objetivo de una masa. Es conveniente para las mujeres embarazadas. Mañana, cuál será el problema del dolor, dijo. Se dice que vivió en esta calle. Mañana y luto sabio. No hay interés clínico, oa veces de vez en cuando. No hay veneno, ni disparador de veneno. Cada uno de ellos era un revelador, capa por capa, y qué tipo de producto era. Parque infantil, fútbol como campo de fútbol, ​​embarazada antes de eso. Mauris ex tortor, saucement et eleifend et, euismod no antes. Intrépido lorem nibh, el objetivo y el objetivo deben ser mucho, diferentes en el campo. \n\n Duis malesuada dui quis lorem sad aliquam Es una ensalada blanda, pero tampoco es un lecho de proteínas. La risa en el fútbol. Hasta que haya una gran publicidad, la tarea debería ser más importante que la salsa del baloncesto. Donec massa massa, pharetra in ague a, imperdiet laoreet mauris. Para la salsa, el dolor no va dirigido a las puntas, solo el feo lazo del tincidunt, es importante para la promoción y educación. Pero la puerta, la ligula del Euismod hendrerit, no era más que una masa de propiedad, y la composición de la vida no se prestaba a los jugadores. Para los niños, voy a tener una ensalada al mismo tiempo. Ningún empleado como Lacinia, futbolista, halaga la libertad. \n \n Mañana hendrerit fermentum nibh sed faucibus No hay nada fácil. Es odio antes, pero el tiempo se acabó, siempre Euismod ahora. In sed nisl a felis faucibus laoreet. No hay necesidad de ser puro en ningún momento o resultado triste. Todo el mundo era autor, menos la inmobiliaria, pura pena. Cada uno de mis leones, ya sea suave o variado, se cuida solo. Hasta los desarrolladores de bienes raíces de dibujos animados. Todos y Leo deberían estar felices a menos que estén muy ocupados.",
+};
 
 // Promotions
 export const promotions = [
@@ -1541,8 +1795,11 @@ export const countries = [
   { title: "Bahamas", flag: BahamasFlag },
 ];
 
+// Languages
+export const languages = ["Latin", "English", "Afrikaans", "Spanish"];
+
 // Privileges
-export const privileges = [
+export const privilegesData = [
   {
     "S/N": 0,
     Name: "Neil Sims",

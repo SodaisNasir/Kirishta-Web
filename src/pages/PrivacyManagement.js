@@ -1,16 +1,37 @@
-import React, { useState } from "react";
-import Page from "../components/Page Templates/Page";
-import { privacyPolicy } from "../constants/data";
+import React, { useEffect, useState } from "react";
 import Editor from "../components/Editor";
+import { privacyPolicy } from "../constants/data";
+import { LanguageSelector } from "../components/helpers";
 
 const PrivacyManagement = () => {
   const [state, setState] = useState({ value: privacyPolicy });
+  const [language, setLanguage] = useState({ state: false, value: "English" });
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = () => console.log(state.value);
 
+  useEffect(() => {
+    setState({ value: privacyPolicy[language.value] });
+  }, []);
+
   return (
-    <Page title={"Privacy Policy Management"}>
+    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+      <header className="flex justify-between">
+        <h1 className="font-semibold text-xl text-[#44403C]">
+          Privacy Policy Management
+        </h1>
+
+        <LanguageSelector
+          {...{
+            language,
+            setLanguage,
+            handleClick: (value) => {
+              setLanguage({ state: false, value });
+              setState({ value: privacyPolicy[language.value] });
+            },
+          }}
+        />
+      </header>
       <main>
         <div className="grid grid-cols-1 gap-5">
           <Editor {...{ state, handleChange }} />
@@ -22,7 +43,7 @@ const PrivacyManagement = () => {
           Update
         </button>
       </main>
-    </Page>
+    </div>
   );
 };
 

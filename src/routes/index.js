@@ -23,11 +23,13 @@ import {
   BookCategoriesManagement,
   ProvincesManagement,
   RegionsManagement,
-  Privileges,
+  // Privileges,
   RCCGContinent2,
   RCCGStructure,
   AboutRCCG,
   AdminEmail,
+  SubAdmin,
+  Roles,
 } from "../pages";
 import { AppContext } from "../context";
 import { AdminLayout } from "../components";
@@ -56,7 +58,9 @@ const Router = () => {
             />
           </Route>
           <Route path="/access">
-            <Route path="/access/privileges" element={<Privileges />} />
+            {/* <Route path="/access/privileges" element={<Privileges />} /> */}
+            <Route path="/access/sub-admin" element={<SubAdmin />} />
+            <Route path="/access/roles" element={<Roles />} />
           </Route>
           <Route path="/books-management" element={<BooksManagement />} />
           <Route path="/publish-book" element={<PublishBook />} />

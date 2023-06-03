@@ -37,7 +37,7 @@ const RegionsManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -69,7 +69,7 @@ const RegionsManagement = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: regions, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: regions }));
       setData(regions);
     }, 2000);
   }, []);

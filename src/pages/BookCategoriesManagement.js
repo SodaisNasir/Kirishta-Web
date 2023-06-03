@@ -37,7 +37,7 @@ const BookCategoriesManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -73,7 +73,7 @@ const BookCategoriesManagement = () => {
       category,
     }));
     setTimeout(() => {
-      setPaginatedData({ items: book_categories, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: book_categories }));
       setData(book_categories);
     }, 2000);
   }, []);

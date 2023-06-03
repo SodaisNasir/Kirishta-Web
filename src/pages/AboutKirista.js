@@ -1,16 +1,31 @@
-import React, { useState } from "react";
-import Page from "../components/Page Templates/Page";
+import React, { useEffect, useState } from "react";
 import { about } from "../constants/data";
+import { LanguageSelector } from "../components/helpers";
 import Editor from "../components/Editor";
 
 const AboutKirista = () => {
   const [state, setState] = useState({ value: about });
+  const [language, setLanguage] = useState({ state: false, value: "English" });
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = () => console.log(state.value);
 
+  useEffect(() => {
+    setState({ value: about[language.value] });
+  }, [language.value]);
+
   return (
-    <Page title={"About Kirista"}>
+    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+      <header className="flex justify-between">
+        <h1 className="font-semibold text-xl text-[#44403C]">About Kirista</h1>
+
+        <LanguageSelector
+          {...{
+            language,
+            setLanguage,
+          }}
+        />
+      </header>
       <main>
         <div className="grid grid-cols-1 gap-5">
           <Editor {...{ state, handleChange }} />
@@ -22,7 +37,7 @@ const AboutKirista = () => {
           Update
         </button>
       </main>
-    </Page>
+    </div>
   );
 };
 

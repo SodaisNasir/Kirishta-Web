@@ -1,16 +1,38 @@
 import React, { useState } from "react";
-import Page from "../components/Page Templates/Page";
 import { terms } from "../constants/data";
 import Editor from "../components/Editor";
+import { useEffect } from "react";
+import { LanguageSelector } from "../components/helpers";
 
 const TermsManagement = () => {
   const [state, setState] = useState({ value: terms });
+  const [language, setLanguage] = useState({ state: false, value: "English" });
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = () => console.log(state.value);
 
+  useEffect(() => {
+    setState({ value: terms[language.value] });
+  }, []);
+
   return (
-    <Page title={"Terms Management"}>
+    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+      <header className="flex justify-between">
+        <h1 className="font-semibold text-xl text-[#44403C]">
+          Terms Management
+        </h1>
+
+        <LanguageSelector
+          {...{
+            language,
+            setLanguage,
+            handleClick: (value) => {
+              setLanguage({ state: false, value });
+              setState({ value: terms[language.value] });
+            },
+          }}
+        />
+      </header>
       <main>
         <div className="grid grid-cols-1 gap-5">
           <Editor {...{ state, handleChange }} />
@@ -22,7 +44,7 @@ const TermsManagement = () => {
           Update
         </button>
       </main>
-    </Page>
+    </div>
   );
 };
 

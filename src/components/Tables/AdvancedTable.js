@@ -39,7 +39,8 @@ const AdvancedTable = ({
       <div
         className={`${
           isLoading ? "relative min-h-[50vh]" : ""
-        } relative overflow-x-auto rounded-lg mx-auto md:max-w-lg lg:max-w-[725px] xl:max-w-5xl`}
+        } relative overflow-x-auto rounded-lg mx-auto w-full`}
+        // } relative overflow-x-auto rounded-lg mx-auto md:max-w-lg lg:max-w-[725px] xl:max-w-5xl`}
       >
         {isLoading ? (
           <Loader />
@@ -192,8 +193,10 @@ const SingleUser = ({
               key={key + SN}
               className="px-6 py-4 text-center whitespace-nowrap"
             >
-              {key === "Image" ? (
+              {key === "Image" || key === "Media File" ? (
                 <img className="w-10" src={data[key]} alt={data.Title} />
+              ) : Array.isArray(data[key]) ? (
+                data[key].join(", ")
               ) : (
                 data[key]
               )}

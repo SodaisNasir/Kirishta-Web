@@ -36,7 +36,7 @@ const ContactManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -71,7 +71,7 @@ const ContactManagement = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: contacts, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: contacts }));
       setData(contacts);
     }, 2000);
   }, []);
@@ -86,7 +86,7 @@ const ContactManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Edit", "Delete"],
+              actionCols: ["Reply", "Delete"],
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">

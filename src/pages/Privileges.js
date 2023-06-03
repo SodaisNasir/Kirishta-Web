@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { privileges } from "../constants/data";
+import { privilegesData } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
@@ -79,7 +79,7 @@ const Privileges = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -106,8 +106,8 @@ const Privileges = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: privileges, curItems: [] });
-      setData(privileges);
+      setPaginatedData((prev) => ({ ...prev, items: privilegesData }));
+      setData(privilegesData);
     }, 2000);
   }, []);
 
@@ -269,7 +269,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                 className={
                   page === 1
                     ? "grid grid-cols-1 xs:grid-cols-2 gap-6"
-                    : "grid grid-cols-1 xs:grid-cols-2 gap-3 gap-x-5 text-xs"
+                    : "grid grid-cols-1 xs:grid-cols-2 gap-3  text-xs"
                 }
               >
                 {page === 1
@@ -395,7 +395,7 @@ const PrivilegesModal = ({ privilegesModal, setPrivilegesModal }) => {
             </div>
             {/* Modal body */}
             <div className="max-h-[70vh] p-6 overflow-y-auto">
-              <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 gap-x-5 text-xs">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-3  text-xs">
                 {keys.map((elem) => (
                   <div
                     key={elem}

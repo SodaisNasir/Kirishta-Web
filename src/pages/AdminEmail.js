@@ -6,6 +6,7 @@ import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
+import { typeCheck } from "../utils";
 
 const AdminEmail = () => {
   const initial_filters = {
@@ -43,7 +44,7 @@ const AdminEmail = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -70,7 +71,7 @@ const AdminEmail = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: admins, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: admins }));
       setData(admins);
     }, 2000);
   }, []);
@@ -151,27 +152,6 @@ const AddUserModal = ({ addUser, setAddUser }) => {
   };
 
   const close = () => setAddUser((prev) => ({ ...prev, isVisible: false }));
-  const typeCheck = (elem) => {
-    let result = null;
-
-    switch (elem) {
-      case "Email":
-        result = "email";
-        break;
-      case "Password":
-        result = "password";
-        break;
-      case "Phone Number":
-        result = "tel";
-        break;
-
-      default:
-        result = "text";
-        break;
-    }
-
-    return result;
-  };
 
   return (
     <>

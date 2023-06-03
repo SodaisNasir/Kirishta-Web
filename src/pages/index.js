@@ -25,6 +25,8 @@ import RCCGContinent2 from "./RCCGContinent2";
 import RCCGStructure from "./RCCGStructure";
 import AboutRCCG from "./AboutRCCG";
 import AdminEmail from "./AdminEmail";
+import SubAdmin from "./SubAdmin";
+import Roles from "./Roles";
 
 export {
   Dashboard,
@@ -47,11 +49,13 @@ export {
   BookCategoriesManagement,
   ProvincesManagement,
   RegionsManagement,
+  PublishBook,
+  BooksManagement,
   Privileges,
   RCCGContinent2,
   RCCGStructure,
   AboutRCCG,
   AdminEmail,
-  PublishBook,
-  BooksManagement,
+  SubAdmin,
+  Roles,
 };

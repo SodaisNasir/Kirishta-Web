@@ -37,7 +37,7 @@ const ProvincesManagement = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -71,7 +71,7 @@ const ProvincesManagement = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData({ items: provinces, curItems: [] });
+      setPaginatedData((prev) => ({ ...prev, items: provinces }));
       setData(provinces);
     }, 2000);
   }, []);
