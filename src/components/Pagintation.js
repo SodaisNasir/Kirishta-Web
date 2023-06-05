@@ -52,12 +52,12 @@ function Paginatation({
         pageCount={pageCount}
         previousLabel="< Previous"
         renderOnZeroPageCount={null}
-        className="flex justify-center items-center space-x-1 text-sm p-2.5 py-4"
+        className="flex justify-center items-center space-x-1 text-sm p-2.5 py-4 overflow-x-auto"
         activeLinkClassName="px-2.5 py-1 !bg-blue-700 text-white rounded-md"
         breakLinkClassName="px-2.5 py-1 bg-blue-200 rounded-md hover:bg-blue-700 hover:text-white"
         pageLinkClassName="px-2.5 py-1 bg-blue-200 rounded-md hover:bg-blue-700 hover:text-white"
-        nextLinkClassName="px-4 py-1.5 bg-blue-200 text-xs rounded-md hover:bg-blue-700 hover:text-white"
-        previousLinkClassName="px-4 py-1.5 bg-blue-200 text-xs rounded-md hover:bg-blue-700 hover:text-white"
+        nextLinkClassName="px-4 py-1.5 bg-blue-200 text-xs rounded-md hover:bg-blue-700 hover:text-white whitespace-nowrap"
+        previousLinkClassName="px-4 py-1.5 bg-blue-200 text-xs rounded-md hover:bg-blue-700 hover:text-white whitespace-nowrap"
         disabledClassName="hidden"
         disabledLinkClassName="hidden"
       />

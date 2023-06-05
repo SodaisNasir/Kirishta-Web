@@ -30,7 +30,12 @@ const Login = () => {
     e.preventDefault();
 
     if (!user) {
-      setUser({ email, password });
+      setUser({
+        name: "Jerry Nudibisi",
+        email,
+        password,
+        photoUrl: "https://i.pravatar.cc/30",
+      });
       navigate("/dashboard");
     }
   };

@@ -307,6 +307,7 @@ export const navLinks = [
     ),
     items: [
       { title: "Admin Email", path: "/settings/admin-email" },
+      { title: "Country", path: "/settings/country" },
       { title: "Region", path: "/settings/region" },
       { title: "Province", path: "/settings/province" },
       { title: "Book Category", path: "/settings/book-category" },
@@ -792,7 +793,7 @@ export const users = [
     Email: "neil.sims@flowbite.com",
     "Phone Number": 3873687368723,
     Country: "Nigeria",
-    Status: "Active",
+    Status: "ACTIVE",
   },
   {
     id: 1,
@@ -801,7 +802,7 @@ export const users = [
     Email: "bonnie@flowbite.com",
     "Phone Number": 3873687368723,
     Country: "Nigeria",
-    Status: "Inactive",
+    Status: "INACTIVE",
   },
   {
     id: 2,
@@ -810,7 +811,7 @@ export const users = [
     Email: "jese@flowbite.com",
     "Phone Number": 3873687368723,
     Country: "Nigeria",
-    Status: "Active",
+    Status: "ACTIVE",
   },
   {
     id: 3,
@@ -819,7 +820,7 @@ export const users = [
     Email: "thomes@flowbite.com",
     "Phone Number": 3873687368723,
     Country: "Benin",
-    Status: "Active",
+    Status: "ACTIVE",
   },
   {
     id: 4,
@@ -828,7 +829,7 @@ export const users = [
     Email: "leslie@flowbite.com",
     "Phone Number": 3873687368723,
     Country: "Nigeria",
-    Status: "Active",
+    Status: "ACTIVE",
   },
 ];
 
@@ -838,10 +839,10 @@ export const banners = [
     "S/N": 637,
     Platform: "Android",
     Title: "Lorem ipsum",
-    Tag: "ndfyhidf.com",
+    Tag: "ndfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -851,7 +852,7 @@ export const banners = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Inactive",
+    Status: "INACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -861,7 +862,7 @@ export const banners = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -871,7 +872,7 @@ export const banners = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -881,7 +882,7 @@ export const banners = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
 ];
@@ -895,7 +896,7 @@ export const popups = [
     Tag: "ndfyhidf.com",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -905,7 +906,7 @@ export const popups = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Inactive",
+    Status: "INACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -915,7 +916,7 @@ export const popups = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -925,7 +926,7 @@ export const popups = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
   {
@@ -935,7 +936,7 @@ export const popups = [
     Tag: "dfyhidf",
     "Media File": "https://loremflickr.com/320/240",
     "App Page": 6,
-    Status: "Active",
+    Status: "ACTIVE",
     "Expiry Date": "2/5/2023",
   },
 ];
@@ -952,8 +953,9 @@ export const books = [
     Country: "Nigeria",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
     "Released Year": 2020,
-    "Downloads/Reads": 67648,
-    Status: "Active",
+    Downloads: 67648,
+    Reads: 8048,
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -966,8 +968,9 @@ export const books = [
     Country: "Benin",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
     "Released Year": 2020,
-    "Downloads/Reads": 67648,
-    Status: "Inactive",
+    Downloads: 67648,
+    Reads: 8048,
+    Status: "INACTIVE",
     Featured: "No",
   },
   {
@@ -980,8 +983,9 @@ export const books = [
     Country: "Nigeria",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
     "Released Year": 2020,
-    "Downloads/Reads": 67648,
-    Status: "Active",
+    Downloads: 67648,
+    Reads: 8048,
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -994,8 +998,9 @@ export const books = [
     Country: "Benin",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
     "Released Year": 2020,
-    "Downloads/Reads": 67648,
-    Status: "Active",
+    Downloads: 67648,
+    Reads: 8048,
+    Status: "ACTIVE",
     Featured: "No",
   },
   {
@@ -1008,8 +1013,9 @@ export const books = [
     Country: "Nigeria",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
     "Released Year": 2020,
-    "Downloads/Reads": 67648,
-    Status: "Active",
+    Downloads: 67648,
+    Reads: 8048,
+    Status: "ACTIVE",
     Featured: "Yes",
   },
 ];
@@ -1021,8 +1027,6 @@ export const parishes = [
     Country: "Nigeria",
     Region: "sdfgysdi",
     Province: "Taxes",
-    Zone: "sdkftgsid",
-    Area: "sdkftgsid",
     Image: "https://loremflickr.com/g/320/240/cover",
     Title: "Lorem ipsum",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
@@ -1032,7 +1036,7 @@ export const parishes = [
     Email: "example@gmail.com",
     Phone: "+92 897 5498 984",
     Website: "www.example.com",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -1040,8 +1044,6 @@ export const parishes = [
     Country: "Benin",
     Region: "sdfgysdi",
     Province: "Taxes",
-    Zone: "sdkftgsid",
-    Area: "sdkftgsid",
     Image: "https://loremflickr.com/g/320/240/cover",
     Title: "Lorem ipsum",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
@@ -1051,7 +1053,7 @@ export const parishes = [
     Email: "example@gmail.com",
     Phone: "+92 897 5498 984",
     Website: "www.example.com",
-    Status: "Inactive",
+    Status: "INACTIVE",
     Featured: "No",
   },
   {
@@ -1059,8 +1061,6 @@ export const parishes = [
     Country: "Nigeria",
     Region: "sdfgysdi",
     Province: "Taxes",
-    Zone: "sdkftgsid",
-    Area: "sdkftgsid",
     Image: "https://loremflickr.com/g/320/240/cover",
     Title: "Lorem ipsum",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
@@ -1070,7 +1070,7 @@ export const parishes = [
     Email: "example@gmail.com",
     Phone: "+92 897 5498 984",
     Website: "www.example.com",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -1078,8 +1078,6 @@ export const parishes = [
     Country: "Benin",
     Region: "sdfgysdi",
     Province: "Taxes",
-    Zone: "sdkftgsid",
-    Area: "sdkftgsid",
     Image: "https://loremflickr.com/g/320/240/cover",
     Title: "Lorem ipsum",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
@@ -1089,7 +1087,7 @@ export const parishes = [
     Email: "example@gmail.com",
     Phone: "+92 897 5498 984",
     Website: "www.example.com",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "No",
   },
   {
@@ -1097,8 +1095,6 @@ export const parishes = [
     Country: "Nigeria",
     Region: "sdfgysdi",
     Province: "Taxes",
-    Zone: "sdkftgsid",
-    Area: "sdkftgsid",
     Image: "https://loremflickr.com/g/320/240/cover",
     Title: "Lorem jack",
     About: "sd fyhosiu fist fiusytd iuysif tr isudtu ystduy tfsdf.",
@@ -1108,7 +1104,7 @@ export const parishes = [
     Email: "example@gmail.com",
     Phone: "+92 897 5498 984",
     Website: "www.example.com",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
 ];
@@ -1125,7 +1121,7 @@ export const events = [
     Location: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Address: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Map: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -1138,7 +1134,7 @@ export const events = [
     Location: "sdfghsd yftg jack fisudyt fitfs ftis.",
     Address: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Map: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
-    Status: "Inactive",
+    Status: "INACTIVE",
     Featured: "No",
   },
   {
@@ -1151,7 +1147,7 @@ export const events = [
     Location: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Address: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Map: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
   {
@@ -1164,7 +1160,7 @@ export const events = [
     Location: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Address: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Map: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "No",
   },
   {
@@ -1177,7 +1173,7 @@ export const events = [
     Location: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Address: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
     Map: "sdfghsd yftg isuyt fisudyt fitfs ftis.",
-    Status: "Active",
+    Status: "ACTIVE",
     Featured: "Yes",
   },
 ];
@@ -1191,8 +1187,7 @@ export const feedbacks = [
     Name: "Lorem ipsum",
     Description: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
     Image: "https://loremflickr.com/g/320/240/cover",
-    Status: "Resolved",
-    Featured: "Yes",
+    Status: "RESOLVED",
   },
   {
     "S/N": 674,
@@ -1201,8 +1196,7 @@ export const feedbacks = [
     Name: "Lorem ipsum",
     Description: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
     Image: "https://loremflickr.com/g/320/240/cover",
-    Status: "Pending",
-    Featured: "No",
+    Status: "PENDING",
   },
   {
     "S/N": 634,
@@ -1211,8 +1205,7 @@ export const feedbacks = [
     Name: "Lorem ipsum",
     Description: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
     Image: "https://loremflickr.com/g/320/240/cover",
-    Status: "Resolved",
-    Featured: "Yes",
+    Status: "RESOLVED",
   },
   {
     "S/N": 637,
@@ -1221,8 +1214,7 @@ export const feedbacks = [
     Name: "Lorem jack",
     Description: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
     Image: "https://loremflickr.com/g/320/240/cover",
-    Status: "Resolved",
-    Featured: "No",
+    Status: "RESOLVED",
   },
   {
     "S/N": 374,
@@ -1231,8 +1223,7 @@ export const feedbacks = [
     Name: "Lorem ipsum",
     Description: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
     Image: "https://loremflickr.com/g/320/240/cover",
-    Status: "Pending",
-    Featured: "Yes",
+    Status: "PENDING",
   },
 ];
 
@@ -1247,7 +1238,7 @@ export const contacts = [
     Phone: "+92 465 6874 146",
     Subject: "Lorem ipsum",
     Message: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
-    Status: "Resolved",
+    Status: "RESOLVED",
     Featured: "Yes",
   },
   {
@@ -1259,7 +1250,7 @@ export const contacts = [
     Phone: "+92 465 6874 146",
     Subject: "Lorem ipsum",
     Message: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
-    Status: "Pending",
+    Status: "PENDING",
     Featured: "No",
   },
   {
@@ -1271,7 +1262,7 @@ export const contacts = [
     Phone: "+92 465 6874 146",
     Subject: "Lorem ipsum",
     Message: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
-    Status: "Resolved",
+    Status: "RESOLVED",
     Featured: "Yes",
   },
   {
@@ -1283,7 +1274,7 @@ export const contacts = [
     Phone: "+92 465 6874 146",
     Subject: "Lorem ipsum",
     Message: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
-    Status: "Resolved",
+    Status: "RESOLVED",
     Featured: "No",
   },
   {
@@ -1295,7 +1286,7 @@ export const contacts = [
     Phone: "+92 465 6874 146",
     Subject: "Lorem ipsum",
     Message: "sdfgisu dtfisu ytfiusy tfuiysdt uysdt uysdt.",
-    Status: "Pending",
+    Status: "PENDING",
     Featured: "Yes",
   },
 ];
@@ -1776,6 +1767,94 @@ export const promotions = [
       "https://picsum.photos/id/237/400/300",
       "https://picsum.photos/id/237/500/400",
     ],
+  },
+];
+
+// Countries Page Data
+export const countriesPageData = [
+  {
+    "S/N": 0,
+    flag: NigerianFlag,
+    "country code": "NG",
+    country: "Nigeria",
+    featured: "Yes",
+  },
+  {
+    "S/N": 1,
+    flag: ArgentinaFlag,
+    "country code": "AR",
+    country: "Argentina",
+    featured: "No",
+  },
+  {
+    "S/N": 2,
+    flag: AustraliaFlag,
+    "country code": "AU",
+    country: "Australia",
+    featured: "Yes",
+  },
+  {
+    "S/N": 3,
+    flag: ArubaFlag,
+    "country code": "AW",
+    country: "Aruba",
+    featured: "No",
+  },
+  {
+    "S/N": 4,
+    flag: BosniaAndHerzegovinaFlag,
+    "country code": "BA",
+    country: "Bosnia and Herzegovina",
+    featured: "No",
+  },
+  {
+    "S/N": 5,
+    flag: BangladeshFlag,
+    "country code": "BD",
+    country: "Bangladesh",
+    featured: "Yes",
+  },
+  {
+    "S/N": 6,
+    flag: BahrainFlag,
+    "country code": "BH",
+    country: "Bahrain",
+    featured: "No",
+  },
+  {
+    "S/N": 7,
+    flag: BermudaFlag,
+    "country code": "BM",
+    country: "Bermuda",
+    featured: "Yes",
+  },
+  {
+    "S/N": 8,
+    flag: BeninFlag,
+    "country code": "BJ",
+    country: "Benin",
+    featured: "No",
+  },
+  {
+    "S/N": 9,
+    flag: BoliviaFlag,
+    "country code": "BO",
+    country: "Bolivia, Plurinational...",
+    featured: "Yes",
+  },
+  {
+    "S/N": 10,
+    flag: BrazilFlag,
+    "country code": "BR",
+    country: "Brazil",
+    featured: "No",
+  },
+  {
+    "S/N": 11,
+    flag: BahamasFlag,
+    "country code": "BS",
+    country: "Bahamas",
+    featured: "Yes",
   },
 ];
 

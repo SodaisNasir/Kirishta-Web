@@ -24,6 +24,7 @@ const BannerPromotion = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createPromoModal, setCreatePromoModal] = useState({
     isVisible: false,
     data: {},
@@ -88,6 +89,7 @@ const BannerPromotion = () => {
               setPaginatedData,
               Actions,
               actionCols: ["Edit", "Delete"],
+              props: { setEditModal },
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -117,7 +119,7 @@ const BannerPromotion = () => {
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                   <DropdownFilter
-                    arr={["Active", "Inactive"]}
+                    arr={["ACTIVE", "INACTIVE"]}
                     title={"Status"}
                     toggle={toggleStatus}
                     curFilter={curFilter}
@@ -158,6 +160,11 @@ const BannerPromotion = () => {
                     <CreatePromoModal
                       {...{ createPromoModal, setCreatePromoModal }}
                     />
+                  )}
+
+                  {/* Edit user modal */}
+                  {editModal.isVisible && (
+                    <EditModal {...{ editModal, setEditModal }} />
                   )}
                 </div>
               </div>
@@ -271,7 +278,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                     htmlFor="book_image"
                   >
-                    Upload file
+                    Image
                   </label>
                   <input
                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -308,11 +315,11 @@ const EditModal = ({ editModal, setEditModal }) => {
                     name="status"
                     id="status"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Active"
+                    placeholder="ACTIVE"
                     required={true}
                   />
                   <datalist id="statuses">
-                    {["Active", "Inactive"].map((status, indx) => (
+                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
                       <option key={status + indx} value={status} />
                     ))}
                   </datalist>
@@ -438,7 +445,7 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                     htmlFor="book_image"
                   >
-                    Upload file
+                    Image
                   </label>
                   <input
                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -475,11 +482,11 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                     name="status"
                     id="status"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Active"
+                    placeholder="ACTIVE"
                     required={true}
                   />
                   <datalist id="statuses">
-                    {["Active", "Inactive"].map((status, indx) => (
+                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
                       <option key={status + indx} value={status} />
                     ))}
                   </datalist>
@@ -510,9 +517,8 @@ const Actions = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  setEditModal,
 }) => {
-  const [editModal, setEditModal] = useState({ isVisible: false, data });
-
   const remove = () => {
     setPaginatedData((prev) => ({
       ...prev,
@@ -522,12 +528,9 @@ const Actions = ({
 
   return (
     <>
-      {/* Edit user modal */}
-      {editModal.isVisible && <EditModal {...{ editModal, setEditModal }} />}
-
       <td className="text-center text-base px-6 py-4">
         <button
-          onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}
+          onClick={() => setEditModal({ isVisible: true, data })}
           className="font-medium text-gray-600 dark:text-gray-500"
         >
           <MdModeEdit />

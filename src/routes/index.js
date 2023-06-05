@@ -30,6 +30,8 @@ import {
   AdminEmail,
   SubAdmin,
   Roles,
+  EditProfile,
+  CountryManagement,
 } from "../pages";
 import { AppContext } from "../context";
 import { AdminLayout } from "../components";
@@ -45,6 +47,7 @@ const Router = () => {
           path="/"
           element={user ? <AdminLayout /> : <Navigate to="/login" />}
         >
+          <Route path="/edit-profile" element={<EditProfile />} />
           <Route index path="/dashboard" element={<Dashboard />} />
           <Route path="/users-management" element={<UsersManagement />} />
           <Route path="/promotion-management">
@@ -70,6 +73,7 @@ const Router = () => {
           <Route path="/contact-management" element={<ContactManagement />} />
           <Route path="/settings">
             <Route path="/settings/admin-email" element={<AdminEmail />} />
+            <Route path="/settings/country" element={<CountryManagement />} />
             <Route path="/settings/region" element={<RegionsManagement />} />
             <Route
               path="/settings/province"

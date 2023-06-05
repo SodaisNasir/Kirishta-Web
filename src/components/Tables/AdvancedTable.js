@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
+import { DropdownContainer, DropdownFilter } from "../helpers";
 
 const AdvancedTable = ({
   data,
@@ -7,6 +8,7 @@ const AdvancedTable = ({
   setPaginatedData,
   Actions,
   actionCols,
+  props,
   children,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -94,6 +96,7 @@ const AdvancedTable = ({
                     paginatedData,
                     setPaginatedData,
                     Actions,
+                    props,
                   }}
                 />
               ) : (
@@ -121,6 +124,7 @@ const Users = ({
   paginatedData,
   setPaginatedData,
   Actions,
+  props,
 }) => {
   return paginatedData.curItems.length
     ? paginatedData.curItems.map((user, indx) => (
@@ -135,6 +139,7 @@ const Users = ({
             paginatedData,
             setPaginatedData,
             Actions,
+            props,
           }}
         />
       ))
@@ -149,6 +154,7 @@ const Users = ({
             setSelectedUsers,
             paginatedData,
             setPaginatedData,
+            props,
           }}
         />
       ));
@@ -163,6 +169,7 @@ const SingleUser = ({
   paginatedData,
   setPaginatedData,
   Actions,
+  props,
 }) => {
   const handleCheckChange = (e) => {
     selectedUsers.includes(SN)
@@ -193,8 +200,28 @@ const SingleUser = ({
               key={key + SN}
               className="px-6 py-4 text-center whitespace-nowrap"
             >
-              {key === "Image" || key === "Media File" ? (
-                <img className="w-10" src={data[key]} alt={data.Title} />
+              {key === "Image" || key === "Media File" || key === "flag" ? (
+                <img
+                  className="w-10 mx-auto"
+                  src={data[key]}
+                  alt={data.Title}
+                />
+              ) : key === "Status" &&
+                (data[key] === "PENDING" || data[key] === "RESOLVED") ? (
+                <StatusDropdown {...{ value: data[key] }} />
+              ) : key.toLowerCase() === "app page" ? (
+                <span
+                  className="text-blue-500 hover:underline cursor-pointer"
+                  onClick={() =>
+                    window.open(
+                      "https://www.google.com",
+                      "",
+                      "height=500,width=657"
+                    )
+                  }
+                >
+                  {data[key]}
+                </span>
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
               ) : (
@@ -206,6 +233,7 @@ const SingleUser = ({
       {Actions && (
         <Actions
           {...{
+            ...props,
             tableStructure,
             data,
             SN,
@@ -217,6 +245,38 @@ const SingleUser = ({
         />
       )}
     </tr>
+  );
+};
+
+const StatusDropdown = ({ value }) => {
+  const [state, setState] = useState({ toggle: false, value: value });
+  const handleClick = (e) =>
+    setState({ toggle: false, value: e.target.innerText });
+
+  return (
+    <div
+      onClick={() => setState((prev) => ({ ...prev, toggle: !state.toggle }))}
+      className="relative inline-block text-blue-500 hover:underline cursor-pointer"
+    >
+      {state.value}
+
+      {state.toggle && (
+        <DropdownContainer extraStyles="!top-auto !right-auto !left-[130%] bottom-[-100%]">
+          {["NEW", "PENDING", "RESOLVED"].map((elem, indx) => (
+            <li
+              key={elem + indx}
+              onClick={handleClick}
+              role="option"
+              className={`${
+                indx !== 2 ? "border-b" : ""
+              } p-1 text-gray-900 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
+              {elem}
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
+    </div>
   );
 };
 

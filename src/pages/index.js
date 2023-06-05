@@ -27,6 +27,8 @@ import AboutRCCG from "./AboutRCCG";
 import AdminEmail from "./AdminEmail";
 import SubAdmin from "./SubAdmin";
 import Roles from "./Roles";
+import EditProfile from "./EditProfile";
+import CountryManagement from "./CountryManagement";
 
 export {
   Dashboard,
@@ -58,4 +60,6 @@ export {
   AdminEmail,
   SubAdmin,
   Roles,
+  EditProfile,
+  CountryManagement,
 };

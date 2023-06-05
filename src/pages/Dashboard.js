@@ -10,6 +10,7 @@ import {
   feedbackListItems,
   notifications,
 } from "../constants/data";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const initialState = { notifications: false, account: false };
@@ -40,7 +41,8 @@ const Dashboard = () => {
 };
 
 const Account = ({ toggle, setSingleToggle }) => {
-  const { setUser } = useContext(AppContext);
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AppContext);
 
   const logout = () => {
     setUser(null);
@@ -50,12 +52,12 @@ const Account = ({ toggle, setSingleToggle }) => {
     {
       title: "Change Password",
       icon: <MdLock className="text-base text-blue-500" />,
-      clickHandler: null,
+      clickHandler: () => navigate("/change-password/" + user.email),
     },
     {
       title: "Edit Profile",
       icon: <RiEdit2Fill className="text-base text-blue-500" />,
-      clickHandler: null,
+      clickHandler: () => navigate("/edit-profile"),
     },
     {
       title: "Log out",
@@ -69,13 +71,9 @@ const Account = ({ toggle, setSingleToggle }) => {
       className="relative flex items-center space-x-3 cursor-pointer"
       onClick={() => setSingleToggle("account", !toggle.account)}
     >
-      <img
-        className="rounded-full"
-        src="https://i.pravatar.cc/30"
-        alt="profile"
-      />
+      <img className="rounded-full text-xs" src={user.photoUrl} alt="profile" />
       <p className="flex flex-col text-xs font-medium">
-        Jerry Nudibisi
+        {user.name}
         <span className="text-[10px] font-light">Admin</span>
       </p>
       <FaChevronDown

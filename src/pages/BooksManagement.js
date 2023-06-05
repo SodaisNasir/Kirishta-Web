@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { books } from "../constants/data";
+import {
+  bookCategories,
+  bookLanguages,
+  books,
+  countries,
+} from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
@@ -132,7 +137,7 @@ const BooksManagement = () => {
                   />
 
                   <DropdownFilter
-                    arr={["Active", "Inactive"]}
+                    arr={["ACTIVE", "INACTIVE"]}
                     title={"Status"}
                     toggle={toggleStatus}
                     curFilter={curFilter}
@@ -409,103 +414,189 @@ const EditUserModal = ({ editUser, setEditUser }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="book_image"
+                  >
+                    Image
+                  </label>
+                  <input
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    aria-describedby="book_image"
+                    id="book_image"
+                    type="file"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="title"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Title
                   </label>
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="title"
+                    id="title"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Bonnie"
-                    required=""
+                    placeholder="Lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="author"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Last Name
+                    Author
                   </label>
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="author"
+                    id="author"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Green"
-                    required=""
+                    placeholder="Lorem ipsum"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="email"
+                    htmlFor="category"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Email
+                    Category
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    list="categories"
+                    name="category"
+                    id="category"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@company.com"
-                    required=""
+                    placeholder="Story"
+                    required={true}
                   />
+                  <datalist id="categories">
+                    {bookCategories.map((category, indx) => (
+                      <option key={category + indx} value={category} />
+                    ))}
+                  </datalist>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="phone-number"
+                    htmlFor="language"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Phone Number
+                    Language
+                  </label>
+                  <input
+                    list="languages"
+                    name="language"
+                    id="language"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="English"
+                    required={true}
+                  />
+                  <datalist id="languages">
+                    {bookLanguages.map((language, indx) => (
+                      <option key={language + indx} value={language} />
+                    ))}
+                  </datalist>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country
+                  </label>
+                  <input
+                    list="countries"
+                    name="country"
+                    id="country"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Nigria"
+                    required={true}
+                  />
+                  <datalist id="countries">
+                    {countries.map((category) => (
+                      <option key={category.title} value={category.title} />
+                    ))}
+                  </datalist>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="status"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Status
+                  </label>
+                  <input
+                    list="statuses"
+                    name="status"
+                    id="status"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="ACTIVE"
+                    required={true}
+                  />
+                  <datalist id="statuses">
+                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
+                      <option key={status + indx} value={status} />
+                    ))}
+                  </datalist>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="release-year"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Release year
                   </label>
                   <input
                     type="number"
-                    name="phone-number"
-                    id="phone-number"
+                    name="release-year"
+                    id="release-year"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="e.g. +(12)3456 789"
-                    required=""
+                    placeholder="2020"
+                    max={new Date().getFullYear()}
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="department"
+                    htmlFor="feature"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Department
+                    Featured
                   </label>
                   <input
-                    type="text"
-                    name="department"
-                    id="department"
+                    list="featured"
+                    name="feature"
+                    id="feature"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Development"
-                    required=""
+                    placeholder="Yes"
+                    required={true}
                   />
+                  <datalist id="featured">
+                    {["Yes", "No"].map((item, indx) => (
+                      <option key={item} value={item} />
+                    ))}
+                  </datalist>
                 </div>
-                <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-6">
                   <label
-                    htmlFor="company"
+                    htmlFor="about"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Company
+                    About
                   </label>
-                  <input
-                    type="number"
-                    name="company"
-                    id="company"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="123456"
-                    required=""
-                  />
+                  <textarea
+                    id="about"
+                    rows="8"
+                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Write about this book..."
+                  ></textarea>
                 </div>
               </div>
             </div>
@@ -513,9 +604,9 @@ const EditUserModal = ({ editUser, setEditUser }) => {
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Save all
+                Update
               </button>
             </div>
           </form>

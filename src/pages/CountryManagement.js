@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { admins } from "../constants/data";
+import { countriesPageData } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { typeCheck } from "../utils";
 
-const AdminEmail = () => {
+const CountryManagement = () => {
   const initial_filters = {
     searchInput: "",
   };
@@ -23,15 +22,9 @@ const AdminEmail = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
-  const [addUser, setAddUser] = useState({
+  const [addModal, setAddModal] = useState({
     isVisible: false,
-    data: {
-      "S/N": null,
-      Name: null,
-      Email: null,
-      Password: null,
-      "Phone Number": null,
-    },
+    data: {},
   });
   const { searchInput } = filters;
 
@@ -49,17 +42,22 @@ const AdminEmail = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter(
-          (user) =>
-            user.Name.toLowerCase().includes(value.toLowerCase()) ||
-            user.Email.toLowerCase().includes(value.toLowerCase())
+        items: data.filter((item) =>
+          item.country.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
   };
 
   useEffect(() => {
-    if (curFilter.filter !== "searchInput") {
+    if (curFilter.filter && curFilter.filter !== "searchInput") {
+      setPaginatedData((prev) => ({
+        ...prev,
+        items: data.filter(
+          (user) => user[curFilter.filter] === curFilter.value
+        ),
+      }));
+    } else if (curFilter.filter !== "searchInput") {
       setPaginatedData((prev) => ({
         ...prev,
         items: data,
@@ -72,13 +70,13 @@ const AdminEmail = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: admins }));
-      setData(admins);
+      setPaginatedData((prev) => ({ ...prev, items: countriesPageData }));
+      setData(countriesPageData);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Admin Email"}>
+    <Page title={"Country Management"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -87,7 +85,7 @@ const AdminEmail = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Edit", "Delete"],
+              actionCols: ["Edit", "Remove"],
               props: { setEditModal },
             }}
           >
@@ -106,7 +104,7 @@ const AdminEmail = () => {
                   value={searchInput}
                   onChange={filterUsersBySearch}
                   className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for admins"
+                  placeholder="Search for countries"
                 />
               </div>
               {/* Search bar end */}
@@ -119,18 +117,18 @@ const AdminEmail = () => {
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                   <button
                     onClick={() =>
-                      setAddUser((prev) => ({
+                      setAddModal((prev) => ({
                         ...prev,
                         isVisible: true,
                       }))
                     }
-                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
+                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                   >
-                    Add User
+                    Add Country
                   </button>
-                  {/* Add User modal */}
-                  {addUser.isVisible && (
-                    <AddUserModal {...{ addUser, setAddUser }} />
+                  {/* Add modal */}
+                  {addModal.isVisible && (
+                    <AddModal {...{ addModal, setAddModal }} />
                   )}
 
                   {/* Edit user modal */}
@@ -172,7 +170,7 @@ const EditModal = ({ editModal, setEditModal }) => {
           editModal.isVisible ? "" : "hidden"
         } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
-        <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative w-full max-w-lg max-h-full">
           {/* Modal content */}
           <form
             action="#"
@@ -193,63 +191,68 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 gap-6">
+                <div>
                   <label
-                    htmlFor="admin-email-1"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="flag"
                   >
-                    Admin Email 1
+                    Image
                   </label>
                   <input
-                    type="email"
-                    name="admin-email-1"
-                    id="admin-email-1"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@gmail.com"
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="flag"
+                    type="file"
                     required={true}
                   />
                 </div>
-                <div className="col-span-6 sm:col-span-3">
+                <div>
                   <label
-                    htmlFor="admin-email-2"
+                    htmlFor="country"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Admin Email 2
+                    Country Name
                   </label>
                   <input
-                    type="email"
-                    name="admin-email-2"
-                    id="admin-email-2"
+                    type="text"
+                    name="country"
+                    id="country"
+                    value={editModal.data.country}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@gmail.com"
+                    placeholder="Nigeria"
                     required={true}
                   />
                 </div>
-                <div className="col-span-6 sm:col-span-3">
+                <div>
                   <label
-                    htmlFor="admin-email-3"
+                    htmlFor="feature"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Admin Email 3
+                    Featured
                   </label>
                   <input
-                    type="email"
-                    name="admin-email-3"
-                    id="admin-email-3"
+                    list="featured"
+                    name="feature"
+                    id="feature"
+                    defaultValue={editModal.data.featured}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="example@gmail.com"
+                    placeholder="No"
                     required={true}
                   />
+                  <datalist id="featured">
+                    {["Yes", "No"].map((item) => (
+                      <option key={item} value={item} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 px-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
               >
                 Update
               </button>
@@ -261,42 +264,42 @@ const EditModal = ({ editModal, setEditModal }) => {
   );
 };
 
-const AddUserModal = ({ addUser, setAddUser }) => {
-  const keys = Object.keys(addUser.data).filter(
-    (e) => e !== "S/N" && e[0] !== "_"
-  );
-
+const AddModal = ({ addModal, setAddModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    close();
+    setAddModal({
+      isVisible: false,
+      data: {},
+    });
   };
 
-  const close = () => setAddUser((prev) => ({ ...prev, isVisible: false }));
+  const close = () => setAddModal((prev) => ({ ...prev, isVisible: false }));
 
   return (
     <>
       <div
         className={`${
-          addUser.isVisible ? "" : "hidden"
+          addModal.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
       />
       <div
         tabIndex="-1"
         className={`${
-          addUser.isVisible ? "" : "hidden"
+          addModal.isVisible ? "" : "hidden"
         } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
-        <form
-          onSubmit={handleSubmit}
-          className="relative w-full max-w-2xl max-h-full"
-        >
+        <div className="relative w-full max-w-lg max-h-full">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <form
+            action="#"
+            onSubmit={handleSubmit}
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          >
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new admin
+                Add new country
               </h3>
               <button
                 onClick={close}
@@ -307,42 +310,72 @@ const AddUserModal = ({ addUser, setAddUser }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-              <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
-                {keys.map((elem) => {
-                  const type = typeCheck(elem);
-
-                  return (
-                    <div key={elem} className="col-span-2 sm:col-span-1">
-                      <label
-                        htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
-                        {elem}
-                      </label>
-                      <input
-                        type={type}
-                        name={elem.toLowerCase()}
-                        id={elem.toLowerCase()}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required={true}
-                      />
-                    </div>
-                  );
-                })}
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 gap-6">
+                <div>
+                  <label
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="flag"
+                  >
+                    Image
+                  </label>
+                  <input
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="flag"
+                    type="file"
+                    required={true}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country Name
+                  </label>
+                  <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Nigeria"
+                    required={true}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="feature"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Featured
+                  </label>
+                  <input
+                    list="featured"
+                    name="feature"
+                    id="feature"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="No"
+                    required={true}
+                  />
+                  <datalist id="featured">
+                    {["Yes", "No"].map((item) => (
+                      <option key={item} value={item} />
+                    ))}
+                  </datalist>
+                </div>
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 py-3  border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center px-6 py-4 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Create
+                Submit
               </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </>
   );
@@ -378,7 +411,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 dark:text-gray-500 hover:text-gray-800"
+          className="font-medium text-gray-600 dark:text-gray-500"
         >
           <MdDelete />
         </button>
@@ -387,4 +420,4 @@ const Actions = ({
   );
 };
 
-export default AdminEmail;
+export default CountryManagement;

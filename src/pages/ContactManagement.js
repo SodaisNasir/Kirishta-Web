@@ -116,7 +116,7 @@ const ContactManagement = () => {
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                   <DropdownFilter
-                    arr={["Resolved", "Pending"]}
+                    arr={["RESOLVED", "PENDING"]}
                     title={"Status"}
                     toggle={toggleStatus}
                     curFilter={curFilter}
@@ -193,17 +193,16 @@ const ReplyModal = ({ setReplyModal }) => {
             <div>
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
               >
                 Message
               </label>
-              <input
-                type="text"
-                name="message"
+              <textarea
                 id="message"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-              />
+                rows="8"
+                className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write message here..."
+              ></textarea>
             </div>
           </div>
 

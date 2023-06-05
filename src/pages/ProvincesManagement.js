@@ -79,7 +79,7 @@ const ProvincesManagement = () => {
   return (
     <Page title={"Provinces Management"}>
       <main>
-        <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
+        <Paginatation {...{ itemsPerPage: 5, paginatedData, setPaginatedData }}>
           <AdvancedTable
             {...{
               data,
