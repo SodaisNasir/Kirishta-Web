@@ -11,7 +11,7 @@ const AboutKirista = () => {
   const handleSubmit = () => console.log(state.value);
 
   useEffect(() => {
-    setState({ value: about[language.value] });
+    setState({ state: false, value: about[language.value] });
   }, [language.value]);
 
   return (
@@ -28,7 +28,7 @@ const AboutKirista = () => {
       </header>
       <main>
         <div className="grid grid-cols-1 gap-5">
-          <Editor {...{ state, handleChange }} />
+          <Editor {...{ state: state.value, handleChange }} />
         </div>
         <button
           onClick={handleSubmit}

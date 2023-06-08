@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { countriesPageData } from "../constants/data";
+import { parishCountryCategories } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
-const CountryManagement = () => {
+const ParishCategories = () => {
   const initial_filters = {
     searchInput: "",
   };
   const [paginatedData, setPaginatedData] = useState({
     items: [],
     curItems: [],
-  });
-  const [curFilter, setCurFilter] = useState({
-    filter: null,
-    value: null,
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
@@ -35,7 +31,6 @@ const CountryManagement = () => {
   const filterUsersBySearch = (e) => {
     const value = e.target.value.trim();
     setSingleFilter("searchInput", value);
-    setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
       setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
@@ -43,40 +38,25 @@ const CountryManagement = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter((item) =>
-          item.country.toLowerCase().includes(value.toLowerCase())
+          item.category.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
   };
 
   useEffect(() => {
-    if (curFilter.filter && curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter(
-          (user) => user[curFilter.filter] === curFilter.value
-        ),
-      }));
-    } else if (curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data,
-      }));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curFilter]);
-
-  useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: countriesPageData }));
-      setData(countriesPageData);
+      setPaginatedData((prev) => ({
+        ...prev,
+        items: parishCountryCategories,
+      }));
+      setData(parishCountryCategories);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Country Management"}>
+    <Page title={"Parish Categories Management"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -104,14 +84,16 @@ const CountryManagement = () => {
                   value={searchInput}
                   onChange={filterUsersBySearch}
                   className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for countries"
+                  placeholder="Search for categories"
                 />
               </div>
               {/* Search bar end */}
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length} results
+                  {paginatedData.items.length <= 1
+                    ? `${paginatedData.items.length} result`
+                    : `${paginatedData.items.length} results`}
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -124,7 +106,7 @@ const CountryManagement = () => {
                     }
                     className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                   >
-                    Add Country
+                    Add Category
                   </button>
                   {/* Add modal */}
                   {addModal.isVisible && (
@@ -195,56 +177,20 @@ const EditModal = ({ editModal, setEditModal }) => {
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
-                    required={true}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="country"
+                    htmlFor="category"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Country Name
+                    Category
                   </label>
                   <input
                     type="text"
-                    name="country"
-                    id="country"
-                    value={editModal.data.country}
+                    name="category"
+                    id="category"
+                    defaultValue={editModal.data.category}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigeria"
+                    placeholder="West Africa 1"
                     required={true}
                   />
-                </div>
-                <div>
-                  <label
-                    htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
-                    defaultValue={editModal.data.featured}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
                 </div>
               </div>
             </div>
@@ -299,7 +245,7 @@ const AddModal = ({ addModal, setAddModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new country
+                Add new category
               </h3>
               <button
                 onClick={close}
@@ -314,54 +260,19 @@ const AddModal = ({ addModal, setAddModal }) => {
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
-                    required={true}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="country"
+                    htmlFor="category"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Country Name
+                    Category
                   </label>
                   <input
                     type="text"
-                    name="country"
-                    id="country"
+                    name="category"
+                    id="category"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigeria"
+                    placeholder="West Africa 1"
                     required={true}
                   />
-                </div>
-                <div>
-                  <label
-                    htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
                 </div>
               </div>
             </div>
@@ -403,7 +314,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdModeEdit />
         </button>
@@ -411,7 +322,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>
@@ -420,4 +331,4 @@ const Actions = ({
   );
 };
 
-export default CountryManagement;
+export default ParishCategories;

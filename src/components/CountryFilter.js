@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { countries } from "../constants/data";
+import { parishCountries } from "../constants/data";
 import { GoChevronDown } from "react-icons/go";
 import { DropdownContainer } from "./helpers";
 
@@ -51,12 +51,14 @@ const CountryFilter = ({ toggle, setToggle, curFilter, handleClick }) => {
           >
             <span className="pl-8 text-[10px]">All countries</span>
           </li>
-          {countries.map((data, idx) => (
+          {parishCountries.map((data, idx) => (
             <li
               key={data.title + idx}
               onClick={() => handleSelect(data)}
               className={`flex items-center p-1 pr-8 cursor-pointer hover:text-gray-500 ${
-                idx !== countries.length - 1 ? "border-b border-[#f2f2f2]" : ""
+                idx !== parishCountries.length - 1
+                  ? "border-b border-[#f2f2f2]"
+                  : ""
               }`}
               role="option"
             >

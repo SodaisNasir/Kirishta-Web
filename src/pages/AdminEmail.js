@@ -16,10 +16,6 @@ const AdminEmail = () => {
     items: [],
     curItems: [],
   });
-  const [curFilter, setCurFilter] = useState({
-    filter: null,
-    value: null,
-  });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
@@ -28,7 +24,9 @@ const AdminEmail = () => {
     data: {
       "S/N": null,
       Name: null,
-      Email: null,
+      "Admin Email 1": null,
+      "Admin Email 2": null,
+      "Admin Email 3": null,
       Password: null,
       "Phone Number": null,
     },
@@ -42,7 +40,6 @@ const AdminEmail = () => {
   const filterUsersBySearch = (e) => {
     const value = e.target.value.trim();
     setSingleFilter("searchInput", value);
-    setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
       setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
@@ -50,24 +47,15 @@ const AdminEmail = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter(
-          (user) =>
-            user.Name.toLowerCase().includes(value.toLowerCase()) ||
-            user.Email.toLowerCase().includes(value.toLowerCase())
+          (item) =>
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item["Admin Email 1"].toLowerCase().includes(value.toLowerCase()) ||
+            item["Admin Email 2"].toLowerCase().includes(value.toLowerCase()) ||
+            item["Admin Email 3"].toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
   };
-
-  useEffect(() => {
-    if (curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data,
-      }));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curFilter]);
 
   useEffect(() => {
     // fetch data
@@ -113,7 +101,9 @@ const AdminEmail = () => {
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length} results
+                  {paginatedData.items.length <= 1
+                    ? `${paginatedData.items.length} result`
+                    : `${paginatedData.items.length} results`}
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -197,6 +187,23 @@ const EditModal = ({ editModal, setEditModal }) => {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
+                    htmlFor="name"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={editModal.data.Name}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="John Doe"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
                     htmlFor="admin-email-1"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
@@ -206,6 +213,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="email"
                     name="admin-email-1"
                     id="admin-email-1"
+                    value={editModal.data["Admin Email 1"]}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@gmail.com"
                     required={true}
@@ -222,6 +230,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="email"
                     name="admin-email-2"
                     id="admin-email-2"
+                    value={editModal.data["Admin Email 2"]}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@gmail.com"
                     required={true}
@@ -238,8 +247,26 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="email"
                     name="admin-email-3"
                     id="admin-email-3"
+                    value={editModal.data["Admin Email 3"]}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@gmail.com"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={editModal.data.Password}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="••••••••••••"
                     required={true}
                   />
                 </div>
@@ -249,7 +276,7 @@ const EditModal = ({ editModal, setEditModal }) => {
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
               >
                 Update
               </button>
@@ -370,7 +397,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdModeEdit />
         </button>
@@ -378,7 +405,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 dark:text-gray-500 hover:text-gray-800"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>

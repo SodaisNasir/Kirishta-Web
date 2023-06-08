@@ -24,6 +24,17 @@ const SubAdmin = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [editModal, setEditModal] = useState({
+    isVisible: false,
+    data: {
+      "S/N": null,
+      Name: null,
+      Email: null,
+      Password: null,
+      "Phone Number": null,
+      Role: null,
+    },
+  });
   const [addModal, setAddModal] = useState({
     isVisible: false,
     data: {
@@ -53,8 +64,8 @@ const SubAdmin = () => {
         ...prev,
         items: data.filter(
           (item) =>
-            item.question.toLowerCase().includes(value.toLowerCase()) ||
-            item.answer.toLowerCase().includes(value.toLowerCase())
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item.Email.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -97,6 +108,7 @@ const SubAdmin = () => {
               setPaginatedData,
               Actions,
               actionCols: ["Edit", "Remove"],
+              props: { setEditModal },
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -121,7 +133,9 @@ const SubAdmin = () => {
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length} results
+                  {paginatedData.items.length <= 1
+                    ? `${paginatedData.items.length} result`
+                    : `${paginatedData.items.length} results`}
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -150,6 +164,11 @@ const SubAdmin = () => {
                   {/* Add modal */}
                   {addModal.isVisible && (
                     <AddModal {...{ addModal, setAddModal }} />
+                  )}
+
+                  {/* Edit user modal */}
+                  {editModal.isVisible && (
+                    <EditModal {...{ editModal, setEditModal }} />
                   )}
                 </div>
               </div>
@@ -346,9 +365,8 @@ const Actions = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  setEditModal,
 }) => {
-  const [editModal, setEditModal] = useState({ isVisible: false, data });
-
   const remove = () => {
     setPaginatedData((prev) => ({
       ...prev,
@@ -358,9 +376,6 @@ const Actions = ({
 
   return (
     <>
-      {/* Edit user modal */}
-      {editModal.isVisible && <EditModal {...{ editModal, setEditModal }} />}
-
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}

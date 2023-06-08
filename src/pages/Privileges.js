@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { privilegesData } from "../constants/data";
+// import { privilegesData } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
@@ -16,10 +16,6 @@ const Privileges = () => {
   const [paginatedData, setPaginatedData] = useState({
     items: [],
     curItems: [],
-  });
-  const [curFilter, setCurFilter] = useState({
-    filter: null,
-    value: null,
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
@@ -76,7 +72,6 @@ const Privileges = () => {
   const filterUsersBySearch = (e) => {
     const value = e.target.value.trim();
     setSingleFilter("searchInput", value);
-    setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
       setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
@@ -92,24 +87,13 @@ const Privileges = () => {
     }
   };
 
-  useEffect(() => {
-    if (curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data,
-      }));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curFilter]);
-
-  useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: privilegesData }));
-      setData(privilegesData);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   // fetch data
+  //   setTimeout(() => {
+  //     setPaginatedData((prev) => ({ ...prev, items: privilegesData }));
+  //     setData(privilegesData);
+  //   }, 2000);
+  // }, []);
 
   return (
     <Page title={"Privileges"}>
@@ -146,7 +130,9 @@ const Privileges = () => {
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length} results
+                  {paginatedData.items.length <= 1
+                    ? `${paginatedData.items.length} result`
+                    : `${paginatedData.items.length} results`}
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -456,7 +442,7 @@ const Actions = ({
   const remove = () => {
     setPaginatedData((prev) => ({
       ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
+      items: prev.items.filter((user) => user["_S/N"] !== SN),
     }));
   };
 
@@ -472,7 +458,7 @@ const Actions = ({
           onClick={() =>
             setPrivilegesModal((prev) => ({ ...prev, isVisible: true }))
           }
-          className="font-medium text-gray-600 dark:text-gray-500 hover:text-gray-800"
+          className="font-medium text-gray-600 hover:text-gray-800 hover:text-gray-800"
         >
           <MdAssignmentInd title="Assign privileges" />
         </button>
@@ -480,7 +466,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 dark:text-gray-500 hover:text-gray-800"
+          className="font-medium text-gray-600 hover:text-gray-800 hover:text-gray-800"
         >
           <MdDelete />
         </button>

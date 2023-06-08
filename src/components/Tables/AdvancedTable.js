@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
-import { DropdownContainer, DropdownFilter } from "../helpers";
+import { DropdownContainer } from "../helpers";
+import { Link } from "react-router-dom";
 
 const AdvancedTable = ({
   data,
@@ -36,7 +37,9 @@ const AdvancedTable = ({
     <>
       {children}
       <div className="xs:hidden lg:block mb-1 text-xs font-medium text-gray-700">
-        {paginatedData.items.length} results
+        {paginatedData.items.length <= 1
+          ? `${paginatedData.items.length} result`
+          : `${paginatedData.items.length} results`}
       </div>
       <div
         className={`${
@@ -133,7 +136,12 @@ const Users = ({
           {...{
             tableStructure,
             data: user,
-            SN: user["S/N"],
+            SN:
+              typeof user["S/N"] === "number"
+                ? user["S/N"]
+                : typeof user["_S/N"] === "number"
+                ? user["_S/N"]
+                : null,
             selectedUsers,
             setSelectedUsers,
             paginatedData,
@@ -149,7 +157,12 @@ const Users = ({
           {...{
             tableStructure,
             data: user,
-            SN: user["S/N"],
+            SN:
+              typeof user["S/N"] === "number"
+                ? user["S/N"]
+                : typeof user["_S/N"] === "number"
+                ? user["_S/N"]
+                : null,
             selectedUsers,
             setSelectedUsers,
             paginatedData,
@@ -198,9 +211,11 @@ const SingleUser = ({
           key[0] !== "_" && (
             <td
               key={key + SN}
-              className="px-6 py-4 text-center whitespace-nowrap"
+              className="px-6 py-4 text-center whitespace-nowrap md:whitespace-normal"
             >
-              {key === "Image" || key === "Media File" || key === "flag" ? (
+              {key === "Image" ||
+              key === "Media File" ||
+              key === "country flag" ? (
                 <img
                   className="w-10 mx-auto"
                   src={data[key]}
@@ -210,18 +225,13 @@ const SingleUser = ({
                 (data[key] === "PENDING" || data[key] === "RESOLVED") ? (
                 <StatusDropdown {...{ value: data[key] }} />
               ) : key.toLowerCase() === "app page" ? (
-                <span
-                  className="text-blue-500 hover:underline cursor-pointer"
-                  onClick={() =>
-                    window.open(
-                      "https://www.google.com",
-                      "",
-                      "height=500,width=657"
-                    )
-                  }
+                <Link
+                  to={data[key]}
+                  className="text-blue-400 hover:underline"
+                  target="_blank"
                 >
                   {data[key]}
-                </span>
+                </Link>
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
               ) : (

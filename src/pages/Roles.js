@@ -24,6 +24,7 @@ const Roles = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [editModal, setEditModal] = useState({ isVisible: false, data });
   const [addModal, setAddModal] = useState({
     isVisible: false,
     data: null,
@@ -44,10 +45,8 @@ const Roles = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter(
-          (item) =>
-            item.Name.toLowerCase().includes(value.toLowerCase()) ||
-            item.Email.toLowerCase().includes(value.toLowerCase())
+        items: data.filter((item) =>
+          item.Role.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -90,6 +89,7 @@ const Roles = () => {
               setPaginatedData,
               Actions,
               actionCols: ["Edit", "Remove"],
+              props: { setEditModal },
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -114,7 +114,9 @@ const Roles = () => {
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length} results
+                  {paginatedData.items.length <= 1
+                    ? `${paginatedData.items.length} result`
+                    : `${paginatedData.items.length} results`}
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -143,6 +145,11 @@ const Roles = () => {
                   {/* Add modal */}
                   {addModal.isVisible && (
                     <AddModal {...{ addModal, setAddModal }} />
+                  )}
+
+                  {/* Edit user modal */}
+                  {editModal.isVisible && (
+                    <EditModal {...{ editModal, setEditModal }} />
                   )}
                 </div>
               </div>
@@ -327,9 +334,8 @@ const Actions = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  setEditModal,
 }) => {
-  const [editModal, setEditModal] = useState({ isVisible: false, data });
-
   const remove = () => {
     setPaginatedData((prev) => ({
       ...prev,
@@ -339,9 +345,6 @@ const Actions = ({
 
   return (
     <>
-      {/* Edit user modal */}
-      {editModal.isVisible && <EditModal {...{ editModal, setEditModal }} />}
-
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}
@@ -361,63 +364,5 @@ const Actions = ({
     </>
   );
 };
-
-// {keys.map((elem, index) => {
-//   if (typeof elem === "boolean") {
-//     return (
-//       <div
-//         key={elem}
-//         className="w-full flex flex-row-reverse items-center justify-between"
-//       >
-//         <input
-//           id={elem.toLowerCase()}
-//           type="checkbox"
-//           className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-//         />
-//         <label
-//           htmlFor={elem.toLowerCase()}
-//           className="ml-2 font-medium text-gray-800 dark:text-gray-300 hover:text-gray-900 cursor-pointer"
-//         >
-//           {elem}
-//         </label>
-//       </div>
-//     );
-//   } else if (typeof elem === "boolean") {
-//     <div
-//       key={elem}
-//       className="w-full flex flex-row-reverse items-center justify-between"
-//     >
-//       <input
-//         id={elem.toLowerCase()}
-//         type="checkbox"
-//         className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-//       />
-//       <label
-//         htmlFor={elem.toLowerCase()}
-//         className="ml-2 font-medium text-gray-800 dark:text-gray-300 hover:text-gray-900 cursor-pointer"
-//       >
-//         {elem}
-//       </label>
-//     </div>;
-//   }
-//   return (
-//     <div
-//       key={elem}
-//       className="w-full flex flex-row-reverse items-center justify-between"
-//     >
-//       <input
-//         id={elem.toLowerCase()}
-//         type="checkbox"
-//         className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-//       />
-//       <label
-//         htmlFor={elem.toLowerCase()}
-//         className="ml-2 font-medium text-gray-800 dark:text-gray-300 hover:text-gray-900 cursor-pointer"
-//       >
-//         {elem}
-//       </label>
-//     </div>
-//   );
-// })}
 
 export default Roles;

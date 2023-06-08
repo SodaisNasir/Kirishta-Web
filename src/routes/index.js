@@ -31,7 +31,9 @@ import {
   SubAdmin,
   Roles,
   EditProfile,
-  CountryManagement,
+  GeneralCountriesManagement,
+  ParishCountriesManagement,
+  ParishCategories,
 } from "../pages";
 import { AppContext } from "../context";
 import { AdminLayout } from "../components";
@@ -73,7 +75,18 @@ const Router = () => {
           <Route path="/contact-management" element={<ContactManagement />} />
           <Route path="/settings">
             <Route path="/settings/admin-email" element={<AdminEmail />} />
-            <Route path="/settings/country" element={<CountryManagement />} />
+            <Route
+              path="/settings/parish-categories"
+              element={<ParishCategories />}
+            />
+            <Route
+              path="/settings/general-countries"
+              element={<GeneralCountriesManagement />}
+            />
+            <Route
+              path="/settings/parish-countries"
+              element={<ParishCountriesManagement />}
+            />
             <Route path="/settings/region" element={<RegionsManagement />} />
             <Route
               path="/settings/province"

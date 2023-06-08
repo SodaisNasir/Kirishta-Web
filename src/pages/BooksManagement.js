@@ -4,7 +4,7 @@ import {
   bookCategories,
   bookLanguages,
   books,
-  countries,
+  parishCountries,
 } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
@@ -13,6 +13,7 @@ import { CountryFilter } from "../components";
 import { DropdownFilter } from "../components/helpers";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { VscClose } from "react-icons/vsc";
+import { AiFillEye } from "react-icons/ai";
 
 const BooksManagement = () => {
   const initial_filters = {
@@ -31,8 +32,8 @@ const BooksManagement = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const { searchInput, toggleCountry, toggleStatus } = filters;
-  // const [addUser, setAddUser] = useState({ isVisible: false, data: {} });
-
+  const [editUser, setEditUser] = useState({ isVisible: false, data: null });
+  const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const setSingleFilter = (key, value) => {
     setFilters({ ...initial_filters, [key]: value });
   };
@@ -49,8 +50,8 @@ const BooksManagement = () => {
         ...prev,
         items: data.filter(
           (user) =>
-            user.Name.toLowerCase().includes(value.toLowerCase()) ||
-            user.Email.toLowerCase().includes(value.toLowerCase())
+            user.Title.toLowerCase().includes(value.toLowerCase()) ||
+            user._About.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -92,7 +93,8 @@ const BooksManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Edit", "Delete"],
+              actionCols: ["View more", "Edit", "Delete"],
+              props: { setEditUser, setViewModal },
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -117,8 +119,7 @@ const BooksManagement = () => {
               {/* Dropdown Filters Start */}
               <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
                 <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.curItems.length || paginatedData.items.length}{" "}
-                  results
+                  {paginatedData.items.length} sresults
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -130,7 +131,7 @@ const BooksManagement = () => {
                         setSingleFilter("toggleCountry", !toggleCountry),
                       handleClick: (data) =>
                         setCurFilter({
-                          filter: data === null ? null : "Country",
+                          filter: data === null ? null : "_Country",
                           value: data === null ? null : data.title,
                         }),
                     }}
@@ -148,21 +149,15 @@ const BooksManagement = () => {
                       setCurFilter({ filter: value ? "Status" : null, value })
                     }
                   />
+                  {/* Edit User modal */}
+                  {editUser.isVisible && (
+                    <EditUserModal {...{ editUser, setEditUser }} />
+                  )}
 
-                  {/*
-                  <button
-                    onClick={() =>
-                      setAddUser((prev) => ({ ...prev, isVisible: true }))
-                    }
-                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-100 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-700/40"
-                  >
-                    Add User
-                  </button>
-                  Edit user modal
-                  {addUser.isVisible && (
-                    <AddUserModal {...{ addUser, setAddUser }} />
-                  )} 
-                  */}
+                  {/* View modal */}
+                  {viewModal.isVisible && (
+                    <ViewModal {...{ viewModal, setViewModal }} />
+                  )}
                 </div>
               </div>
             </div>
@@ -173,200 +168,75 @@ const BooksManagement = () => {
   );
 };
 
-// const AddUserModal = ({ addUser, setAddUser }) => {
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
+const ViewModal = ({ viewModal, setViewModal }) => {
+  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const data = viewModal.data;
 
-//     setAddUser({
-//       isVisible: false,
-//       data: {},
-//     });
-//   };
+  const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
 
-//   const close = () => setAddUser((prev) => ({ ...prev, isVisible: false }));
-
-//   return (
-//     <>
-//       <div
-//         className={`${
-//           addUser.isVisible ? "" : "hidden"
-//         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-//       />
-//       <div
-//         tabIndex="-1"
-//         className={`${
-//           addUser.isVisible ? "" : "hidden"
-//         } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-//       >
-//         <div className="relative w-full max-w-2xl max-h-full">
-//           {/* Modal content */}
-//           <form
-//             action="#"
-//             onSubmit={handleSubmit}
-//             className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-//           >
-//             {/* Modal header */}
-//             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-//                 Add new user
-//               </h3>
-//               <button
-//                 onClick={close}
-//                 type="button"
-//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-//                 data-modal-hide="editUserModal"
-//               >
-//                 <VscClose />
-//               </button>
-//             </div>
-//             {/* Modal body */}
-//             <div className="p-6 space-y-6">
-//               <div className="grid grid-cols-6 gap-6">
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="first-name"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     First Name
-//                   </label>
-//                   <input
-//                     type="text"
-//                     name="first-name"
-//                     id="first-name"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="Bonnie"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="last-name"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Last Name
-//                   </label>
-//                   <input
-//                     type="text"
-//                     name="last-name"
-//                     id="last-name"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="Green"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="email"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Email
-//                   </label>
-//                   <input
-//                     type="email"
-//                     name="email"
-//                     id="email"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="example@company.com"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="phone-number"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Phone Number
-//                   </label>
-//                   <input
-//                     type="number"
-//                     name="phone-number"
-//                     id="phone-number"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="e.g. +(12)3456 789"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="department"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Department
-//                   </label>
-//                   <input
-//                     type="text"
-//                     name="department"
-//                     id="department"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="Development"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="company"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Company
-//                   </label>
-//                   <input
-//                     type="number"
-//                     name="company"
-//                     id="company"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="123456"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="current-password"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     Current Password
-//                   </label>
-//                   <input
-//                     type="password"
-//                     name="current-password"
-//                     id="current-password"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="••••••••"
-//                     required=""
-//                   />
-//                 </div>
-//                 <div className="col-span-6 sm:col-span-3">
-//                   <label
-//                     htmlFor="new-password"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-//                   >
-//                     New Password
-//                   </label>
-//                   <input
-//                     type="password"
-//                     name="new-password"
-//                     id="new-password"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-//                     placeholder="••••••••"
-//                     required=""
-//                   />
-//                 </div>
-//               </div>
-//             </div>
-//             {/* Modal footer */}
-//             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-//               <button
-//                 type="submit"
-//                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-//               >
-//                 Save all
-//               </button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+  return (
+    <>
+      <div
+        className={`${
+          viewModal.isVisible ? "" : "hidden"
+        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
+      />
+      <div
+        tabIndex="-1"
+        className={`${
+          viewModal.isVisible ? "" : "hidden"
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+      >
+        <div className="relative w-full max-w-2xl max-h-full">
+          {/* Modal content */}
+          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            {/* Modal header */}
+            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                View more
+              </h3>
+              <button
+                onClick={close}
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                <VscClose />
+              </button>
+            </div>
+            {/* Modal body */}
+            <div className="p-6 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-6">
+                {keys.map((elem) => (
+                  <div
+                    key={elem}
+                    className="col-span-6 sm:col-span-3 capitalize"
+                  >
+                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                      {elem.replace(/_/, (m) => "")}
+                    </p>
+                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
+                      {data[elem]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Modal footer */}
+            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <button
+                onClick={close}
+                type="button"
+                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+              >
+                close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const EditUserModal = ({ editUser, setEditUser }) => {
   const handleSubmit = (e) => {
@@ -520,7 +390,7 @@ const EditUserModal = ({ editUser, setEditUser }) => {
                     required={true}
                   />
                   <datalist id="countries">
-                    {countries.map((category) => (
+                    {parishCountries.map((category) => (
                       <option key={category.title} value={category.title} />
                     ))}
                   </datalist>
@@ -624,9 +494,9 @@ const Actions = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  setEditUser,
+  setViewModal,
 }) => {
-  const [editUser, setEditUser] = useState({ isVisible: false, data: {} });
-
   const remove = () => {
     setPaginatedData((prev) => ({
       ...prev,
@@ -636,15 +506,20 @@ const Actions = ({
 
   return (
     <>
-      {/* Edit User */}
-      {editUser.isVisible && <EditUserModal {...{ editUser, setEditUser }} />}
-
+      <td className="text-center text-base px-6 py-4">
+        <button
+          onClick={() => setViewModal({ isVisible: true, data })}
+          className="font-medium text-gray-600 hover:text-gray-800"
+        >
+          <AiFillEye />
+        </button>
+      </td>
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() =>
             setEditUser((prev) => ({ ...prev, isVisible: !prev.isVisible }))
           }
-          className="font-medium text-gray-600 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdEdit />
         </button>
@@ -652,7 +527,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>

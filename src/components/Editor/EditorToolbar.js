@@ -26,10 +26,10 @@ const CustomRedo = () => (
 );
 
 // Undo and redo functions for Custom Toolbar
-function undoChange() {
+export function undoChange() {
   this.quill.history.undo();
 }
-function redoChange() {
+export function redoChange() {
   this.quill.history.redo();
 }
 
@@ -42,22 +42,6 @@ Quill.register(Size, true);
 const Font = Quill.import("formats/font");
 Font.whitelist = ["arial", "georgia", "helvetica", "montserrat", "poppins"];
 Quill.register(Font, true);
-
-// Modules object for setting up the Quill editor
-export const modules = {
-  toolbar: {
-    container: "#toolbar",
-    handlers: {
-      undo: undoChange,
-      redo: redoChange,
-    },
-  },
-  history: {
-    delay: 500,
-    maxStack: 100,
-    userOnly: true,
-  },
-};
 
 // Formats objects for setting up the Quill editor
 export const formats = [
@@ -82,8 +66,8 @@ export const formats = [
 ];
 
 // Quill Toolbar component
-export const QuillToolbar = () => (
-  <div id="toolbar">
+export const QuillToolbar = ({ id }) => (
+  <div id={"toolbar" + id}>
     <span className="ql-formats">
       <select className="ql-font" defaultValue="arial">
         <option value="arial">Arial</option>

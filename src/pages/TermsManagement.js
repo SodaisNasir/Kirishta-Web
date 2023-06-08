@@ -12,8 +12,8 @@ const TermsManagement = () => {
   const handleSubmit = () => console.log(state.value);
 
   useEffect(() => {
-    setState({ value: terms[language.value] });
-  }, []);
+    setState({ state: false, value: terms[language.value] });
+  }, [language.value]);
 
   return (
     <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
@@ -26,16 +26,12 @@ const TermsManagement = () => {
           {...{
             language,
             setLanguage,
-            handleClick: (value) => {
-              setLanguage({ state: false, value });
-              setState({ value: terms[language.value] });
-            },
           }}
         />
       </header>
       <main>
         <div className="grid grid-cols-1 gap-5">
-          <Editor {...{ state, handleChange }} />
+          <Editor {...{ state: state.value, handleChange }} />
         </div>
         <button
           onClick={handleSubmit}

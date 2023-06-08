@@ -28,7 +28,9 @@ import AdminEmail from "./AdminEmail";
 import SubAdmin from "./SubAdmin";
 import Roles from "./Roles";
 import EditProfile from "./EditProfile";
-import CountryManagement from "./CountryManagement";
+import GeneralCountriesManagement from "./GeneralCountriesManagement";
+import ParishCountriesManagement from "./ParishCountriesManagement";
+import ParishCategories from "./ParishCategories";
 
 export {
   Dashboard,
@@ -61,5 +63,7 @@ export {
   SubAdmin,
   Roles,
   EditProfile,
-  CountryManagement,
+  GeneralCountriesManagement,
+  ParishCountriesManagement,
+  ParishCategories,
 };

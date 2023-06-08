@@ -58,7 +58,7 @@ export const DropdownFilter = ({
   );
 };
 
-export const LanguageSelector = ({ language, setLanguage, handleClick }) => {
+export const LanguageSelector = ({ language, setLanguage }) => {
   return (
     <button
       onClick={() => setLanguage((prev) => ({ ...prev, state: !prev.state }))}
@@ -71,7 +71,7 @@ export const LanguageSelector = ({ language, setLanguage, handleClick }) => {
           {languages.map((elem, indx) => (
             <li
               key={elem + indx}
-              onClick={() => handleClick(elem)}
+              onClick={() => setLanguage((prev) => ({ ...prev, value: elem }))}
               role="option"
               className={`${
                 indx !== languages.length - 1 ? "border-b" : ""
