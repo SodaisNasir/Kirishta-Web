@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { about } from "../constants/data";
-import { LanguageSelector } from "../components/helpers";
-import Editor from "../components/Editor";
+import { about } from "../../constants/data";
+import { LanguageSelector } from "../../components/helpers";
+import Editor from "../../components/Editor";
 
 const AboutRCCG = () => {
   const [state, setState] = useState({ value: about });

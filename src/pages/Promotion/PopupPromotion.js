@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import AdvancedTable from "../components/Tables/AdvancedTable";
-import { banners } from "../constants/data";
-import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import AdvancedTable from "../../components/Tables/AdvancedTable";
+import { popups } from "../../constants/data";
+import { Page } from "../../components";
+import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit, MdNotificationAdd } from "react-icons/md";
-import { DropdownFilter } from "../components/helpers";
+import { DropdownFilter } from "../../components/helpers";
 import { AiFillEye } from "react-icons/ai";
 
-const BannerPromotion = () => {
+const PopupPromotion = () => {
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -76,13 +76,13 @@ const BannerPromotion = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: banners }));
-      setData(banners);
+      setPaginatedData((prev) => ({ ...prev, items: popups }));
+      setData(popups);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Banner Promotion"}>
+    <Page title={"Popup Promotion"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -557,6 +557,7 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                 onClick={close}
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="editUserModal"
               >
                 <VscClose />
               </button>
@@ -721,7 +722,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdModeEdit />
         </button>
@@ -729,7 +730,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>
@@ -738,4 +739,4 @@ const Actions = ({
   );
 };
 
-export default BannerPromotion;
+export default PopupPromotion;

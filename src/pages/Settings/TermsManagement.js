@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { about } from "../constants/data";
-import { LanguageSelector } from "../components/helpers";
-import Editor from "../components/Editor";
+import React, { useState } from "react";
+import { terms } from "../../constants/data";
+import Editor from "../../components/Editor";
+import { useEffect } from "react";
+import { LanguageSelector } from "../../components/helpers";
 
-const AboutRCCGContinent2 = () => {
-  const [state, setState] = useState({ value: about });
+const TermsManagement = () => {
+  const [state, setState] = useState({ value: terms });
   const [language, setLanguage] = useState({ state: false, value: "English" });
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = () => console.log(state.value);
+
   useEffect(() => {
-    setState({ state: false, value: about[language.value] });
+    setState({ state: false, value: terms[language.value] });
   }, [language.value]);
 
   return (
     <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
       <header className="flex justify-between">
         <h1 className="font-semibold text-xl text-[#44403C]">
-          About RCCG Continent 2
+          Terms Management
         </h1>
 
         <LanguageSelector
@@ -42,4 +44,4 @@ const AboutRCCGContinent2 = () => {
   );
 };
 
-export default AboutRCCGContinent2;
+export default TermsManagement;

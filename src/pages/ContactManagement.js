@@ -80,7 +80,7 @@ const ContactManagement = () => {
   }, []);
 
   return (
-    <Page title={"Contacts Management"}>
+    <Page title={"Contact Management"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable

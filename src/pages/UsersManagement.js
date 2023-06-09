@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { users } from "../constants/data";
+import { parishCountries, users } from "../constants/data";
 import { Page } from "../components";
 import Paginatation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
@@ -222,34 +222,19 @@ const EditModal = ({ editModal, setEditModal }) => {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="name"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    First Name
+                    Name
                   </label>
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="name"
+                    id="name"
+                    defaultValue={editModal.data.Name}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Bonnie"
-                    required=""
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="last-name"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    name="last-name"
-                    id="last-name"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Green"
-                    required=""
+                    placeholder="Neil Sims"
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
@@ -263,9 +248,10 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="email"
                     name="email"
                     id="email"
+                    defaultValue={editModal.data.Email}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@company.com"
-                    required=""
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
@@ -279,42 +265,55 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="number"
                     name="phone-number"
                     id="phone-number"
+                    defaultValue={editModal.data["Phone Number"]}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="e.g. +(12)3456 789"
-                    required=""
+                    required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="department"
+                    htmlFor="country"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Department
+                    Country
                   </label>
                   <input
-                    type="text"
-                    name="department"
-                    id="department"
+                    list="countries"
+                    name="country"
+                    id="country"
+                    defaultValue={editModal.data._Country}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Development"
-                    required=""
+                    placeholder="Nigeria"
+                    required={true}
                   />
+                  <datalist id="countries">
+                    {parishCountries.map((elem) => (
+                      <option key={elem.title} value={elem.title} />
+                    ))}
+                  </datalist>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="company"
+                    htmlFor="status"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Company
+                    Status
                   </label>
                   <input
-                    type="number"
-                    name="company"
-                    id="company"
+                    list="status-list"
+                    name="status"
+                    id="status"
+                    defaultValue={editModal.data.Status}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="123456"
-                    required=""
+                    placeholder="ACTIVE"
+                    required={true}
                   />
+                  <datalist id="status-list">
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option key={elem} value={elem} />
+                    ))}
+                  </datalist>
                 </div>
               </div>
             </div>

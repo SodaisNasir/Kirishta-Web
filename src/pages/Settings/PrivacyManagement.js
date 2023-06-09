@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { about } from "../constants/data";
-import { LanguageSelector } from "../components/helpers";
-import Editor from "../components/Editor";
+import Editor from "../../components/Editor";
+import { privacyPolicy } from "../../constants/data";
+import { LanguageSelector } from "../../components/helpers";
 
-const AboutRCCGStructure = () => {
-  const [state, setState] = useState({ value: about });
+const PrivacyManagement = () => {
+  const [state, setState] = useState({ value: privacyPolicy });
   const [language, setLanguage] = useState({ state: false, value: "English" });
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = () => console.log(state.value);
 
   useEffect(() => {
-    setState({ state: false, value: about[language.value] });
+    setState({ state: false, value: privacyPolicy[language.value] });
   }, [language.value]);
 
   return (
     <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
       <header className="flex justify-between">
         <h1 className="font-semibold text-xl text-[#44403C]">
-          About RCCG Structure
+          Privacy Policy Management
         </h1>
 
         <LanguageSelector
@@ -43,4 +43,4 @@ const AboutRCCGStructure = () => {
   );
 };
 
-export default AboutRCCGStructure;
+export default PrivacyManagement;

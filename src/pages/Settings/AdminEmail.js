@@ -1,52 +1,37 @@
 import React, { useEffect, useState } from "react";
-import AdvancedTable from "../components/Tables/AdvancedTable";
-import { subadmins } from "../constants/data";
-import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import AdvancedTable from "../../components/Tables/AdvancedTable";
+import { admins } from "../../constants/data";
+import { Page } from "../../components";
+import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { typeCheck } from "../utils";
-import { DropdownFilter } from "../components/helpers";
+import { typeCheck } from "../../utils";
 
-const SubAdmin = () => {
+const AdminEmail = () => {
   const initial_filters = {
     searchInput: "",
-    toggleRole: false,
   };
   const [paginatedData, setPaginatedData] = useState({
     items: [],
     curItems: [],
   });
-  const [curFilter, setCurFilter] = useState({
-    filter: null,
-    value: null,
-  });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
-  const [editModal, setEditModal] = useState({
+  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
+  const [addUser, setAddUser] = useState({
     isVisible: false,
     data: {
       "S/N": null,
       Name: null,
-      Email: null,
+      "Admin Email 1": null,
+      "Admin Email 2": null,
+      "Admin Email 3": null,
       Password: null,
       "Phone Number": null,
-      Role: null,
     },
   });
-  const [addModal, setAddModal] = useState({
-    isVisible: false,
-    data: {
-      "S/N": null,
-      Name: null,
-      Email: null,
-      Password: null,
-      "Phone Number": null,
-      Role: null,
-    },
-  });
-  const { searchInput, toggleRole } = filters;
+  const { searchInput } = filters;
 
   const setSingleFilter = (key, value) => {
     setFilters({ ...initial_filters, [key]: value });
@@ -55,7 +40,6 @@ const SubAdmin = () => {
   const filterUsersBySearch = (e) => {
     const value = e.target.value.trim();
     setSingleFilter("searchInput", value);
-    setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
       setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
@@ -65,40 +49,24 @@ const SubAdmin = () => {
         items: data.filter(
           (item) =>
             item.Name.toLowerCase().includes(value.toLowerCase()) ||
-            item.Email.toLowerCase().includes(value.toLowerCase())
+            item["Admin Email 1"].toLowerCase().includes(value.toLowerCase()) ||
+            item["Admin Email 2"].toLowerCase().includes(value.toLowerCase()) ||
+            item["Admin Email 3"].toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
   };
 
   useEffect(() => {
-    if (curFilter.filter && curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter(
-          (user) => user[curFilter.filter] === curFilter.value
-        ),
-      }));
-    } else if (curFilter.filter !== "searchInput") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data,
-      }));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curFilter]);
-
-  useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: subadmins }));
-      setData(subadmins);
+      setPaginatedData((prev) => ({ ...prev, ...prev, items: admins }));
+      setData(admins);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Sub Admin"}>
+    <Page title={"Admin Email"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -107,7 +75,7 @@ const SubAdmin = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Edit", "Remove"],
+              actionCols: ["Edit", "Delete"],
               props: { setEditModal },
             }}
           >
@@ -139,31 +107,20 @@ const SubAdmin = () => {
                 </div>
 
                 <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
-                  <DropdownFilter
-                    arr={["Admin", "Editor"]}
-                    title={"Role"}
-                    toggle={toggleRole}
-                    curFilter={curFilter}
-                    setToggle={() => setSingleFilter("toggleRole", !toggleRole)}
-                    handleClick={(value) =>
-                      setCurFilter({ filter: value ? "Role" : null, value })
-                    }
-                  />
-
                   <button
                     onClick={() =>
-                      setAddModal((prev) => ({
+                      setAddUser((prev) => ({
                         ...prev,
                         isVisible: true,
                       }))
                     }
-                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
                   >
-                    Add Admin
+                    Add User
                   </button>
-                  {/* Add modal */}
-                  {addModal.isVisible && (
-                    <AddModal {...{ addModal, setAddModal }} />
+                  {/* Add User modal */}
+                  {addUser.isVisible && (
+                    <AddUserModal {...{ addUser, setAddUser }} />
                   )}
 
                   {/* Edit user modal */}
@@ -181,14 +138,13 @@ const SubAdmin = () => {
 };
 
 const EditModal = ({ editModal, setEditModal }) => {
-  const keys = Object.keys(editModal.data).filter(
-    (e) => e !== "S/N" && e[0] !== "_"
-  );
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    close();
+    setEditModal({
+      isVisible: false,
+      data: {},
+    });
   };
 
   const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
@@ -216,7 +172,7 @@ const EditModal = ({ editModal, setEditModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit admin
+                Edit
               </h3>
               <button
                 onClick={close}
@@ -227,37 +183,100 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {keys.map((elem) => {
-                  const type = typeCheck(elem);
-
-                  return (
-                    <div key={elem}>
-                      <label
-                        htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
-                        {elem}
-                      </label>
-                      <input
-                        type={type}
-                        name={elem.toLowerCase()}
-                        id={elem.toLowerCase()}
-                        value={editModal.data[elem]}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required={true}
-                      />
-                    </div>
-                  );
-                })}
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="name"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={editModal.data.Name}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="John Doe"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="admin-email-1"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Admin Email 1
+                  </label>
+                  <input
+                    type="email"
+                    name="admin-email-1"
+                    id="admin-email-1"
+                    value={editModal.data["Admin Email 1"]}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="example@gmail.com"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="admin-email-2"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Admin Email 2
+                  </label>
+                  <input
+                    type="email"
+                    name="admin-email-2"
+                    id="admin-email-2"
+                    value={editModal.data["Admin Email 2"]}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="example@gmail.com"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="admin-email-3"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Admin Email 3
+                  </label>
+                  <input
+                    type="email"
+                    name="admin-email-3"
+                    id="admin-email-3"
+                    value={editModal.data["Admin Email 3"]}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="example@gmail.com"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={editModal.data.Password}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="••••••••••••"
+                    required={true}
+                  />
+                </div>
               </div>
             </div>
             {/* Modal footer */}
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
               >
                 Update
               </button>
@@ -269,8 +288,8 @@ const EditModal = ({ editModal, setEditModal }) => {
   );
 };
 
-const AddModal = ({ addModal, setAddModal }) => {
-  const keys = Object.keys(addModal.data).filter(
+const AddUserModal = ({ addUser, setAddUser }) => {
+  const keys = Object.keys(addUser.data).filter(
     (e) => e !== "S/N" && e[0] !== "_"
   );
 
@@ -280,28 +299,27 @@ const AddModal = ({ addModal, setAddModal }) => {
     close();
   };
 
-  const close = () => setAddModal((prev) => ({ ...prev, isVisible: false }));
+  const close = () => setAddUser((prev) => ({ ...prev, isVisible: false }));
 
   return (
     <>
       <div
         className={`${
-          addModal.isVisible ? "" : "hidden"
+          addUser.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
       />
       <div
         tabIndex="-1"
         className={`${
-          addModal.isVisible ? "" : "hidden"
+          addUser.isVisible ? "" : "hidden"
         } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
-        <div className="relative w-full max-w-2xl max-h-full">
+        <form
+          onSubmit={handleSubmit}
+          className="relative w-full max-w-2xl max-h-full"
+        >
           {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
+          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -316,13 +334,13 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-6">
                 {keys.map((elem) => {
                   const type = typeCheck(elem);
 
                   return (
-                    <div key={elem}>
+                    <div key={elem} className="col-span-2 sm:col-span-1">
                       <label
                         htmlFor={elem.toLowerCase()}
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -342,16 +360,16 @@ const AddModal = ({ addModal, setAddModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-6 py-3  border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
               >
-                Submit
+                Create
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </>
   );
@@ -378,8 +396,8 @@ const Actions = ({
     <>
       <td className="text-center text-base px-6 py-4">
         <button
-          onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
+          onClick={() => setEditModal({ isVisible: true, data })}
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdModeEdit />
         </button>
@@ -387,7 +405,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>
@@ -396,4 +414,4 @@ const Actions = ({
   );
 };
 
-export default SubAdmin;
+export default AdminEmail;

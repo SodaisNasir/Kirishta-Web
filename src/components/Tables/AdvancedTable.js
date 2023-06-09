@@ -277,6 +277,7 @@ const StatusDropdown = ({ value }) => {
               key={elem + indx}
               onClick={handleClick}
               role="option"
+              aria-selected={elem === state.value}
               className={`${
                 indx !== 2 ? "border-b" : ""
               } p-1 text-gray-900 hover:text-gray-600 cursor-pointer whitespace-nowrap`}

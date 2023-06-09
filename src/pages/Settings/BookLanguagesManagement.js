@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AdvancedTable from "../components/Tables/AdvancedTable";
-import { bookLanguages } from "../constants/data";
-import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import AdvancedTable from "../../components/Tables/AdvancedTable";
+import { bookLanguages } from "../../constants/data";
+import { Page } from "../../components";
+import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";

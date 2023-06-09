@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import AdvancedTable from "../components/Tables/AdvancedTable";
-import { parishCountries, regions } from "../constants/data";
-import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import AdvancedTable from "../../components/Tables/AdvancedTable";
+import { bookCategories } from "../../constants/data";
+import { Page } from "../../components";
+import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete } from "react-icons/md";
 
-const RegionsManagement = () => {
+const BookCategoriesManagement = () => {
   const initial_filters = {
     searchInput: "",
   };
@@ -36,10 +36,8 @@ const RegionsManagement = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter(
-          (item) =>
-            item.region.toLowerCase().includes(value.toLowerCase()) ||
-            item.country.toLowerCase().includes(value.toLowerCase())
+        items: data.filter((item) =>
+          item.category.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -47,14 +45,18 @@ const RegionsManagement = () => {
 
   useEffect(() => {
     // fetch data
+    const book_categories = bookCategories.map((category, index) => ({
+      "S/N": index,
+      category,
+    }));
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: regions }));
-      setData(regions);
+      setPaginatedData((prev) => ({ ...prev, items: book_categories }));
+      setData(book_categories);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Regions Management"}>
+    <Page title={"Book Categories Management"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -81,7 +83,7 @@ const RegionsManagement = () => {
                   value={searchInput}
                   onChange={filterUsersBySearch}
                   className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for regions"
+                  placeholder="Search for categories"
                 />
               </div>
               {/* Search bar end */}
@@ -103,7 +105,7 @@ const RegionsManagement = () => {
                     }
                     className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                   >
-                    Add Region
+                    Add Category
                   </button>
                   {/* Add modal */}
                   {addModal.isVisible && (
@@ -154,7 +156,7 @@ const AddModal = ({ addModal, setAddModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new region
+                Add new category
               </h3>
               <button
                 onClick={close}
@@ -167,40 +169,19 @@ const AddModal = ({ addModal, setAddModal }) => {
             {/* Modal body */}
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 gap-5">
-                <div>
+                <div className="col-span-1">
                   <label
-                    htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="category"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Country
-                  </label>
-                  <input
-                    list="countries"
-                    name="country"
-                    id="country"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigria"
-                    required={true}
-                  />
-                  <datalist id="countries">
-                    {parishCountries.map((country) => (
-                      <option key={country.title} value={country.title} />
-                    ))}
-                  </datalist>
-                </div>
-                <div>
-                  <label
-                    htmlFor="region"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Region
+                    Category
                   </label>
                   <input
                     type="text"
-                    name="region"
-                    id="region"
+                    name="category"
+                    id="category"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Southeast"
+                    placeholder="Mystery"
                     required={true}
                   />
                 </div>
@@ -252,4 +233,4 @@ const Actions = ({
   );
 };
 
-export default RegionsManagement;
+export default BookCategoriesManagement;

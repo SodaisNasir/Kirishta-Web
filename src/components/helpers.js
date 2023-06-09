@@ -36,6 +36,7 @@ export const DropdownFilter = ({
           <li
             onClick={() => handleClick(null)}
             role="option"
+            aria-selected={curFilter.value === null}
             className={`border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
           >
             All
@@ -45,6 +46,7 @@ export const DropdownFilter = ({
               key={elem + indx}
               onClick={() => handleClick(elem)}
               role="option"
+              aria-selected={elem === curFilter.value}
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
               } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
@@ -73,6 +75,7 @@ export const LanguageSelector = ({ language, setLanguage }) => {
               key={elem + indx}
               onClick={() => setLanguage((prev) => ({ ...prev, value: elem }))}
               role="option"
+              aria-selected={elem === language.value}
               className={`${
                 indx !== languages.length - 1 ? "border-b" : ""
               } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}

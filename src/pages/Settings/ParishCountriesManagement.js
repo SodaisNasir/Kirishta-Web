@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import AdvancedTable from "../components/Tables/AdvancedTable";
-import { parishCountryCategories } from "../constants/data";
-import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import AdvancedTable from "../../components/Tables/AdvancedTable";
+import {
+  parishCountriesPageData,
+  parishCountryCategories,
+} from "../../constants/data";
+import { Page } from "../../components";
+import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 
-const ParishCategories = () => {
+const ParishCountriesManagement = () => {
   const initial_filters = {
     searchInput: "",
   };
@@ -37,8 +40,10 @@ const ParishCategories = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter((item) =>
-          item.category.toLowerCase().includes(value.toLowerCase())
+        items: data.filter(
+          (item) =>
+            item["country name"].toLowerCase().includes(value.toLowerCase()) ||
+            item["country code"].toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -47,16 +52,13 @@ const ParishCategories = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: parishCountryCategories,
-      }));
-      setData(parishCountryCategories);
+      setPaginatedData((prev) => ({ ...prev, items: parishCountriesPageData }));
+      setData(parishCountriesPageData);
     }, 2000);
   }, []);
 
   return (
-    <Page title={"Parish Categories Management"}>
+    <Page title={"Parish Countries Management"}>
       <main>
         <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
           <AdvancedTable
@@ -84,7 +86,7 @@ const ParishCategories = () => {
                   value={searchInput}
                   onChange={filterUsersBySearch}
                   className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for categories"
+                  placeholder="Search for parish countries"
                 />
               </div>
               {/* Search bar end */}
@@ -106,7 +108,7 @@ const ParishCategories = () => {
                     }
                     className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                   >
-                    Add Category
+                    Add Country
                   </button>
                   {/* Add modal */}
                   {addModal.isVisible && (
@@ -183,15 +185,90 @@ const EditModal = ({ editModal, setEditModal }) => {
                     Category
                   </label>
                   <input
-                    type="text"
+                    list="categories"
                     name="category"
                     id="category"
                     defaultValue={editModal.data.category}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="West Africa 1"
+                    placeholder="West Afria 3"
+                    required={true}
+                  />
+                  <datalist id="categories">
+                    {parishCountryCategories.map((item) => (
+                      <option key={item.category} value={item.category} />
+                    ))}
+                  </datalist>
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country Name
+                  </label>
+                  <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    defaultValue={editModal.data["country name"]}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Nigeria"
                     required={true}
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="country-code"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country Code
+                  </label>
+                  <input
+                    type="text"
+                    name="country-code"
+                    id="country-code"
+                    defaultValue={editModal.data["country code"]}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="NG"
+                    required={true}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="flag"
+                  >
+                    Country Flag
+                  </label>
+                  <input
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="flag"
+                    type="file"
+                    required={true}
+                  />
+                </div>
+                {/* <div>
+                  <label
+                    htmlFor="feature"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Featured
+                  </label>
+                  <input
+                    list="featured"
+                    name="feature"
+                    id="feature"
+                    defaultValue={editModal.data.featured}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="No"
+                    required={true}
+                  />
+                  <datalist id="featured">
+                    {["Yes", "No"].map((item) => (
+                      <option key={item} value={item} />
+                    ))}
+                  </datalist>
+                </div> */}
               </div>
             </div>
             {/* Modal footer */}
@@ -245,7 +322,7 @@ const AddModal = ({ addModal, setAddModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new category
+                Add new country
               </h3>
               <button
                 onClick={close}
@@ -266,14 +343,86 @@ const AddModal = ({ addModal, setAddModal }) => {
                     Category
                   </label>
                   <input
-                    type="text"
+                    list="categories"
                     name="category"
                     id="category"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="West Africa 1"
+                    placeholder="West Afria 3"
+                    required={true}
+                  />
+                  <datalist id="categories">
+                    {parishCountryCategories.map((item) => (
+                      <option key={item.category} value={item.category} />
+                    ))}
+                  </datalist>
+                </div>
+                <div>
+                  <label
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country Name
+                  </label>
+                  <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Nigeria"
                     required={true}
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="country-code"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Country Code
+                  </label>
+                  <input
+                    type="text"
+                    name="country-code"
+                    id="country-code"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="NG"
+                    required={true}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="flag"
+                  >
+                    Country Flag
+                  </label>
+                  <input
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="flag"
+                    type="file"
+                    required={true}
+                  />
+                </div>
+                {/* <div>
+                  <label
+                    htmlFor="feature"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Featured
+                  </label>
+                  <input
+                    list="featured"
+                    name="feature"
+                    id="feature"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="No"
+                    required={true}
+                  />
+                  <datalist id="featured">
+                    {["Yes", "No"].map((item) => (
+                      <option key={item} value={item} />
+                    ))}
+                  </datalist>
+                </div> */}
               </div>
             </div>
             {/* Modal footer */}
@@ -331,4 +480,4 @@ const Actions = ({
   );
 };
 
-export default ParishCategories;
+export default ParishCountriesManagement;

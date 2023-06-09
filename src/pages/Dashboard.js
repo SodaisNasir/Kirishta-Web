@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DropdownContainer } from "../components/helpers";
 import { MdFeedback, MdLock, MdLogout } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
@@ -18,6 +18,10 @@ const Dashboard = () => {
 
   const setSingleToggle = (key, value) =>
     setToggle({ ...initialState, [key]: value });
+
+  useEffect(() => {
+    document.title = "Dashboard - Kirista";
+  }, []);
 
   return (
     <>
