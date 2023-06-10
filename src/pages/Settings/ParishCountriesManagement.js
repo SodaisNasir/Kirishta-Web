@@ -175,29 +175,30 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
-                    htmlFor="category"
+                    htmlFor="categories"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Category
                   </label>
-                  <input
-                    list="categories"
-                    name="category"
-                    id="category"
+                  <select
                     defaultValue={editModal.data.category}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="West Afria 3"
-                    required={true}
-                  />
-                  <datalist id="categories">
+                    id="categories"
+                  >
                     {parishCountryCategories.map((item) => (
-                      <option key={item.category} value={item.category} />
+                      <option
+                        className="text-sm"
+                        key={item.category}
+                        value={item.category}
+                      >
+                        {item.category}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div>
                   <label
@@ -216,7 +217,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     required={true}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label
                     htmlFor="country-code"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -246,7 +247,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="file"
                     required={true}
                   />
-                </div>
+                </div> */}
                 {/* <div>
                   <label
                     htmlFor="feature"
@@ -333,28 +334,29 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
-                    htmlFor="category"
+                    htmlFor="categories"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Category
                   </label>
-                  <input
-                    list="categories"
-                    name="category"
-                    id="category"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="West Afria 3"
-                    required={true}
-                  />
-                  <datalist id="categories">
+                    id="categories"
+                  >
                     {parishCountryCategories.map((item) => (
-                      <option key={item.category} value={item.category} />
+                      <option
+                        className="text-sm"
+                        key={item.category}
+                        value={item.category}
+                      >
+                        {item.category}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div>
                   <label
@@ -372,7 +374,7 @@ const AddModal = ({ addModal, setAddModal }) => {
                     required={true}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label
                     htmlFor="country-code"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -401,7 +403,7 @@ const AddModal = ({ addModal, setAddModal }) => {
                     type="file"
                     required={true}
                   />
-                </div>
+                </div> */}
                 {/* <div>
                   <label
                     htmlFor="feature"

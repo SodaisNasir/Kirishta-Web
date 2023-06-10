@@ -8,6 +8,7 @@ const AdvancedTable = ({
   paginatedData,
   setPaginatedData,
   Actions,
+  tableTemplate,
   actionCols,
   props,
   children,
@@ -28,7 +29,11 @@ const AdvancedTable = ({
 
   useEffect(() => {
     if (data.length) {
-      setTableStructure(Object.keys(data[0]));
+      setTableStructure(
+        typeof tableTemplate === "object"
+          ? Object.keys(tableTemplate)
+          : Object.keys(data[0])
+      );
       setIsLoading(false);
     }
   }, [data]);
@@ -70,7 +75,7 @@ const AdvancedTable = ({
                 {tableStructure.map(
                   (key) =>
                     key !== "Images" &&
-                    key[0] !== "_" && (
+                    !key.includes("_") && (
                       <th
                         key={key}
                         scope="col"
@@ -208,14 +213,14 @@ const SingleUser = ({
       </td>
       {tableStructure.map(
         (key) =>
-          key[0] !== "_" && (
+          !key.includes("_") && (
             <td
               key={key + SN}
-              className="px-6 py-4 text-center whitespace-nowrap md:whitespace-normal"
+              className={`px-6 py-4 text-center ${
+                key === "country flag" ? "font-emoji text-2xl" : ""
+              } whitespace-nowrap md:whitespace-normal`}
             >
-              {key === "Image" ||
-              key === "Media File" ||
-              key === "country flag" ? (
+              {key === "Image" || key === "Media File" ? (
                 <img
                   className="w-10 mx-auto"
                   src={data[key]}

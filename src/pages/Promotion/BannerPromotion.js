@@ -91,7 +91,7 @@ const BannerPromotion = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["View more", "Push Notification", "Edit", "Delete"],
+              actionCols: ["View", "Push Notification", "Edit", "Delete"],
               props: { setEditModal, setNotificationModal, setViewModal },
             }}
           >
@@ -237,13 +237,12 @@ const EditModal = ({ editModal, setEditModal }) => {
                 onClick={close}
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="editUserModal"
               >
                 <VscClose />
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -252,14 +251,17 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Platform
                   </label>
-                  <input
-                    type="text"
-                    name="platform"
-                    id="platform"
+                  <select
+                    defaultValue={editModal.data._Platform}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="iOS"
-                    required={true}
-                  />
+                    id="platform"
+                  >
+                    {["Android", "iOS"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -272,6 +274,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="text"
                     name="title"
                     id="title"
+                    defaultValue={editModal.data.Title}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Lorem ipsum"
                     required={true}
@@ -288,6 +291,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     type="text"
                     name="tag"
                     id="tag"
+                    defaultValue={editModal.data._Tag}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="lorem ipsum"
                     required={true}
@@ -296,30 +300,31 @@ const EditModal = ({ editModal, setEditModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="book_image"
+                    htmlFor="media-file"
                   >
-                    Image
+                    Media File
                   </label>
                   <input
                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="book_image"
-                    id="book_image"
+                    name="media-file"
+                    id="media-file"
                     type="file"
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="appPage"
+                    htmlFor="app-page"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     App Page
                   </label>
                   <input
-                    type="text"
-                    name="appPage"
-                    id="appPage"
+                    type="url"
+                    name="app-page"
+                    id="app-page"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="2"
+                    defaultValue={editModal.data["App Page"]}
+                    placeholder="https://www.google.com"
                     required={true}
                   />
                 </div>
@@ -330,27 +335,25 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    defaultValue={editModal.data.Status}
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Update
               </button>
@@ -446,7 +449,7 @@ const NotificationModal = ({ notificationModal, setNotificationModal }) => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -470,7 +473,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View more
+                View
               </h3>
               <button
                 onClick={close}
@@ -481,29 +484,35 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-6 gap-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-3">
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 capitalize"
+                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
                     </p>
-                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-                      {data[elem]}
+                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                      {typeof data[elem] === "string" &&
+                      (data[elem].includes("https://") ||
+                        data[elem].includes("http://")) ? (
+                        <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : (
+                        data[elem]
+                      )}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 close
               </button>
@@ -562,7 +571,7 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -571,14 +580,16 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                   >
                     Platform
                   </label>
-                  <input
-                    type="text"
-                    name="platform"
-                    id="platform"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="iOS"
-                    required={true}
-                  />
+                    id="platform"
+                  >
+                    {["Android", "iOS"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -628,15 +639,15 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="link"
+                    htmlFor="app-page"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Link
+                    App Page
                   </label>
                   <input
                     type="url"
-                    name="link"
-                    id="link"
+                    name="app-page"
+                    id="app-page"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="www.example.com"
                     required={true}
@@ -649,27 +660,24 @@ const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Create
               </button>

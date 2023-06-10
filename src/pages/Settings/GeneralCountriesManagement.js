@@ -175,7 +175,7 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
@@ -213,15 +213,18 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div>
                   <label
+                    htmlFor="country-flag"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
                   >
                     Country Flag
                   </label>
                   <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
+                    type="text"
+                    name="country-flag"
+                    id="country-flag"
+                    defaultValue={editModal.data["country flag"]}
+                    className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="e.g. 🇧🇷"
                     required={true}
                   />
                 </div>
@@ -232,20 +235,17 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Featured
                   </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
-                    defaultValue={editModal.data.featured}
+                  <select
+                    defaultValue={editModal.data._Featured}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
+                    id="featured"
+                  >
                     {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
+                      <option className="text-sm" key={item} value={item}>
+                        {item}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
               </div>
             </div>
@@ -311,7 +311,7 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
@@ -347,15 +347,17 @@ const AddModal = ({ addModal, setAddModal }) => {
                 </div>
                 <div>
                   <label
+                    htmlFor="country-flag"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
                   >
                     Country Flag
                   </label>
                   <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
+                    type="text"
+                    name="country-flag"
+                    id="country-flag"
+                    className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="e.g. 🇧🇷"
                     required={true}
                   />
                 </div>
@@ -366,19 +368,16 @@ const AddModal = ({ addModal, setAddModal }) => {
                   >
                     Featured
                   </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
+                    id="featured"
+                  >
                     {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
+                      <option className="text-sm" key={item} value={item}>
+                        {item}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
               </div>
             </div>

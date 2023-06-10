@@ -173,7 +173,7 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label
@@ -256,7 +256,7 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label

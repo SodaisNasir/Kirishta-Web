@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { subadmins } from "../../constants/data";
+import { roles, subadmins } from "../../constants/data";
 import { Page } from "../../components";
 import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
@@ -26,14 +26,7 @@ const SubAdmin = () => {
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({
     isVisible: false,
-    data: {
-      "S/N": null,
-      Name: null,
-      Email: null,
-      Password: null,
-      "Phone Number": null,
-      Role: null,
-    },
+    data: null,
   });
   const [addModal, setAddModal] = useState({
     isVisible: false,
@@ -227,10 +220,38 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {keys.map((elem) => {
                   const type = typeCheck(elem);
+
+                  if (elem === "Role") {
+                    return (
+                      <div key={elem}>
+                        <label
+                          htmlFor="roles"
+                          className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        >
+                          Role
+                        </label>
+                        <select
+                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          id="roles"
+                          defaultValue={editModal.data[elem]}
+                        >
+                          {roles.map((item, indx) => (
+                            <option
+                              className="text-sm"
+                              key={item + indx}
+                              value={item}
+                            >
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
 
                   return (
                     <div key={elem}>
@@ -244,7 +265,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                         type={type}
                         name={elem.toLowerCase()}
                         id={elem.toLowerCase()}
-                        value={editModal.data[elem]}
+                        defaultValue={editModal.data[elem]}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required={true}
                       />
@@ -254,10 +275,10 @@ const EditModal = ({ editModal, setEditModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Update
               </button>
@@ -316,10 +337,37 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {keys.map((elem) => {
                   const type = typeCheck(elem);
+
+                  if (elem === "Role") {
+                    return (
+                      <div key={elem}>
+                        <label
+                          htmlFor="roles"
+                          className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        >
+                          Role
+                        </label>
+                        <select
+                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          id="roles"
+                        >
+                          {roles.map((item, indx) => (
+                            <option
+                              className="text-sm"
+                              key={item + indx}
+                              value={item}
+                            >
+                              {item}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
 
                   return (
                     <div key={elem}>
@@ -342,10 +390,10 @@ const AddModal = ({ addModal, setAddModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Submit
               </button>
@@ -378,7 +426,7 @@ const Actions = ({
     <>
       <td className="text-center text-base px-6 py-4">
         <button
-          onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}
+          onClick={() => setEditModal({ isVisible: true, data })}
           className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
         >
           <MdModeEdit />

@@ -90,7 +90,7 @@ const UsersManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["View more", "Edit", "Delete", "Block"],
+              actionCols: ["View", "Edit", "Delete", "Block"],
               props: { setEditModal, setViewModal },
             }}
           >
@@ -218,7 +218,7 @@ const EditModal = ({ editModal, setEditModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -256,6 +256,23 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
+                    htmlFor="password"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    defaultValue={editModal.data._Password}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="••••••••••"
+                    required={true}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
                     htmlFor="phone-number"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
@@ -273,25 +290,25 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="country"
+                    htmlFor="countries"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Country
                   </label>
-                  <input
-                    list="countries"
-                    name="country"
-                    id="country"
-                    defaultValue={editModal.data._Country}
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigeria"
-                    required={true}
-                  />
-                  <datalist id="countries">
+                    id="countries"
+                  >
                     {parishCountries.map((elem) => (
-                      <option key={elem.title} value={elem.title} />
+                      <option
+                        className="text-sm"
+                        key={elem.title}
+                        value={elem.title}
+                      >
+                        {elem.title}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -300,28 +317,25 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="status-list"
-                    name="status"
-                    id="status"
-                    defaultValue={editModal.data.Status}
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="status-list">
+                    defaultValue={editModal.data.Status}
+                    id="status"
+                  >
                     {["ACTIVE", "INACTIVE"].map((elem) => (
-                      <option key={elem} value={elem} />
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Update
               </button>
@@ -334,7 +348,7 @@ const EditModal = ({ editModal, setEditModal }) => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -358,7 +372,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View more
+                View
               </h3>
               <button
                 onClick={close}
@@ -369,29 +383,35 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-6 gap-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-3">
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 capitalize"
+                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
                     </p>
-                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-                      {data[elem]}
+                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                      {typeof data[elem] === "string" &&
+                      (data[elem].includes("https://") ||
+                        data[elem].includes("http://")) ? (
+                        <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : (
+                        data[elem]
+                      )}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 close
               </button>

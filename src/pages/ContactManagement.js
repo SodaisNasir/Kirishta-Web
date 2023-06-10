@@ -89,7 +89,21 @@ const ContactManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["View more", "Reply", "Delete"],
+              tableTemplate: {
+                "_S/N": null,
+                id: null,
+                Device: null,
+                Name: null,
+                Email: null,
+                _Phone: null,
+                Subject: null,
+                _Message: null,
+                _Response: null,
+                _Timestamp: null,
+                Status: null,
+                _Featured: null,
+              },
+              actionCols: ["View", "Reply", "Delete"],
               props: { setViewModal, setReplyModal },
             }}
           >
@@ -236,7 +250,7 @@ const ReplyModal = ({ setReplyModal }) => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -260,7 +274,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View more
+                View
               </h3>
               <button
                 onClick={close}
@@ -271,29 +285,35 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-3">
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 capitalize"
+                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
                     </p>
-                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-                      {data[elem]}
+                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                      {typeof data[elem] === "string" &&
+                      (data[elem].includes("https://") ||
+                        data[elem].includes("http://")) ? (
+                        <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : (
+                        data[elem]
+                      )}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 close
               </button>

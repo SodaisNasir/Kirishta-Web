@@ -5,7 +5,7 @@ import { Page } from "../../components";
 import Paginatation from "../../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 
 const BookLanguagesManagement = () => {
   const initial_filters = {
@@ -17,6 +17,7 @@ const BookLanguagesManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [addModal, setAddModal] = useState({
     isVisible: false,
     data: {},
@@ -66,7 +67,8 @@ const BookLanguagesManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["Remove"],
+              actionCols: ["Edit", "Remove"],
+              props: { setEditModal },
             }}
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -111,6 +113,11 @@ const BookLanguagesManagement = () => {
                   {/* Add modal */}
                   {addModal.isVisible && (
                     <AddModal {...{ addModal, setAddModal }} />
+                  )}
+
+                  {/* Edit user modal */}
+                  {editModal.isVisible && (
+                    <EditModal {...{ editModal, setEditModal }} />
                   )}
                 </div>
               </div>
@@ -168,12 +175,12 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
               <div className="grid grid-cols-1 gap-5">
                 <div className="col-span-1">
                   <label
                     htmlFor="language"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Language
                   </label>
@@ -204,6 +211,87 @@ const AddModal = ({ addModal, setAddModal }) => {
   );
 };
 
+const EditModal = ({ editModal, setEditModal }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setEditModal({
+      isVisible: false,
+      data: {},
+    });
+  };
+
+  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
+
+  return (
+    <>
+      <div
+        className={`${
+          editModal.isVisible ? "" : "hidden"
+        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
+      />
+      <div
+        tabIndex="-1"
+        className={`${
+          editModal.isVisible ? "" : "hidden"
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+      >
+        <div className="relative w-full max-w-lg max-h-full">
+          {/* Modal content */}
+          <form
+            action="#"
+            onSubmit={handleSubmit}
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          >
+            {/* Modal header */}
+            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Edit
+              </h3>
+              <button
+                onClick={close}
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                <VscClose />
+              </button>
+            </div>
+            {/* Modal body */}
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="col-span-1">
+                <label
+                  htmlFor="language"
+                  className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                >
+                  Language
+                </label>
+                <input
+                  type="text"
+                  name="language"
+                  id="language"
+                  defaultValue={editModal.data.language}
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Spanish"
+                  required={true}
+                />
+              </div>
+            </div>
+            {/* Modal footer */}
+            <div className="flex items-center p-4 px-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <button
+                type="submit"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const Actions = ({
   tableStructure,
   data,
@@ -212,6 +300,7 @@ const Actions = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  setEditModal,
 }) => {
   const remove = () => {
     setPaginatedData((prev) => ({
@@ -222,6 +311,14 @@ const Actions = ({
 
   return (
     <>
+      <td className="text-center text-base px-6 py-4">
+        <button
+          onClick={() => setEditModal({ isVisible: true, data })}
+          className="font-medium text-gray-600 hover:text-gray-800"
+        >
+          <MdModeEdit />
+        </button>
+      </td>
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}

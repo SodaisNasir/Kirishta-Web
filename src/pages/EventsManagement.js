@@ -90,7 +90,7 @@ const EventsManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["View more", "Edit", "Delete"],
+              actionCols: ["View", "Edit", "Delete"],
               props: { setEditModal, setViewModal },
             }}
           >
@@ -245,15 +245,15 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="date-from"
+                    htmlFor="date-start"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Date (from)
+                    Date (Start)
                   </label>
                   <input
                     type="date"
-                    name="date-from"
-                    id="date-from"
+                    name="date-start"
+                    id="date-start"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="2/6/2020"
                     required={true}
@@ -261,15 +261,15 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="date-to"
+                    htmlFor="date-end"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Date (to)
+                    Date (End)
                   </label>
                   <input
                     type="date"
-                    name="date-to"
-                    id="date-to"
+                    name="date-end"
+                    id="date-end"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="6/7/2021"
                     required={true}
@@ -277,15 +277,15 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="time-from"
+                    htmlFor="time-start"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Time (from)
+                    Time (Start)
                   </label>
                   <input
                     type="time"
-                    name="time-from"
-                    id="time-from"
+                    name="time-start"
+                    id="time-start"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="2/6/2020"
                     required={true}
@@ -293,15 +293,15 @@ const EditModal = ({ editModal, setEditModal }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="time-to"
+                    htmlFor="time-end"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Time (to)
+                    Time (End)
                   </label>
                   <input
                     type="time"
-                    name="time-to"
-                    id="time-to"
+                    name="time-end"
+                    id="time-end"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="6/7/2021"
                     required={true}
@@ -351,7 +351,7 @@ const EditModal = ({ editModal, setEditModal }) => {
                     name="map"
                     id="map"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
+                    placeholder="41°24'12.2'N - 2°10'26.5'E"
                     required={true}
                   />
                 </div>
@@ -362,40 +362,36 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
+                    defaultValue={editModal.data.Status}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="feature"
+                    htmlFor="featured"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Featured
                   </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
+                  <select
+                    defaultValue={editModal.data._Featured}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Yes"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item, indx) => (
-                      <option key={item} value={item} />
+                    id="featured"
+                  >
+                    {["Yes", "No"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6">
                   <label
@@ -414,10 +410,10 @@ const EditModal = ({ editModal, setEditModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Update
               </button>
@@ -430,7 +426,7 @@ const EditModal = ({ editModal, setEditModal }) => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -454,7 +450,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View more
+                View
               </h3>
               <button
                 onClick={close}
@@ -465,29 +461,35 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-3">
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 capitalize"
+                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
                     </p>
-                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-                      {data[elem]}
+                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                      {typeof data[elem] === "string" &&
+                      (data[elem].includes("https://") ||
+                        data[elem].includes("http://")) ? (
+                        <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : (
+                        data[elem]
+                      )}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 close
               </button>
@@ -534,7 +536,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new user
+                Add new event
               </h3>
               <button
                 onClick={close}
@@ -578,15 +580,15 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="date-from"
+                    htmlFor="date-start"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Date (from)
+                    Date (Start)
                   </label>
                   <input
                     type="date"
-                    name="date-from"
-                    id="date-from"
+                    name="date-start"
+                    id="date-start"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="2/6/2020"
                     required={true}
@@ -594,15 +596,15 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="date-to"
+                    htmlFor="date-end"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Date (to)
+                    Date (End)
                   </label>
                   <input
                     type="date"
-                    name="date-to"
-                    id="date-to"
+                    name="date-end"
+                    id="date-end"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="6/7/2021"
                     required={true}
@@ -610,15 +612,15 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="time-from"
+                    htmlFor="time-start"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Time (from)
+                    Time (Start)
                   </label>
                   <input
                     type="time"
-                    name="time-from"
-                    id="time-from"
+                    name="time-start"
+                    id="time-start"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="2/6/2020"
                     required={true}
@@ -626,15 +628,15 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="time-to"
+                    htmlFor="time-end"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
-                    Time (to)
+                    Time (End)
                   </label>
                   <input
                     type="time"
-                    name="time-to"
-                    id="time-to"
+                    name="time-end"
+                    id="time-end"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="6/7/2021"
                     required={true}
@@ -684,7 +686,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                     name="map"
                     id="map"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
+                    placeholder="41°24'12.2'N - 2°10'26.5'E"
                     required={true}
                   />
                 </div>
@@ -695,40 +697,34 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="feature"
+                    htmlFor="featured"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Featured
                   </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Yes"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item, indx) => (
-                      <option key={item} value={item} />
+                    id="featured"
+                  >
+                    {["Yes", "No"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6">
                   <label
@@ -747,10 +743,10 @@ const AddUserModal = ({ addUser, setAddUser }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Create
               </button>

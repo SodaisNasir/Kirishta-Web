@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         poppins: ["Poppins"],
+        mont: ["Montserrat"],
+        emoji: ["Noto Color Emoji"],
       },
       screens: {
         xs: "480px",

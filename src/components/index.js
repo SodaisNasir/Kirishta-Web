@@ -7,6 +7,7 @@ import Loader from "./Loaders/Loader";
 import ConfirmationCodeFeilds from "./ConfirmationCodeFeilds";
 import NestedCheckbox from "./NestedCheckBox";
 import CountrySelector from "./CountrySelector";
+import CreateEPUB from "./CreateEPUB";
 
 export {
   AdminLayout,
@@ -18,4 +19,5 @@ export {
   ConfirmationCodeFeilds,
   NestedCheckbox,
   CountrySelector,
+  CreateEPUB,
 };

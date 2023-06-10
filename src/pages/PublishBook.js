@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import Page from "../components/Page Templates/Page";
 import { bookCategories, bookLanguages } from "../constants/data";
-import Editor from "../components/Editor";
 import { useState } from "react";
-import { VscClose } from "react-icons/vsc";
+import { CreateEPUB } from "../components";
+import { MdEdit } from "react-icons/md";
 
 const PublishBook = () => {
   const initialState = [{ title: "", body: "" }];
@@ -23,11 +23,56 @@ const PublishBook = () => {
   return (
     <Page title="Publish Book">
       <main>
+        {/* Saved Books Table */}
+        <div className="relative overflow-x-auto rounded-xl mt-4">
+          <table className="w-full text-xs text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="text-center px-6 py-3">
+                  Book Name
+                </th>
+                <th scope="col" className="text-center px-6 py-3">
+                  Author
+                </th>
+                <th scope="col" className="text-center px-6 py-3">
+                  Category
+                </th>
+                <th scope="col" className="text-center px-6 py-3">
+                  Edit
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center text-base px-6 py-2.5">
+                  <button className="font-medium text-gray-600 hover:text-gray-800">
+                    <MdEdit />
+                  </button>
+                </td>
+              </tr>
+              <tr className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center px-6 py-2.5">lorem ipsum</td>
+                <td className="text-center text-base px-6 py-2.5">
+                  <button className="font-medium text-gray-600 hover:text-gray-800">
+                    <MdEdit />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Book Details */}
         <div className="relative w-full mx-auto max-w-3xl max-h-full">
           <div
             // action="#"
             // onSubmit={handleSubmit}
-            className="relative mt-5 dark:bg-gray-700"
+            className="relative mt-2 dark:bg-gray-700"
           >
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-6 gap-6">
@@ -65,45 +110,60 @@ const PublishBook = () => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="category"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="book-cover"
+                  >
+                    Book Cover
+                  </label>
+                  <input
+                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="book-cover"
+                    type="file"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="categories"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Category
                   </label>
-                  <input
-                    list="categories"
-                    name="category"
-                    id="category"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Story"
-                    required={true}
-                  />
-                  <datalist id="categories">
+                    id="categories"
+                  >
                     {bookCategories.map((category, indx) => (
-                      <option key={category + indx} value={category} />
+                      <option
+                        className="text-xs"
+                        key={category + indx}
+                        value={category}
+                      >
+                        {category}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="language"
+                    htmlFor="languages"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Language
                   </label>
-                  <input
-                    list="languages"
-                    name="language"
-                    id="language"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="English"
-                    required={true}
-                  />
-                  <datalist id="languages">
+                    id="languages"
+                  >
                     {bookLanguages.map((language, indx) => (
-                      <option key={language + indx} value={language} />
+                      <option
+                        className="text-xs"
+                        key={language + indx}
+                        value={language}
+                      >
+                        {language}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -122,7 +182,6 @@ const PublishBook = () => {
                     required={true}
                   />
                 </div>
-                <br className="hidden sm:block" />
                 <div className="col-span-6">
                   <label
                     htmlFor="about"
@@ -229,100 +288,6 @@ const PublishBook = () => {
         </div>
       </main>
     </Page>
-  );
-};
-
-const CreateEPUB = ({ state, setState }) => {
-  const handleTitleChange = (value, index) => {
-    const updatedState = [...state];
-    updatedState[index] = {
-      ...updatedState[index],
-      title: value,
-    };
-    setState(updatedState);
-  };
-
-  const handleBodyChange = (value, index) => {
-    const updatedState = [...state];
-    updatedState[index] = {
-      ...updatedState[index],
-      body: value,
-    };
-    setState(updatedState);
-  };
-
-  const handleAdd = () => {
-    let stateCopy = [...state];
-    stateCopy.push({ title: "", body: "" });
-    setState(stateCopy);
-  };
-
-  const closeSection = (index) =>
-    index !== 0 && setState((prev) => prev.filter((_, idx) => idx !== index));
-
-  return (
-    <div className="col-span-6">
-      {state.map((item, index) => (
-        <div
-          key={item.title + index}
-          className={`w-full text-sm text-gray-800 ${
-            index !== 0 ? "mt-6" : ""
-          } border rounded-md overflow-hidden`}
-        >
-          <header className="flex items-center justify-between font-semibold p-3 py-4 bg-gray-100">
-            Section #{index + 1}
-            <button
-              onClick={() => closeSection(index)}
-              className="text-lg text-gray-800 hover:text-gray-600"
-            >
-              <VscClose />
-            </button>
-          </header>
-          <main className="p-5">
-            <div>
-              <label
-                htmlFor={"chapter-title-" + (index + 1)}
-                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-              >
-                Chapter Title
-              </label>
-              <input
-                type="text"
-                name={"chapter-title-" + (index + 1)}
-                id={"chapter-title-" + (index + 1)}
-                value={item.title}
-                onChange={(e) => handleTitleChange(e.target.value, index)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Harry Potter"
-                autoFocus={true}
-              />
-            </div>
-            <div>
-              <label className="block my-2 mt-4 text-xs font-medium text-gray-900 dark:text-white">
-                Chapter Body
-              </label>
-              <Editor
-                {...{
-                  id: index,
-                  styles: "!pt-0",
-                  state: item.body,
-                  handleChange: (value) => handleBodyChange(value, index),
-                }}
-              />
-            </div>
-          </main>
-        </div>
-      ))}
-
-      <div className="flex justify-end mt-5">
-        <button
-          onClick={handleAdd}
-          className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
-        >
-          Add Section
-        </button>
-      </div>
-    </div>
   );
 };
 

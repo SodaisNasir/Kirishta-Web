@@ -94,7 +94,7 @@ const ParishManagement = () => {
               paginatedData,
               setPaginatedData,
               Actions,
-              actionCols: ["View more", "Edit", "Delete"],
+              actionCols: ["View", "Edit", "Delete"],
               props: { setEditModal, setViewModal },
             }}
           >
@@ -346,72 +346,78 @@ const EditModal = ({ editModal, setEditModal }) => {
                     name="map"
                     id="map"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
+                    placeholder="41°24'12.2'N - 2°10'26.5'E"
                     required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="country"
+                    htmlFor="countries"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Country
                   </label>
-                  <input
-                    list="countries"
-                    name="country"
-                    id="country"
+                  <select
+                    defaultValue={editModal.data.Country}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigria"
-                    required={true}
-                  />
-                  <datalist id="countries">
-                    {parishCountries.map((category) => (
-                      <option key={category.title} value={category.title} />
+                    id="countries"
+                  >
+                    {parishCountries.map((country) => (
+                      <option
+                        className="text-sm"
+                        key={country.title}
+                        value={country.title}
+                      >
+                        {country.title}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="province"
+                    htmlFor="provinces"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Province
                   </label>
-                  <input
-                    list="provinces"
-                    name="province"
-                    id="province"
+                  <select
+                    defaultValue={editModal.data._Province}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Texas"
-                    required={true}
-                  />
-                  <datalist id="provinces">
+                    id="provinces"
+                  >
                     {provinces.map((province) => (
-                      <option key={province["S/N"]} value={province.state} />
+                      <option
+                        className="text-sm"
+                        key={province["S/N"]}
+                        value={province.state}
+                      >
+                        {province.state}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="region"
+                    htmlFor="regions"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Region
                   </label>
-                  <input
-                    list="regions"
-                    name="region"
-                    id="region"
+                  <select
+                    defaultValue={editModal.data._Region}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Southie"
-                    required={true}
-                  />
-                  <datalist id="regions">
+                    id="regions"
+                  >
                     {regions.map((region) => (
-                      <option key={region["S/N"]} value={region.region} />
+                      <option
+                        className="text-sm"
+                        key={region["S/N"]}
+                        value={region.region}
+                      >
+                        {region.region}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -420,19 +426,17 @@ const EditModal = ({ editModal, setEditModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    defaultValue={editModal.data.Status}
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6">
                   <label
@@ -451,10 +455,10 @@ const EditModal = ({ editModal, setEditModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Update
               </button>
@@ -467,7 +471,7 @@ const EditModal = ({ editModal, setEditModal }) => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter((e) => e[0] === "_");
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -491,7 +495,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View more
+                View
               </h3>
               <button
                 onClick={close}
@@ -502,29 +506,35 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-3">
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 capitalize"
+                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
                     </p>
-                    <p className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">
-                      {data[elem]}
+                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                      {typeof data[elem] === "string" &&
+                      (data[elem].includes("https://") ||
+                        data[elem].includes("http://")) ? (
+                        <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : (
+                        data[elem]
+                      )}
                     </p>
                   </div>
                 ))}
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 close
               </button>
@@ -706,72 +716,75 @@ const CreateNewModal = ({ createNewModal, setCreateNewModal }) => {
                     name="map"
                     id="map"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
+                    placeholder="41°24'12.2'N - 2°10'26.5'E"
                     required={true}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="country"
+                    htmlFor="countries"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Country
                   </label>
-                  <input
-                    list="countries"
-                    name="country"
-                    id="country"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigria"
-                    required={true}
-                  />
-                  <datalist id="countries">
-                    {parishCountries.map((category, indx) => (
-                      <option key={category + indx} value={category} />
+                    id="countries"
+                  >
+                    {parishCountries.map((country) => (
+                      <option
+                        className="text-sm"
+                        key={country.title}
+                        value={country.title}
+                      >
+                        {country.title}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="province"
+                    htmlFor="provinces"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Province
                   </label>
-                  <input
-                    list="provinces"
-                    name="province"
-                    id="province"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Texas"
-                    required={true}
-                  />
-                  <datalist id="provinces">
+                    id="provinces"
+                  >
                     {provinces.map((province) => (
-                      <option key={province["S/N"]} value={province.state} />
+                      <option
+                        className="text-sm"
+                        key={province["S/N"]}
+                        value={province.state}
+                      >
+                        {province.state}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="region"
+                    htmlFor="regions"
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                   >
                     Region
                   </label>
-                  <input
-                    list="regions"
-                    name="region"
-                    id="region"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Southie"
-                    required={true}
-                  />
-                  <datalist id="regions">
+                    id="regions"
+                  >
                     {regions.map((region) => (
-                      <option key={region["S/N"]} value={region.region} />
+                      <option
+                        className="text-sm"
+                        key={region["S/N"]}
+                        value={region.region}
+                      >
+                        {region.region}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -780,19 +793,16 @@ const CreateNewModal = ({ createNewModal, setCreateNewModal }) => {
                   >
                     Status
                   </label>
-                  <input
-                    list="statuses"
-                    name="status"
-                    id="status"
+                  <select
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="ACTIVE"
-                    required={true}
-                  />
-                  <datalist id="statuses">
-                    {["ACTIVE", "INACTIVE"].map((status, indx) => (
-                      <option key={status + indx} value={status} />
+                    id="status"
+                  >
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
                     ))}
-                  </datalist>
+                  </select>
                 </div>
                 <div className="col-span-6">
                   <label
@@ -811,10 +821,10 @@ const CreateNewModal = ({ createNewModal, setCreateNewModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
               >
                 Create
               </button>
