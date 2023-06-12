@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 import { DropdownContainer } from "../helpers";
 import { Link } from "react-router-dom";
-import Pagintation from "../Pagintation";
+import Pagination from "../Pagination";
 
 const AdvancedTable = ({
   data,
@@ -48,7 +48,7 @@ const AdvancedTable = ({
           : `${paginatedData.items.length} results`}
       </div>
 
-      <Pagintation {...{ paginatedData, setPaginatedData }} />
+      <Pagination {...{ paginatedData, setPaginatedData }} />
 
       <div
         className={`${

@@ -2203,4 +2203,4 @@ export const themes = {
   success: "border-green-600 bg-green-100 text-green-600",
 };
 
-export const pagintationEntries = ["All", 50, 100, 200, 500, 1000];
+export const paginationEntries = ["All", 50, 100, 200, 500, 1000];

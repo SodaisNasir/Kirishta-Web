@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { feedbacks } from "../constants/data";
 import { Page } from "../components";
-import Pagintation from "../components/Pagintation";
+
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { AiFillEye } from "react-icons/ai";

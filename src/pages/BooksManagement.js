@@ -7,7 +7,7 @@ import {
   parishCountries,
 } from "../constants/data";
 import { CreateEPUB, Page } from "../components";
-import Pagintation from "../components/Pagintation";
+
 import { BiSearch } from "react-icons/bi";
 import { CountryFilter } from "../components";
 import { DropdownFilter } from "../components/helpers";
