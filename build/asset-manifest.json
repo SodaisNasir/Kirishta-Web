@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.a6454c8d.css",
-    "main.js": "/static/js/main.f40b0c5e.js",
+    "main.js": "/static/js/main.5149678e.js",
     "static/media/login_bg.webp": "/static/media/login_bg.cd177af1d36c8b4df57a.webp",
     "static/media/bermuda-flag-icon.png": "/static/media/bermuda-flag-icon.a6393b0358877ed830b1.png",
     "index.html": "/index.html",
     "main.a6454c8d.css.map": "/static/css/main.a6454c8d.css.map",
-    "main.f40b0c5e.js.map": "/static/js/main.f40b0c5e.js.map"
+    "main.5149678e.js.map": "/static/js/main.5149678e.js.map"
   },
   "entrypoints": [
     "static/css/main.a6454c8d.css",
-    "static/js/main.f40b0c5e.js"
+    "static/js/main.5149678e.js"
   ]
 }
