@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { banners } from "../../constants/data";
 import { Page } from "../../components";
-import Paginatation from "../../components/Pagintation";
+
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit, MdNotificationAdd } from "react-icons/md";
@@ -84,113 +84,111 @@ const BannerPromotion = () => {
   return (
     <Page title={"Banner Promotion"}>
       <main>
-        <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
-          <AdvancedTable
-            {...{
-              data,
-              paginatedData,
-              setPaginatedData,
-              Actions,
-              actionCols: ["View", "Push Notification", "Edit", "Delete"],
-              props: { setEditModal, setNotificationModal, setViewModal },
-            }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
-              {/* Search bar start */}
-              <label htmlFor="table-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <BiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="table-search-users"
-                  value={searchInput}
-                  onChange={filterUsersBySearch}
-                  className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for promotion"
-                />
+        <AdvancedTable
+          {...{
+            data,
+            paginatedData,
+            setPaginatedData,
+            Actions,
+            actionCols: ["View", "Push Notification", "Edit", "Delete"],
+            props: { setEditModal, setNotificationModal, setViewModal },
+          }}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+            {/* Search bar start */}
+            <label htmlFor="table-search" className="sr-only">
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <BiSearch />
               </div>
-              {/* Search bar end */}
-              {/* Dropdown Filters Start */}
-              <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-                <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length <= 1
-                    ? `${paginatedData.items.length} result`
-                    : `${paginatedData.items.length} results`}
-                </div>
+              <input
+                type="text"
+                id="table-search-users"
+                value={searchInput}
+                onChange={filterUsersBySearch}
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search for promotion"
+              />
+            </div>
+            {/* Search bar end */}
+            {/* Dropdown Filters Start */}
+            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
+              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+                {paginatedData.items.length <= 1
+                  ? `${paginatedData.items.length} result`
+                  : `${paginatedData.items.length} results`}
+              </div>
 
-                <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
-                  <DropdownFilter
-                    arr={["ACTIVE", "INACTIVE"]}
-                    title={"Status"}
-                    toggle={toggleStatus}
-                    curFilter={curFilter}
-                    setToggle={() =>
-                      setSingleFilter("toggleStatus", !toggleStatus)
-                    }
-                    handleClick={(value) =>
-                      setCurFilter({ filter: value ? "Status" : null, value })
-                    }
+              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+                <DropdownFilter
+                  arr={["ACTIVE", "INACTIVE"]}
+                  title={"Status"}
+                  toggle={toggleStatus}
+                  curFilter={curFilter}
+                  setToggle={() =>
+                    setSingleFilter("toggleStatus", !toggleStatus)
+                  }
+                  handleClick={(value) =>
+                    setCurFilter({ filter: value ? "Status" : null, value })
+                  }
+                />
+
+                <DropdownFilter
+                  arr={["Android", "iOS"]}
+                  title={"Platform"}
+                  toggle={togglePlatform}
+                  curFilter={curFilter}
+                  setToggle={() =>
+                    setSingleFilter("togglePlatform", !togglePlatform)
+                  }
+                  handleClick={(value) =>
+                    setCurFilter({
+                      filter: value ? "_Platform" : null,
+                      value,
+                    })
+                  }
+                />
+
+                <button
+                  onClick={() =>
+                    setCreatePromoModal((prev) => ({
+                      ...prev,
+                      isVisible: true,
+                    }))
+                  }
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                >
+                  Create new
+                </button>
+                {/* Create new modal */}
+                {createPromoModal.isVisible && (
+                  <CreatePromoModal
+                    {...{ createPromoModal, setCreatePromoModal }}
                   />
+                )}
 
-                  <DropdownFilter
-                    arr={["Android", "iOS"]}
-                    title={"Platform"}
-                    toggle={togglePlatform}
-                    curFilter={curFilter}
-                    setToggle={() =>
-                      setSingleFilter("togglePlatform", !togglePlatform)
-                    }
-                    handleClick={(value) =>
-                      setCurFilter({
-                        filter: value ? "_Platform" : null,
-                        value,
-                      })
-                    }
+                {/* Edit user modal */}
+                {editModal.isVisible && (
+                  <EditModal {...{ editModal, setEditModal }} />
+                )}
+
+                {/* Notification modal */}
+                {notificationModal && (
+                  <NotificationModal
+                    {...{ notificationModal, setNotificationModal }}
                   />
+                )}
 
-                  <button
-                    onClick={() =>
-                      setCreatePromoModal((prev) => ({
-                        ...prev,
-                        isVisible: true,
-                      }))
-                    }
-                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
-                  >
-                    Create new
-                  </button>
-                  {/* Create new modal */}
-                  {createPromoModal.isVisible && (
-                    <CreatePromoModal
-                      {...{ createPromoModal, setCreatePromoModal }}
-                    />
-                  )}
-
-                  {/* Edit user modal */}
-                  {editModal.isVisible && (
-                    <EditModal {...{ editModal, setEditModal }} />
-                  )}
-
-                  {/* Notification modal */}
-                  {notificationModal && (
-                    <NotificationModal
-                      {...{ notificationModal, setNotificationModal }}
-                    />
-                  )}
-
-                  {/* View modal */}
-                  {viewModal.isVisible && (
-                    <ViewModal {...{ viewModal, setViewModal }} />
-                  )}
-                </div>
+                {/* View modal */}
+                {viewModal.isVisible && (
+                  <ViewModal {...{ viewModal, setViewModal }} />
+                )}
               </div>
             </div>
-          </AdvancedTable>
-        </Paginatation>
+          </div>
+        </AdvancedTable>
       </main>
     </Page>
   );
@@ -508,11 +506,11 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 close
               </button>

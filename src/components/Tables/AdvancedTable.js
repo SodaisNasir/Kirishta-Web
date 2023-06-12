@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 import { DropdownContainer } from "../helpers";
 import { Link } from "react-router-dom";
+import Pagintation from "../Pagintation";
 
 const AdvancedTable = ({
   data,
@@ -41,11 +42,14 @@ const AdvancedTable = ({
   return (
     <>
       {children}
-      <div className="xs:hidden lg:block mb-1 text-xs font-medium text-gray-700">
+      <div className="xs:hidden lg:block mb-1 ml-1.5 text-xs font-medium text-gray-700">
         {paginatedData.items.length <= 1
           ? `${paginatedData.items.length} result`
           : `${paginatedData.items.length} results`}
       </div>
+
+      <Pagintation {...{ paginatedData, setPaginatedData }} />
+
       <div
         className={`${
           isLoading ? "relative min-h-[50vh]" : ""

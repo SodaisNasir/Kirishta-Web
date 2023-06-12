@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { parishCountryCategories } from "../../constants/data";
 import { Page } from "../../components";
-import Paginatation from "../../components/Pagintation";
+
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdDelete, MdModeEdit } from "react-icons/md";
@@ -58,70 +58,68 @@ const ParishCategories = () => {
   return (
     <Page title={"Parish Categories Management"}>
       <main>
-        <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
-          <AdvancedTable
-            {...{
-              data,
-              paginatedData,
-              setPaginatedData,
-              Actions,
-              actionCols: ["Edit", "Remove"],
-              props: { setEditModal },
-            }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
-              {/* Search bar start */}
-              <label htmlFor="table-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <BiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="table-search-users"
-                  value={searchInput}
-                  onChange={filterUsersBySearch}
-                  className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for categories"
-                />
+        <AdvancedTable
+          {...{
+            data,
+            paginatedData,
+            setPaginatedData,
+            Actions,
+            actionCols: ["Edit", "Remove"],
+            props: { setEditModal },
+          }}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+            {/* Search bar start */}
+            <label htmlFor="table-search" className="sr-only">
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <BiSearch />
               </div>
-              {/* Search bar end */}
-              {/* Dropdown Filters Start */}
-              <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-                <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length <= 1
-                    ? `${paginatedData.items.length} result`
-                    : `${paginatedData.items.length} results`}
-                </div>
+              <input
+                type="text"
+                id="table-search-users"
+                value={searchInput}
+                onChange={filterUsersBySearch}
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search for categories"
+              />
+            </div>
+            {/* Search bar end */}
+            {/* Dropdown Filters Start */}
+            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
+              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+                {paginatedData.items.length <= 1
+                  ? `${paginatedData.items.length} result`
+                  : `${paginatedData.items.length} results`}
+              </div>
 
-                <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
-                  <button
-                    onClick={() =>
-                      setAddModal((prev) => ({
-                        ...prev,
-                        isVisible: true,
-                      }))
-                    }
-                    className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
-                  >
-                    Add Category
-                  </button>
-                  {/* Add modal */}
-                  {addModal.isVisible && (
-                    <AddModal {...{ addModal, setAddModal }} />
-                  )}
+              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+                <button
+                  onClick={() =>
+                    setAddModal((prev) => ({
+                      ...prev,
+                      isVisible: true,
+                    }))
+                  }
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                >
+                  Add Category
+                </button>
+                {/* Add modal */}
+                {addModal.isVisible && (
+                  <AddModal {...{ addModal, setAddModal }} />
+                )}
 
-                  {/* Edit user modal */}
-                  {editModal.isVisible && (
-                    <EditModal {...{ editModal, setEditModal }} />
-                  )}
-                </div>
+                {/* Edit user modal */}
+                {editModal.isVisible && (
+                  <EditModal {...{ editModal, setEditModal }} />
+                )}
               </div>
             </div>
-          </AdvancedTable>
-        </Paginatation>
+          </div>
+        </AdvancedTable>
       </main>
     </Page>
   );

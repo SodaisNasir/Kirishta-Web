@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { contacts } from "../constants/data";
 import { Page } from "../components";
-import Paginatation from "../components/Pagintation";
+import Pagintation from "../components/Pagintation";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { AiFillEye } from "react-icons/ai";
@@ -82,84 +82,82 @@ const ContactManagement = () => {
   return (
     <Page title={"Contact Management"}>
       <main>
-        <Paginatation {...{ itemsPerPage: 2, paginatedData, setPaginatedData }}>
-          <AdvancedTable
-            {...{
-              data,
-              paginatedData,
-              setPaginatedData,
-              Actions,
-              tableTemplate: {
-                "_S/N": null,
-                id: null,
-                Device: null,
-                Name: null,
-                Email: null,
-                _Phone: null,
-                Subject: null,
-                _Message: null,
-                _Response: null,
-                _Timestamp: null,
-                Status: null,
-                _Featured: null,
-              },
-              actionCols: ["View", "Reply", "Delete"],
-              props: { setViewModal, setReplyModal },
-            }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
-              {/* Search bar start */}
-              <label htmlFor="table-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <BiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="table-search-users"
-                  value={searchInput}
-                  onChange={filterUsersBySearch}
-                  className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search for contacts"
-                />
+        <AdvancedTable
+          {...{
+            data,
+            paginatedData,
+            setPaginatedData,
+            Actions,
+            tableTemplate: {
+              "_S/N": null,
+              id: null,
+              Device: null,
+              Name: null,
+              Email: null,
+              _Phone: null,
+              Subject: null,
+              _Message: null,
+              _Response: null,
+              _Timestamp: null,
+              Status: null,
+              _Featured: null,
+            },
+            actionCols: ["View", "Reply", "Delete"],
+            props: { setViewModal, setReplyModal },
+          }}
+        >
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+            {/* Search bar start */}
+            <label htmlFor="table-search" className="sr-only">
+              Search
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <BiSearch />
               </div>
-              {/* Search bar end */}
-              {/* Dropdown Filters Start */}
-              <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-                <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                  {paginatedData.items.length <= 1
-                    ? `${paginatedData.items.length} result`
-                    : `${paginatedData.items.length} results`}
-                </div>
+              <input
+                type="text"
+                id="table-search-users"
+                value={searchInput}
+                onChange={filterUsersBySearch}
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search for contacts"
+              />
+            </div>
+            {/* Search bar end */}
+            {/* Dropdown Filters Start */}
+            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
+              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+                {paginatedData.items.length <= 1
+                  ? `${paginatedData.items.length} result`
+                  : `${paginatedData.items.length} results`}
+              </div>
 
-                <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
-                  <DropdownFilter
-                    arr={["RESOLVED", "PENDING"]}
-                    title={"Status"}
-                    toggle={toggleStatus}
-                    curFilter={curFilter}
-                    setToggle={() =>
-                      setSingleFilter("toggleStatus", !toggleStatus)
-                    }
-                    handleClick={(value) =>
-                      setCurFilter({ filter: value ? "Status" : null, value })
-                    }
-                  />
+              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+                <DropdownFilter
+                  arr={["RESOLVED", "PENDING"]}
+                  title={"Status"}
+                  toggle={toggleStatus}
+                  curFilter={curFilter}
+                  setToggle={() =>
+                    setSingleFilter("toggleStatus", !toggleStatus)
+                  }
+                  handleClick={(value) =>
+                    setCurFilter({ filter: value ? "Status" : null, value })
+                  }
+                />
 
-                  {/* View modal */}
-                  {viewModal.isVisible && (
-                    <ViewModal {...{ viewModal, setViewModal }} />
-                  )}
+                {/* View modal */}
+                {viewModal.isVisible && (
+                  <ViewModal {...{ viewModal, setViewModal }} />
+                )}
 
-                  {/* Edit user modal */}
-                  {replyModal && <ReplyModal {...{ setReplyModal }} />}
-                </div>
+                {/* Edit user modal */}
+                {replyModal && <ReplyModal {...{ setReplyModal }} />}
               </div>
             </div>
-          </AdvancedTable>
-        </Paginatation>
+          </div>
+        </AdvancedTable>
       </main>
     </Page>
   );
@@ -203,21 +201,6 @@ const ReplyModal = ({ setReplyModal }) => {
           </div>
           {/* Modal content */}
           <div className="grid grid-cols-1 gap-4 overflow-y-scroll p-5">
-            <div>
-              <label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-              />
-            </div>
             <div>
               <label
                 htmlFor="message"
@@ -290,7 +273,13 @@ const ViewModal = ({ viewModal, setViewModal }) => {
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
+                    className={`${
+                      elem === "Subject" ||
+                      elem === "_Message" ||
+                      elem === "_Response"
+                        ? "col-span-6 min-h-[65px]"
+                        : "col-span-6 sm:col-span-3"
+                    } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
                   >
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
                       {elem.replace(/_/, (m) => "")}
@@ -309,11 +298,11 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 onClick={close}
                 type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 close
               </button>
