@@ -18,7 +18,7 @@ const ConfirmationCodeFeilds = ({
     allowedPattern,
     initialValue,
     autoFocus,
-    onChange: handleChange,
+    // onChange: handleChange,
   });
 
   return (
@@ -27,7 +27,7 @@ const ConfirmationCodeFeilds = ({
         <input
           className="w-10 text-center bg-gray-50 border border-gray-300 text-gray-900 m-1.5 text-xs rounded-lg outline-none focus:ring-blue-600 focus:border-blue-600 inline-block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           key={index}
-          onChange={() => handleChange(inputs, index)}
+          // onChange={(e) => handleChange(e.target.value, index)}
           value={inputs[index]}
           ref={ref}
           required={true}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Page } from "../components";
+import { OtherPage } from "../components";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { themes } from "../constants/data";
 
@@ -58,7 +58,10 @@ const ChangePassword = () => {
   };
 
   return (
-    <Page extraClasses="bg-[url('../src/assets/images/login_bg.png')] bg-cover bg-top h-screen">
+    <OtherPage
+      title="Change Password"
+      extraClasses="bg-[url('../src/assets/images/login_bg.webp')] pt-10 bg-cover bg-top h-screen"
+    >
       <main className="flex justify-center w-full h-full p-3 font-poppins">
         <div className="w-full max-w-md p-4">
           <h2 className="font-semibold text-lg mb-2">Change Password</h2>
@@ -94,7 +97,7 @@ const ChangePassword = () => {
                   placeholder="Password"
                   required={true}
                 />
-                <div className="w-10 text-lg text-blue-500">
+                <div className="w-8 text-lg text-blue-500">
                   {newPassword.isVisible ? (
                     <AiFillEye
                       onClick={toggleNewPassword}
@@ -127,7 +130,7 @@ const ChangePassword = () => {
                   placeholder="Password"
                   required={true}
                 />
-                <div className="w-10 text-lg text-blue-500">
+                <div className="w-8 text-lg text-blue-500">
                   {confirmPassword.isVisible ? (
                     <AiFillEye
                       onClick={toggleConfirmPassword}
@@ -152,7 +155,7 @@ const ChangePassword = () => {
           </form>
         </div>
       </main>
-    </Page>
+    </OtherPage>
   );
 };
 

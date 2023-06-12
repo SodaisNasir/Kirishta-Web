@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../context";
-import Logo from "../assets/images/krista_main.png";
+import Logo from "../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { OtherPage } from "../components";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -41,13 +42,16 @@ const Login = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#EEF2F5] overflow-hidden">
-      <div className="flex justify-center items-center bg-[url('../src/assets/images/login_bg.png')] bg-cover bg-top w-full h-full font-poppins">
+    <OtherPage
+      title="Login"
+      extraClasses="w-screen h-screen bg-[#EEF2F5] overflow-hidden"
+    >
+      <div className="flex justify-center items-center bg-[url('../src/assets/images/login_bg.webp')] bg-cover bg-top w-full h-full font-poppins">
         <main className="w-full max-w-sm mx-4">
           <div className="relative h-16 bg-transparent mb-10 w-48 mx-auto">
             <img className="w-full" src={Logo} alt="kirista logo" />
           </div>
-          <section className="w-full bg-white rounded-xl px-6 pt-8 pb-10">
+          <section className="w-full bg-white rounded-xl px-6 pt-8 pb-9">
             <h1 className="text-xl text-center font-[700] mb-8">
               Welcome Back, Admin.
             </h1>
@@ -98,7 +102,7 @@ const Login = () => {
                   )}
                 </div>
               </div>
-              <div className="w-full text-right text-[11px] font-medium mb-2.5">
+              <div className="w-full text-right text-[11px] font-medium mb-3 mt-2">
                 <Link
                   to={"/forgot-password"}
                   className="hover:text-blue-400 hover:underline"
@@ -116,7 +120,7 @@ const Login = () => {
           </section>
         </main>
       </div>
-    </div>
+    </OtherPage>
   );
 };
 

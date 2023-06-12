@@ -1,5 +1,6 @@
 import AdminLayout from "./AdminLayout";
 import Page from "./Page Templates/Page";
+import OtherPage from "./Page Templates/OtherPage";
 import CountryFilter from "./CountryFilter";
 import Navbar from "./Navbar";
 import ModalComtainer from "./Modals/ModalComtainer";
@@ -12,6 +13,7 @@ import CreateEPUB from "./CreateEPUB";
 export {
   AdminLayout,
   Page,
+  OtherPage,
   CountryFilter,
   Navbar,
   ModalComtainer,

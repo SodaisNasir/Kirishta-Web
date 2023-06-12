@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../assets/images/krista_main.png";
+import Logo from "../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
 import { navLinks } from "../constants/data";
 import { VscClose } from "react-icons/vsc";

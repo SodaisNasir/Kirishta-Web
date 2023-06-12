@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Page } from "../components";
+import { OtherPage } from "../components";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -13,7 +13,10 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Page extraClasses="bg-[url('../src/assets/images/login_bg.png')] bg-cover bg-top h-screen">
+    <OtherPage
+      title="Reset Password"
+      extraClasses="bg-[url('../src/assets/images/login_bg.webp')] pt-10 bg-cover bg-top h-screen"
+    >
       <main className="flex justify-center w-full h-full p-3 font-poppins">
         <div className="w-full max-w-md p-4">
           <h2 className="font-semibold text-lg mb-2">Reset Password</h2>
@@ -50,7 +53,7 @@ const ForgotPassword = () => {
           </form>
         </div>
       </main>
-    </Page>
+    </OtherPage>
   );
 };
 

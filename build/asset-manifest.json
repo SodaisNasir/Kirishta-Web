@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.fc1a339b.css",
-    "main.js": "/static/js/main.06684528.js",
-    "static/media/krista_main.png": "/static/media/krista_main.65239f30911d2f815282.png",
-    "static/media/login_bg.png": "/static/media/login_bg.f1b04515668058693585.png",
+    "main.css": "/static/css/main.e5e89fe3.css",
+    "main.js": "/static/js/main.36c12e28.js",
+    "static/media/login_bg.webp": "/static/media/login_bg.cd177af1d36c8b4df57a.webp",
     "static/media/bermuda-flag-icon.png": "/static/media/bermuda-flag-icon.a6393b0358877ed830b1.png",
     "index.html": "/index.html",
-    "main.fc1a339b.css.map": "/static/css/main.fc1a339b.css.map",
-    "main.06684528.js.map": "/static/js/main.06684528.js.map"
+    "main.e5e89fe3.css.map": "/static/css/main.e5e89fe3.css.map",
+    "main.36c12e28.js.map": "/static/js/main.36c12e28.js.map"
   },
   "entrypoints": [
-    "static/css/main.fc1a339b.css",
-    "static/js/main.06684528.js"
+    "static/css/main.e5e89fe3.css",
+    "static/js/main.36c12e28.js"
   ]
 }
