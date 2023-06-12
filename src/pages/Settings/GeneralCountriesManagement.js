@@ -200,12 +200,12 @@ const EditModal = ({ editModal, setEditModal }) => {
                     Country Code
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="country-code"
                     id="country-code"
                     defaultValue={editModal.data["country code"]}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="NG"
+                    placeholder="234"
                     required={true}
                   />
                 </div>
@@ -335,11 +335,11 @@ const AddModal = ({ addModal, setAddModal }) => {
                     Country Code
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="country-code"
                     id="country-code"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="NG"
+                    placeholder="234"
                     required={true}
                   />
                 </div>

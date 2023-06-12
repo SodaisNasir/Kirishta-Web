@@ -30,7 +30,7 @@ const ConfirmationCodeFeilds = ({
           // onChange={(e) => handleChange(e.target.value, index)}
           value={inputs[index]}
           ref={ref}
-          required={true}
+          // required={true}
           {...inputProps}
         />
       ))}

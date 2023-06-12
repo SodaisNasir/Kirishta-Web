@@ -17,6 +17,10 @@ code {
     monospace;
 }
 
+svg {
+  fill: currentColor;
+}
+
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
