@@ -160,7 +160,7 @@ const DashboardCards = ({ arr }) => {
       key={title + indx}
       className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}
     >
-      <div className="flex">
+      <div className="flex items-center">
         {icon}
         <span className="text-xs font-medium text-[#8B8B93] ml-2">{title}</span>
       </div>
@@ -205,11 +205,10 @@ const ContactList = () => {
                 : ""
             } flex flex-col items-start py-3`}
           >
-            <div className="flex">
+            <div className="flex items-center">
               <img className="rounded-full" src={elem.photoUrl} alt="profile" />
-              <p className="flex flex-col text-xs font-medium ml-2">
+              <p className="flex flex-col items-center text-xs font-medium ml-2">
                 {elem.title}
-                <span className="text-[10px] font-light">{elem.subtitle}</span>
               </p>
             </div>
             <p className="mt-2 text-xs ml-10">
@@ -265,15 +264,10 @@ const FeedbackList = () => {
                 : ""
             } flex flex-col items-start py-3`}
           >
-            <div className="flex">
-              <img
-                className="min-w-[30px] min-h-[30px] rounded-full"
-                src={elem.photoUrl}
-                alt="profile"
-              />
-              <p className="flex flex-col text-xs font-medium ml-2">
+            <div className="flex items-center">
+              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <p className="flex flex-col items-center text-xs font-medium ml-2">
                 {elem.title}
-                <span className="text-[10px] font-light">{elem.subtitle}</span>
               </p>
             </div>
             <p className="mt-2 text-xs ml-10">
