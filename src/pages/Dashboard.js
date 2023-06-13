@@ -75,7 +75,11 @@ const Account = ({ toggle, setSingleToggle }) => {
       className="relative flex items-center space-x-3 cursor-pointer"
       onClick={() => setSingleToggle("account", !toggle.account)}
     >
-      <img className="rounded-full text-xs" src={user.photoUrl} alt="profile" />
+      <img
+        className="min-w-[30px] min-h-[30px] rounded-full text-xs"
+        src={user.photoUrl}
+        alt="profile"
+      />
       <p className="flex flex-col text-xs font-medium">
         {user.name}
         <span className="text-[10px] font-light">Admin</span>
@@ -248,7 +252,7 @@ const FeedbackList = () => {
     <div className="col-span-2 sm:col-span-1 flex flex-col mt-5 p-2 rounded-xl bg-white">
       <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
         <MdFeedback className="text-lg text-blue-500 mr-2" />
-        Contacts ({feedbackListItems.length})
+        Feedbacks ({feedbackListItems.length})
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
@@ -262,7 +266,11 @@ const FeedbackList = () => {
             } flex flex-col items-start py-3`}
           >
             <div className="flex">
-              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <img
+                className="min-w-[30px] min-h-[30px] rounded-full"
+                src={elem.photoUrl}
+                alt="profile"
+              />
               <p className="flex flex-col text-xs font-medium ml-2">
                 {elem.title}
                 <span className="text-[10px] font-light">{elem.subtitle}</span>

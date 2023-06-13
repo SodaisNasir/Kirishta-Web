@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { about } from "../../constants/data";
 import { LanguageSelector } from "../../components/helpers";
 import Editor from "../../components/Editor";
+import { OtherPage } from "../../components";
 
 const AboutKirista = () => {
   const [state, setState] = useState({ value: about });
@@ -15,7 +16,10 @@ const AboutKirista = () => {
   }, [language.value]);
 
   return (
-    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+    <OtherPage
+      title="About Kirista"
+      extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
+    >
       <header className="flex justify-between">
         <h1 className="font-semibold text-xl text-[#44403C]">About Kirista</h1>
 
@@ -37,7 +41,7 @@ const AboutKirista = () => {
           Update
         </button>
       </main>
-    </div>
+    </OtherPage>
   );
 };
 

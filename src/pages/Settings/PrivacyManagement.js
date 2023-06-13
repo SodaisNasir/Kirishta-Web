@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Editor from "../../components/Editor";
 import { privacyPolicy } from "../../constants/data";
 import { LanguageSelector } from "../../components/helpers";
+import { OtherPage } from "../../components";
 
 const PrivacyManagement = () => {
   const [state, setState] = useState({ value: privacyPolicy });
@@ -15,7 +16,10 @@ const PrivacyManagement = () => {
   }, [language.value]);
 
   return (
-    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+    <OtherPage
+      title="Privacy Policy Management"
+      extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
+    >
       <header className="flex justify-between">
         <h1 className="font-semibold text-xl text-[#44403C]">
           Privacy Policy Management
@@ -39,7 +43,7 @@ const PrivacyManagement = () => {
           Update
         </button>
       </main>
-    </div>
+    </OtherPage>
   );
 };
 

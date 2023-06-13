@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { about } from "../../constants/data";
 import { LanguageSelector } from "../../components/helpers";
 import Editor from "../../components/Editor";
+import { OtherPage } from "../../components";
 
 const AboutRCCGContinent2 = () => {
   const [state, setState] = useState({ value: about });
@@ -14,7 +15,10 @@ const AboutRCCGContinent2 = () => {
   }, [language.value]);
 
   return (
-    <div className={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
+    <OtherPage
+      title="About RCCG Continent 2"
+      extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
+    >
       <header className="flex justify-between">
         <h1 className="font-semibold text-xl text-[#44403C]">
           About RCCG Continent 2
@@ -38,7 +42,7 @@ const AboutRCCGContinent2 = () => {
           Update
         </button>
       </main>
-    </div>
+    </OtherPage>
   );
 };
 
