@@ -1981,18 +1981,18 @@ export const parishCountriesPageData = [
 
 // General Countries
 export const generalCountries = [
-  { title: "Nigeria", flag: NigerianFlag },
-  { title: "Argentina", flag: ArgentinaFlag },
-  { title: "Australia", flag: AustraliaFlag },
-  { title: "Aruba", flag: ArubaFlag },
-  { title: "Bosnia and Herzegovina", flag: BosniaAndHerzegovinaFlag },
-  { title: "Bangladesh", flag: BangladeshFlag },
-  { title: "Bahrain", flag: BahrainFlag },
-  { title: "Bermuda", flag: BermudaFlag },
-  { title: "Benin", flag: BeninFlag },
-  { title: "Bolivia, Plurinational...", flag: BoliviaFlag },
-  { title: "Brazil", flag: BrazilFlag },
-  { title: "Bahamas", flag: BahamasFlag },
+  { title: "Nigeria", flag: "🇳🇬" },
+  { title: "Argentina", flag: "🇦🇷" },
+  { title: "Australia", flag: "🇦🇺	" },
+  { title: "Aruba", flag: "🇦🇼" },
+  { title: "Bosnia and Herzegovina", flag: "🇧🇦" },
+  { title: "Bangladesh", flag: "🇧🇩" },
+  { title: "Bahrain", flag: "🇧🇭" },
+  { title: "Bermuda", flag: "🇧🇲" },
+  { title: "Benin", flag: "🇧🇯" },
+  { title: "Bolivia, Plurinational...", flag: "🇧🇴" },
+  { title: "Brazil", flag: "🇧🇷" },
+  { title: "Bahamas", flag: "🇧🇸" },
 ];
 
 // Parish Countries

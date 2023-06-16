@@ -3,12 +3,19 @@ import Page from "./Page Templates/Page";
 import OtherPage from "./Page Templates/OtherPage";
 import CountryFilter from "./CountryFilter";
 import Navbar from "./Navbar";
-import ModalComtainer from "./Modals/ModalComtainer";
 import Loader from "./Loaders/Loader";
 import ConfirmationCodeFeilds from "./ConfirmationCodeFeilds";
 import NestedCheckbox from "./NestedCheckBox";
 import CountrySelector from "./CountrySelector";
 import CreateEPUB from "./CreateEPUB";
+import Actions from "./Actions";
+import {
+  ViewModal,
+  CreateNewModal,
+  EditModal,
+  // MediaModal,
+  ReplyModal,
+} from "./Modals";
 
 export {
   AdminLayout,
@@ -16,10 +23,15 @@ export {
   OtherPage,
   CountryFilter,
   Navbar,
-  ModalComtainer,
   Loader,
   ConfirmationCodeFeilds,
   NestedCheckbox,
   CountrySelector,
   CreateEPUB,
+  Actions,
+  CreateNewModal,
+  EditModal,
+  // MediaModal,
+  ReplyModal,
+  ViewModal,
 };

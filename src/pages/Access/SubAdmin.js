@@ -50,7 +50,7 @@ const SubAdmin = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -84,7 +84,7 @@ const SubAdmin = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: subadmins }));
+      setPaginatedData((prev) => ({ ...prev, items: subadmins }));
       setData(subadmins);
     }, 2000);
   }, []);

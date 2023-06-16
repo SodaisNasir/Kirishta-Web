@@ -44,7 +44,7 @@ const BannerPromotion = () => {
     setCurFilter({ filter: "searchInput", value });
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,

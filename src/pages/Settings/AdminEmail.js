@@ -28,7 +28,7 @@ const AdminEmail = () => {
     setSingleFilter("searchInput", value);
 
     if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: data }));
+      setPaginatedData((prev) => ({ ...prev, items: data }));
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
@@ -46,7 +46,7 @@ const AdminEmail = () => {
   useEffect(() => {
     // fetch data
     setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, ...prev, items: admins }));
+      setPaginatedData((prev) => ({ ...prev, items: admins }));
       setData(admins);
     }, 2000);
   }, []);

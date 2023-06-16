@@ -8,7 +8,9 @@ const AdvancedTable = ({
   data,
   paginatedData,
   setPaginatedData,
+  setData,
   Actions,
+  deleteUrl,
   tableTemplate,
   actionCols,
   props,
@@ -22,8 +24,8 @@ const AdvancedTable = ({
     e.target.checked
       ? setSelectedUsers(
           paginatedData.items.length
-            ? paginatedData.items.map((user) => user["S/N"])
-            : paginatedData.curItems.map((user) => user["S/N"])
+            ? paginatedData.items.map((item) => item.id)
+            : paginatedData.curItems.map((item) => item.id)
         )
       : setSelectedUsers([]);
   };
@@ -79,13 +81,13 @@ const AdvancedTable = ({
                 {tableStructure.map(
                   (key) =>
                     key !== "Images" &&
-                    !key.includes("_") && (
+                    key[0] !== "_" && (
                       <th
                         key={key}
                         scope="col"
                         className="text-center px-6 py-3"
                       >
-                        {key}
+                        {key.replace("_", " ")}
                       </th>
                     )
                 )}
@@ -107,6 +109,9 @@ const AdvancedTable = ({
                     setSelectedUsers,
                     paginatedData,
                     setPaginatedData,
+                    actionCols,
+                    deleteUrl,
+                    setData,
                     Actions,
                     props,
                   }}
@@ -135,6 +140,9 @@ const Users = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  actionCols,
+  deleteUrl,
+  setData,
   Actions,
   props,
 }) => {
@@ -145,16 +153,19 @@ const Users = ({
           {...{
             tableStructure,
             data: user,
-            SN:
-              typeof user["S/N"] === "number"
-                ? user["S/N"]
-                : typeof user["_S/N"] === "number"
-                ? user["_S/N"]
+            id:
+              typeof user.id === "number"
+                ? user.id
+                : typeof user._id === "number"
+                ? user._id
                 : null,
             selectedUsers,
             setSelectedUsers,
             paginatedData,
             setPaginatedData,
+            actionCols,
+            deleteUrl,
+            setData,
             Actions,
             props,
           }}
@@ -166,16 +177,20 @@ const Users = ({
           {...{
             tableStructure,
             data: user,
-            SN:
-              typeof user["S/N"] === "number"
-                ? user["S/N"]
-                : typeof user["_S/N"] === "number"
-                ? user["_S/N"]
+            id:
+              typeof user.id === "number"
+                ? user.id
+                : typeof user._id === "number"
+                ? user._id
                 : null,
             selectedUsers,
             setSelectedUsers,
             paginatedData,
             setPaginatedData,
+            actionCols,
+            setData,
+            deleteUrl,
+            Actions,
             props,
           }}
         />
@@ -185,18 +200,21 @@ const Users = ({
 const SingleUser = ({
   tableStructure,
   data,
-  SN,
+  setData,
+  id,
   selectedUsers,
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  deleteUrl,
+  actionCols,
   Actions,
   props,
 }) => {
   const handleCheckChange = (e) => {
-    selectedUsers.includes(SN)
-      ? setSelectedUsers((prev) => prev.filter((e) => e !== SN))
-      : setSelectedUsers((prev) => [...prev, SN]);
+    selectedUsers.includes(id)
+      ? setSelectedUsers((prev) => prev.filter((e) => e !== id))
+      : setSelectedUsers((prev) => [...prev, id]);
   };
 
   return (
@@ -204,24 +222,24 @@ const SingleUser = ({
       <td className="w-4 p-4">
         <div className="flex items-center">
           <input
-            id={"checkbox-table-search-" + SN}
+            id={"checkbox-table-search-" + id}
             type="checkbox"
-            checked={selectedUsers.includes(SN)}
+            checked={selectedUsers.includes(id)}
             onChange={handleCheckChange}
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
           />
-          <label htmlFor={"checkbox-table-search-" + SN} className="sr-only">
+          <label htmlFor={"checkbox-table-search-" + id} className="sr-only">
             checkbox
           </label>
         </div>
       </td>
       {tableStructure.map(
         (key) =>
-          !key.includes("_") && (
+          key[0] !== "_" && (
             <td
-              key={key + SN}
+              key={key + id}
               className={`px-6 py-4 text-center ${
-                key === "country flag" ? "font-emoji text-2xl" : ""
+                key === "flag_code" ? "font-emoji text-2xl" : ""
               } whitespace-nowrap md:whitespace-normal`}
             >
               {key === "Image" || key === "Media File" ? (
@@ -253,9 +271,12 @@ const SingleUser = ({
         <Actions
           {...{
             ...props,
+            actionCols,
             tableStructure,
+            deleteUrl,
             data,
-            SN,
+            setData,
+            id,
             selectedUsers,
             setSelectedUsers,
             paginatedData,

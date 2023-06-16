@@ -5,6 +5,7 @@ import EditorToolbar, {
   redoChange,
   undoChange,
 } from "./EditorToolbar";
+import "react-quill/dist/quill.snow.css";
 
 export const Editor = ({ state, handleChange, id, styles = "" }) => {
   return (

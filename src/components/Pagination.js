@@ -18,7 +18,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
     const curItems = paginatedData.items.slice(0, endOffset);
     setPageCount(Math.ceil(paginatedData.items.length / itemsPerPageState));
     console.log(`Loading items from ${0} to ${endOffset}`);
-    setPaginatedData((prev) => ({ ...prev, ...prev, curItems }));
+    setPaginatedData((prev) => ({ ...prev, curItems }));
   }, [paginatedData.items, itemsPerPageState]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
     const curItems = paginatedData.items.slice(itemOffset, endOffset);
     setPageCount(Math.ceil(paginatedData.items.length / itemsPerPageState));
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setPaginatedData((prev) => ({ ...prev, ...prev, curItems }));
+    setPaginatedData((prev) => ({ ...prev, curItems }));
   }, [itemOffset]);
 
   const handlePageClick = (event) => {
