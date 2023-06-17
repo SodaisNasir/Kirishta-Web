@@ -14,6 +14,7 @@ import {
   CreateNewModal,
   EditModal,
   // MediaModal,
+  NotificationModal,
   ReplyModal,
 } from "./Modals";
 
@@ -32,6 +33,7 @@ export {
   CreateNewModal,
   EditModal,
   // MediaModal,
+  NotificationModal,
   ReplyModal,
   ViewModal,
 };

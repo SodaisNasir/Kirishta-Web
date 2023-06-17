@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { popups } from "../../constants/data";
-import { Page } from "../../components";
+import {
+  CreateNewModal,
+  EditModal,
+  NotificationModal,
+  Actions,
+  Page,
+  ViewModal,
+} from "../../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { MdDelete, MdModeEdit, MdNotificationAdd } from "react-icons/md";
 import { DropdownFilter } from "../../components/helpers";
-import { AiFillEye } from "react-icons/ai";
+import { base_url } from "../../utils/url";
+import { fetchData } from "../../utils";
+
+const showAllBanners = `${base_url}/popup`;
+const editUrl = `${base_url}/popup-edit`;
+const createUrl = `${base_url}/popup-store`;
+const deleteUrl = `${base_url}/popup-delete`;
 
 const PopupPromotion = () => {
   const initial_filters = {
@@ -26,10 +36,20 @@ const PopupPromotion = () => {
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
-  const [notificationModal, setNotificationModal] = useState(false);
-  const [createPromoModal, setCreatePromoModal] = useState({
+  const [notidicationModal, setNotificationModal] = useState({
     isVisible: false,
-    data: {},
+    message: null,
+  });
+  const [createNewModal, setCreateNewModal] = useState({
+    isVisible: false,
+    data: {
+      _platform: "Android",
+      title: null,
+      _tag: null,
+      image: null,
+      app_page: null,
+      status: "ACTIVE",
+    },
   });
   const { searchInput, toggleStatus, togglePlatform } = filters;
 
@@ -72,12 +92,18 @@ const PopupPromotion = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = [
+    "id",
+    "_platform",
+    "title",
+    "_tag",
+    "image",
+    "app_page",
+    "status",
+  ];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: popups }));
-      setData(popups);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
   }, []);
 
   return (
@@ -86,8 +112,10 @@ const PopupPromotion = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
             paginatedData,
             setPaginatedData,
+            deleteUrl,
             Actions,
             actionCols: ["View", "Push Notification", "Edit", "Delete"],
             props: { setEditModal, setNotificationModal, setViewModal },
@@ -130,7 +158,7 @@ const PopupPromotion = () => {
                     setSingleFilter("toggleStatus", !toggleStatus)
                   }
                   handleClick={(value) =>
-                    setCurFilter({ filter: value ? "Status" : null, value })
+                    setCurFilter({ filter: value ? "status" : null, value })
                   }
                 />
 
@@ -144,7 +172,7 @@ const PopupPromotion = () => {
                   }
                   handleClick={(value) =>
                     setCurFilter({
-                      filter: value ? "_Platform" : null,
+                      filter: value ? "_platform" : null,
                       value,
                     })
                   }
@@ -152,7 +180,7 @@ const PopupPromotion = () => {
 
                 <button
                   onClick={() =>
-                    setCreatePromoModal((prev) => ({
+                    setCreateNewModal((prev) => ({
                       ...prev,
                       isVisible: true,
                     }))
@@ -161,23 +189,38 @@ const PopupPromotion = () => {
                 >
                   Create new
                 </button>
+
                 {/* Create new modal */}
-                {createPromoModal.isVisible && (
-                  <CreatePromoModal
-                    {...{ createPromoModal, setCreatePromoModal }}
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      createUrl,
+                      setData,
+                      setPaginatedData,
+                      statusType: "active/inactive",
+                    }}
                   />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      editUrl,
+                      setData,
+                      setPaginatedData,
+                      statusType: "active/inactive",
+                    }}
+                  />
                 )}
 
                 {/* Notification modal */}
-                {notificationModal && (
-                  <NotificationModal
-                    {...{ notificationModal, setNotificationModal }}
-                  />
+                {notidicationModal.isViNotification && (
+                  <NotificationModal {...{ setNotificationModal }} />
                 )}
 
                 {/* View modal */}
@@ -190,557 +233,6 @@ const PopupPromotion = () => {
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEditModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="platform"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Platform
-                  </label>
-                  <select
-                    defaultValue={editModal.data._Platform}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="platform"
-                  >
-                    {["Android", "iOS"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    defaultValue={editModal.data.Title}
-                    placeholder="Lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="tag"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Tag
-                  </label>
-                  <input
-                    type="text"
-                    name="tag"
-                    id="tag"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    defaultValue={editModal.data._Tag}
-                    placeholder="lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="book_image"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="book_image"
-                    id="book_image"
-                    type="file"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="app-page"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    App Page
-                  </label>
-                  <input
-                    type="url"
-                    name="app-page"
-                    id="app-page"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    defaultValue={editModal.data["App Page"]}
-                    placeholder="www.google.com"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Status
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    defaultValue={editModal.data.Status}
-                    id="status"
-                  >
-                    {["ACTIVE", "INACTIVE"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const NotificationModal = ({ notificationModal, setNotificationModal }) => {
-  const close = () => setNotificationModal(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setNotificationModal(false);
-  };
-
-  return (
-    <>
-      <div
-        onClick={close}
-        className={`fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <form
-          onSubmit={handleSubmit}
-          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg"
-        >
-          {/* Modal header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Push Notification
-            </h3>
-            <button
-              onClick={close}
-              type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <VscClose />
-            </button>
-          </div>
-          {/* Modal content */}
-          <div className="grid grid-cols-1 gap-4 p-5">
-            <div>
-              <label
-                htmlFor="title"
-                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="message"
-                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                rows="8"
-                className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write message here..."
-              ></textarea>
-            </div>
-          </div>
-
-          {/* Modal footer */}
-          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-            <button
-              type="submit"
-              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Send
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
-  );
-};
-
-const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data);
-  const data = viewModal.data;
-
-  const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-3">
-                {keys.map((elem) => (
-                  <div
-                    key={elem}
-                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
-                  >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
-                      {elem.replace(/_/, (m) => "")}
-                    </p>
-                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
-                      {typeof data[elem] === "string" &&
-                      (data[elem].includes("https://") ||
-                        data[elem].includes("http://")) ? (
-                        <img className="h-10" src={data[elem]} alt="cover" />
-                      ) : (
-                        data[elem]
-                      )}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                onClick={close}
-                type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setCreatePromoModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () =>
-    setCreatePromoModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          createPromoModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          createPromoModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Create new promotion
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="editUserModal"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="platform"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Platform
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="platform"
-                  >
-                    {["Android", "iOS"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="tag"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Tag
-                  </label>
-                  <input
-                    type="text"
-                    name="tag"
-                    id="tag"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="book_image"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    aria-describedby="book_image"
-                    id="book_image"
-                    type="file"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="app-page"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    App Page
-                  </label>
-                  <input
-                    type="url"
-                    name="app-page"
-                    id="app-page"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="www.google.com"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Status
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="status"
-                  >
-                    {["ACTIVE", "INACTIVE"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-  setNotificationModal,
-  setViewModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setViewModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <AiFillEye />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setNotificationModal(true)}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdNotificationAdd />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

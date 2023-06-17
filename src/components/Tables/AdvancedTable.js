@@ -87,7 +87,7 @@ const AdvancedTable = ({
                         scope="col"
                         className="text-center px-6 py-3"
                       >
-                        {key.replace("_", " ")}
+                        {key === "id" ? "S/N" : key.replace("_", " ")}
                       </th>
                     )
                 )}
@@ -242,23 +242,28 @@ const SingleUser = ({
                 key === "flag_code" ? "font-emoji text-2xl" : ""
               } whitespace-nowrap md:whitespace-normal`}
             >
-              {key === "Image" || key === "Media File" ? (
+              {key === "image" || key === "Media File" ? (
                 <img
                   className="w-10 mx-auto"
                   src={data[key]}
                   alt={data.Title}
                 />
-              ) : key === "Status" &&
+              ) : key === "status" &&
                 (data[key] === "PENDING" || data[key] === "RESOLVED") ? (
                 <StatusDropdown {...{ value: data[key] }} />
-              ) : key.toLowerCase() === "app page" ? (
-                <Link
-                  to={data[key]}
+              ) : key.toLowerCase() === "app_page" ? (
+                <a
+                  href={
+                    data[key].includes("http")
+                      ? data[key]
+                      : "https://" + data[key]
+                  }
                   className="text-blue-400 hover:underline"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   {data[key]}
-                </Link>
+                </a>
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
               ) : (

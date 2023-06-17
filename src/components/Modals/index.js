@@ -4,6 +4,7 @@ import {
   CountryField,
   DeviceField,
   FeaturedField,
+  PlatformField,
   RoleField,
   StatusField,
   TextArea,
@@ -69,8 +70,8 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
                         : "col-span-6 sm:col-span-3"
                     } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
                   >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
-                      {elem.replace("_", "")}
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
+                      {elem.replace("_", " ")}
                     </p>
                     <p
                       className={`block font-medium ${
@@ -166,7 +167,79 @@ export const ReplyModal = ({ setReplyModal }) => {
           <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button
               type="submit"
-              className="w-full text-sm text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export const NotificationModal = ({ setNotificationModal }) => {
+  const close = () =>
+    setNotificationModal((prev) => ({ ...prev, isVisible: false }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    close();
+  };
+
+  return (
+    <>
+      <div
+        onClick={close}
+        className={`fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
+      />
+      <div
+        tabIndex="-1"
+        className={`fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+      >
+        <form
+          onSubmit={handleSubmit}
+          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto"
+        >
+          {/* Modal header */}
+          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              Reply
+            </h3>
+            <button
+              onClick={close}
+              type="button"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="editUserModal"
+            >
+              <VscClose />
+            </button>
+          </div>
+          {/* Modal content */}
+          <div className="grid grid-cols-1 gap-4 overflow-y-scroll p-5">
+            <div>
+              <label
+                htmlFor="message"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Message
+              </label>
+              <textarea
+                name="message"
+                id="message"
+                rows={10}
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write message here..."
+                required={true}
+              ></textarea>
+            </div>
+          </div>
+
+          {/* Modal footer */}
+          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button
+              type="submit"
+              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Send
             </button>
@@ -240,15 +313,21 @@ export const EditModal = ({
   setPaginatedData,
   setData,
   gridCols = 2,
+  statusType = "pending/resolved",
+  canUploadMultipleImages = false,
 }) => {
-  const [state, setState] = useState(editModal.data);
+  const initial_state = editModal.data;
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [state, setState] = useState(initial_state);
+  console.log(state);
 
-  const keys = Object.keys(editModal.data).filter((e) => e !== "id");
+  const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
   const setValue = (key, val) => setState((prev) => ({ ...prev, [key]: val }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setToggleBtn(true);
 
     try {
       let formdata = new FormData();
@@ -266,16 +345,26 @@ export const EditModal = ({
       const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
 
-      if (json.success) {
-        setEditModal({ data: state, isVisible: false });
-        setData((prev) => prev.map((e) => (e.id === state.id ? state : e)));
+      if (json.success.status == 200) {
+        console.log(json.success.data);
+        const data = keys.includes("image")
+          ? { ...state, image: json.success.data.image }
+          : state;
+        setEditModal({ data, isVisible: false });
+        setData((prev) => prev.map((e) => (e.id === data.id ? data : e)));
         setPaginatedData((prev) => ({
           ...prev,
-          items: prev.items.map((e) => (e.id === state.id ? state : e)),
+          items: prev.items.map((e) => (e.id === data.id ? data : e)),
         }));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      setToggleBtn(false);
+    } finally {
+      setEditModal({
+        data: initial_state,
+        isVisible: false,
+      });
     }
   };
 
@@ -350,6 +439,27 @@ export const EditModal = ({
                         }}
                       />
                     );
+                  else if (key.includes("platform"))
+                    return (
+                      <PlatformField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
+                  else if (key.includes("status"))
+                    return (
+                      <StatusField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          statusType,
+                        }}
+                      />
+                    );
                   else if (
                     key.includes("country_name") &&
                     !keys.includes("flag_code")
@@ -374,13 +484,14 @@ export const EditModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("media") || key.includes("images"))
+                  else if (key.includes("media") || key.includes("image"))
                     return (
                       <UploadField
                         {...{
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          canUploadMultipleImages,
                         }}
                       />
                     );
@@ -436,9 +547,17 @@ export const EditModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}
               >
-                Update
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Updating
+                  </>
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </form>
@@ -456,22 +575,26 @@ export const CreateNewModal = ({
   createUrl,
   gridCols = 2,
   title = "Create new",
+  statusType = "pending/resolved",
+  canUploadMultipleImages = false,
+  fileRequired = true,
 }) => {
+  const initial_state = createNewModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
-  const [state, setState] = useState(createNewModal.data);
+  const [state, setState] = useState(initial_state);
+  console.log(state);
 
-  const keys = Object.keys(createNewModal.data).filter((e) => e !== "id");
+  const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
   const setValue = (key, val) => setState((prev) => ({ ...prev, [key]: val }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setToggleBtn(true);
-    console.log(state);
 
     try {
       let formdata = new FormData();
-      keys.forEach((key) => formdata.append(key, state[key]));
+      keys.forEach((key) => formdata.append(key.replace(/^_/, ""), state[key]));
 
       let requestOptions = {
         headers: {
@@ -485,11 +608,16 @@ export const CreateNewModal = ({
       const res = await fetch(createUrl, requestOptions);
       const json = await res.json();
 
-      console.log(json.success);
+      console.log(json);
 
       if (json.success.status == 200) {
-        const data = { ...state, id: json.success.data.id };
-        setCreateNewModal({ data, isVisible: false });
+        const data = keys.includes("image")
+          ? {
+              ...state,
+              id: json.success.data.id,
+              image: json.success.data.image,
+            }
+          : { ...state, id: json.success.data.id };
         setData((prev) => [...prev, data]);
         setPaginatedData((prev) => ({
           ...prev,
@@ -497,8 +625,13 @@ export const CreateNewModal = ({
         }));
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setToggleBtn(false);
+    } finally {
+      setCreateNewModal({
+        data: initial_state,
+        isVisible: false,
+      });
     }
   };
 
@@ -575,6 +708,27 @@ export const CreateNewModal = ({
                         }}
                       />
                     );
+                  else if (key.includes("platform"))
+                    return (
+                      <PlatformField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
+                  else if (key.includes("status"))
+                    return (
+                      <StatusField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          statusType,
+                        }}
+                      />
+                    );
                   else if (
                     key.includes("country_name") &&
                     !keys.includes("flag_code")
@@ -599,13 +753,15 @@ export const CreateNewModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("media") || key.includes("images"))
+                  else if (key.includes("media") || key.includes("image"))
                     return (
                       <UploadField
                         {...{
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          canUploadMultipleImages,
+                          fileRequired,
                         }}
                       />
                     );
@@ -659,13 +815,17 @@ export const CreateNewModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="relative flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
-                {toggleBtn && (
-                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Creating
+                  </>
+                ) : (
+                  "Create"
                 )}
-                Create
               </button>
             </div>
           </form>

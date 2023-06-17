@@ -48,3 +48,8 @@ SELECT {
   appearance: none !important;
   padding-right: 2rem !important;
 }
+
+::selection {
+  color: white;
+  background-color: #387de5;
+}

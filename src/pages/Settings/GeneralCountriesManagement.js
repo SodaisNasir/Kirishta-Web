@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-// import { generalCountriesPageData } from "../../constants/data";
 import { Page, Actions, EditModal, CreateNewModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { base_url } from "../../utils/url";
+import { fetchData } from "../../utils";
 
+const showAllCountries = `${base_url}/country`;
 const editUrl = `${base_url}/country-edit`;
 const createUrl = `${base_url}/country-store`;
 const deleteUrl = `${base_url}/country-delete`;
@@ -26,7 +27,7 @@ const GeneralCountriesManagement = () => {
       country_name: null,
       country_code: null,
       flag_code: null,
-      featured: null,
+      featured: "YES",
     },
   });
   const { searchInput } = filters;
@@ -53,35 +54,16 @@ const GeneralCountriesManagement = () => {
     }
   };
 
-  console.log(data, paginatedData);
-
-  const modifyData = (data) =>
-    data.map(({ id, country_name, country_code, flag_code, featured }) => ({
-      id,
-      country_name,
-      country_code,
-      flag_code,
-      featured,
-    }));
-
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`${base_url}/country`);
-      const json = await res.json();
-      const data = modifyData(json.success.data);
-
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data,
-      }));
-      setData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const neededProps = [
+    "id",
+    "country_name",
+    "country_code",
+    "flag_code",
+    "featured",
+  ];
 
   useEffect(() => {
-    fetchData();
+    fetchData(setPaginatedData, setData, neededProps, showAllCountries);
   }, []);
 
   return (

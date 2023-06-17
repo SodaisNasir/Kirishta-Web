@@ -10,7 +10,12 @@ import { CgUnblock } from "react-icons/cg";
 import { FaReplyAll } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 import { IoIosSend } from "react-icons/io";
-import { MdBlock, MdDelete, MdModeEdit } from "react-icons/md";
+import {
+  MdBlock,
+  MdDelete,
+  MdModeEdit,
+  MdNotificationAdd,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const Actions = ({
@@ -116,7 +121,7 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={() =>
-              setIsViewerOpen({ isVisible: true, images: data._Images })
+              setIsViewerOpen({ isVisible: true, images: data._images })
             }
             className="font-medium text-gray-600 hover:text-gray-800"
           >
@@ -175,6 +180,18 @@ const Actions = ({
             className="font-medium text-gray-600 hover:text-gray-800"
           >
             <FaReplyAll />
+          </button>
+        </td>
+      )}
+      {actionCols.includes("Push Notification") && (
+        <td className="text-center text-base px-6 py-4">
+          <button
+            onClick={() =>
+              setReplyModal((prev) => ({ ...prev, isVisible: true }))
+            }
+            className="font-medium text-gray-600 hover:text-gray-800"
+          >
+            <MdNotificationAdd />
           </button>
         </td>
       )}
