@@ -67,8 +67,10 @@ const BannerPromotion = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter((user) =>
-          user.Title.toLowerCase().includes(value.toLowerCase())
+        items: data.filter(
+          (user) =>
+            user.title.toLowerCase().includes(value.toLowerCase()) ||
+            user._tag.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -163,7 +165,7 @@ const BannerPromotion = () => {
                 />
 
                 <DropdownFilter
-                  arr={["Android", "iOS"]}
+                  arr={["Android", "IOS"]}
                   title={"Platform"}
                   toggle={togglePlatform}
                   curFilter={curFilter}

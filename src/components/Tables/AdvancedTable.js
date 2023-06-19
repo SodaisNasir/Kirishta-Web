@@ -197,6 +197,28 @@ const Users = ({
       ));
 };
 
+// const privilageObjToText = (obj) => {
+//   const roles = obj.Access.Roles;
+//   const subadmin = obj.Access.Roles;
+//   const users = obj['Users Management'];
+//   const banner = obj['Promotion Management'].Banner;
+//   const popup = obj['Promotion Management']['Pop-up'];
+
+//   return `${obj.Dashboard ? "Dashboard, " : ""}${roles.Create || roles.Edit || roles.Delete ? `Roles (${
+//     roles.Create ? "create, " : ""
+//   }${roles.Edit ? "edit, " : ""}${
+//     roles.Delete ? "delete, " : ""
+//   }), ` : ''}${subadmin.Create || subadmin.Edit || subadmin.Delete ? `Roles (${
+//     subadmin.Create ? "create, " : ""
+//   }${subadmin.Edit ? "edit, " : ""}${
+//     subadmin.Delete ? "delete, " : ""
+//   }), ` : ''}${users.Create || users.Edit || users.Delete ? `Roles (${
+//     users.Create ? "create, " : ""
+//   }${users.Edit ? "edit, " : ""}${
+//     users.Delete ? "delete, " : ""
+//   }), ` : ''}`;
+// };
+
 const SingleUser = ({
   tableStructure,
   data,
@@ -242,7 +264,7 @@ const SingleUser = ({
                 key === "flag_code" ? "font-emoji text-2xl" : ""
               } whitespace-nowrap md:whitespace-normal`}
             >
-              {key === "image" || key === "Media File" ? (
+              {key.includes("image") || key === "Media File" ? (
                 <img
                   className="w-10 mx-auto"
                   src={data[key]}
@@ -251,7 +273,9 @@ const SingleUser = ({
               ) : key === "status" &&
                 (data[key] === "PENDING" || data[key] === "RESOLVED") ? (
                 <StatusDropdown {...{ value: data[key] }} />
-              ) : key.toLowerCase() === "app_page" ? (
+              ) : key === "privilage" ? (
+                "true"
+              ) : key === "app_page" ? (
                 <a
                   href={
                     data[key].includes("http")

@@ -3,11 +3,13 @@ import { AppContext } from "../context";
 import Logo from "../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { OtherPage } from "../components";
+import { Loader, OtherPage } from "../components";
+import { themes } from "../constants/data";
 
 const Login = () => {
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [email, setEmail] = useState("");
-  // const [message, setMessage] = useState({ theme: "", value: "" });
+  const [message, setMessage] = useState({ theme: "", value: "" });
   const [password, setPassword] = useState({ isVisible: false, value: "" });
   const { user, setUser } = useContext(AppContext);
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Login = () => {
     const name = e.target.name;
     const value = e.target.value.trim();
 
-    // message.value && setMessage({ theme: "", value: "" });
+    message.value && setMessage({ theme: "", value: "" });
     if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
@@ -27,17 +29,55 @@ const Login = () => {
   const togglePassword = () =>
     setPassword((prev) => ({ ...prev, isVisible: !prev.isVisible }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setToggleBtn(true);
+    let json = null;
 
-    if (!user) {
-      setUser({
-        name: "Jerry Nudibisi",
-        email,
-        password,
-        photoUrl: "https://i.pravatar.cc/30",
+    try {
+      let formdata = new FormData();
+      formdata.append("email", email);
+      formdata.append("password", password);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(
+        "https://sassolution.org/kirista/api/admin-login",
+        requestOptions
+      );
+      json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        const data = json.success.data;
+        setMessage({ theme: themes.success, value: "Loign successful!" });
+        setUser({
+          ...data,
+          profile_image: "https://i.pravatar.cc/30",
+        });
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1500);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage({
+        theme: themes.error,
+        value:
+          json.error === "Unauthorised"
+            ? "Your Email or password is incorrect!"
+            : json.error,
       });
-      navigate("/dashboard");
+    } finally {
+      setToggleBtn(false);
     }
   };
 
@@ -56,13 +96,13 @@ const Login = () => {
               Welcome Back, Admin.
             </h1>
 
-            {/* {message.value && (
+            {message.value && (
               <p
                 className={`w-full p-2.5 mb-3 text-xs rounded-md border ${message.theme}`}
               >
                 {message.value}
               </p>
-            )} */}
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-2">
@@ -111,10 +151,18 @@ const Login = () => {
                 </Link>
               </div>
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-2xl px-4 py-2.5 block w-full outline-none"
+                className="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-2xl px-4 py-2.5 w-full outline-none disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed disabled:opacity-60"
                 type="submit"
+                disabled={toggleBtn}
               >
-                Log in
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Loging in
+                  </>
+                ) : (
+                  "Log in"
+                )}
               </button>
             </form>
           </section>

@@ -37,7 +37,7 @@ const Privileges = () => {
         "Sub-Admin": false,
         "Users Management": false,
         Android: false,
-        iOS: false,
+        IOS: false,
         "Verification Management": false,
         "Ambulance Management": false,
         "Emergency Management": false,

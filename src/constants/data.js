@@ -526,7 +526,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total iOS Users",
+    title: "Total IOS Users",
     icon: (
       <svg
         className="w-4 h-4"
@@ -808,7 +808,7 @@ export const banners = [
   },
   {
     "S/N": 63,
-    _Platform: "iOS",
+    _Platform: "IOS",
     Title: "Pellentesque facilisis dolor",
     _Tag: "Sollicitudin",
     "App Page": "www.example.com",
@@ -828,7 +828,7 @@ export const banners = [
   },
   {
     "S/N": 4,
-    _Platform: "iOS",
+    _Platform: "IOS",
     Title: "Pellentesque facilisis dolor",
     _Tag: "Sollicitudin",
     "App Page": "www.example.com",
@@ -862,7 +862,7 @@ export const popups = [
   },
   {
     "S/N": 63,
-    _Platform: "iOS",
+    _Platform: "IOS",
     Title: "Pellentesque facilisis dolor",
     _Tag: "Sollicitudin",
     "App Page": "www.example.com",
@@ -882,7 +882,7 @@ export const popups = [
   },
   {
     "S/N": 4,
-    _Platform: "iOS",
+    _Platform: "IOS",
     Title: "Pellentesque facilisis dolor",
     _Tag: "Sollicitudin",
     "App Page": "www.example.com",
@@ -1166,7 +1166,7 @@ export const feedbacks = [
   {
     "_S/N": 674,
     ID: 674,
-    Device: "iOS",
+    Device: "IOS",
     Name: "Pretium Sed",
     _Timestamp: "59:30",
     Image: "https://loremflickr.com/g/320/240/cover",
@@ -1198,7 +1198,7 @@ export const feedbacks = [
   {
     "_S/N": 374,
     ID: 374,
-    Device: "iOS",
+    Device: "IOS",
     Name: "Pretium Sed",
     _Timestamp: "59:30",
     Image: "https://loremflickr.com/g/320/240/cover",
@@ -1227,7 +1227,7 @@ export const contacts = [
   {
     "_S/N": 674,
     ID: 674,
-    Device: "iOS",
+    Device: "IOS",
     Name: "sodales semper sapien",
     Email: "example@gmail.com",
     _Phone: "+92 465 6874 146",
@@ -1269,7 +1269,7 @@ export const contacts = [
   {
     "_S/N": 374,
     ID: 374,
-    Device: "iOS",
+    Device: "IOS",
     Name: "sodales semper sapien",
     Email: "example@gmail.com",
     _Phone: "+92 465 6874 146",
@@ -1659,7 +1659,7 @@ export const promotions = [
   },
   {
     "S/N": 1,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1731,7 +1731,7 @@ export const promotions = [
   },
   {
     "S/N": 7,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1743,7 +1743,7 @@ export const promotions = [
   },
   {
     "S/N": 8,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1755,7 +1755,7 @@ export const promotions = [
   },
   {
     "S/N": 9,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1767,7 +1767,7 @@ export const promotions = [
   },
   {
     "S/N": 10,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1779,7 +1779,7 @@ export const promotions = [
   },
   {
     "S/N": 11,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Benin",
     Title: "adsfgaskf",
     Images: [
@@ -1791,7 +1791,7 @@ export const promotions = [
   },
   {
     "S/N": 12,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1803,7 +1803,7 @@ export const promotions = [
   },
   {
     "S/N": 13,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Nigeria",
     Title: "adsfgaskf",
     Images: [
@@ -1815,7 +1815,7 @@ export const promotions = [
   },
   {
     "S/N": 14,
-    Device: "iOS",
+    Device: "IOS",
     Country: "Benin",
     Title: "adsfgaskf",
     Images: [

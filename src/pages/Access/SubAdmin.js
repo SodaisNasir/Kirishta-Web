@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { roles, subadmins } from "../../constants/data";
-import { Page } from "../../components";
+import { Page, Actions, EditModal, CreateNewModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { MdDelete, MdModeEdit } from "react-icons/md";
-import { typeCheck } from "../../utils";
+import { fetchData } from "../../utils";
 import { DropdownFilter } from "../../components/helpers";
+import { base_url } from "../../utils/url";
+
+const showAllBanners = `${base_url}/admin`;
+const editUrl = `${base_url}/admin-edit`;
+const createUrl = `${base_url}/create-admin`;
+const deleteUrl = `${base_url}/admin-delete`;
 
 const SubAdmin = () => {
   const initial_filters = {
@@ -27,15 +30,14 @@ const SubAdmin = () => {
     isVisible: false,
     data: null,
   });
-  const [addModal, setAddModal] = useState({
+  const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
-      "S/N": null,
-      Name: null,
-      Email: null,
-      Password: null,
-      "Phone Number": null,
-      Role: null,
+      name: null,
+      email: null,
+      password: null,
+      phone_number: null,
+      role: "Admin",
     },
   });
   const { searchInput, toggleRole } = filters;
@@ -56,8 +58,8 @@ const SubAdmin = () => {
         ...prev,
         items: data.filter(
           (item) =>
-            item.Name.toLowerCase().includes(value.toLowerCase()) ||
-            item.Email.toLowerCase().includes(value.toLowerCase())
+            item.name.toLowerCase().includes(value.toLowerCase()) ||
+            item.email.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -81,12 +83,17 @@ const SubAdmin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = [
+    "id",
+    "name",
+    "email",
+    "password",
+    "phone_number",
+    "role",
+  ];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: subadmins }));
-      setData(subadmins);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
   }, []);
 
   return (
@@ -95,6 +102,8 @@ const SubAdmin = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -143,7 +152,7 @@ const SubAdmin = () => {
 
                 <button
                   onClick={() =>
-                    setAddModal((prev) => ({
+                    setCreateNewModal((prev) => ({
                       ...prev,
                       isVisible: true,
                     }))
@@ -152,14 +161,31 @@ const SubAdmin = () => {
                 >
                   Add Admin
                 </button>
+
                 {/* Add modal */}
-                {addModal.isVisible && (
-                  <AddModal {...{ addModal, setAddModal }} />
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      setData,
+                      setPaginatedData,
+                      createUrl,
+                    }}
+                  />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      setData,
+                      setPaginatedData,
+                      editUrl,
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -167,277 +193,6 @@ const SubAdmin = () => {
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const keys = Object.keys(editModal.data).filter(
-    (e) => e !== "S/N" && e[0] !== "_"
-  );
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    close();
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit admin
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {keys.map((elem) => {
-                  const type = typeCheck(elem);
-
-                  if (elem === "Role") {
-                    return (
-                      <div key={elem}>
-                        <label
-                          htmlFor="roles"
-                          className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                        >
-                          Role
-                        </label>
-                        <select
-                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          id="roles"
-                          defaultValue={editModal.data[elem]}
-                        >
-                          {roles.map((item, indx) => (
-                            <option
-                              className="text-sm"
-                              key={item + indx}
-                              value={item}
-                            >
-                              {item}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={elem}>
-                      <label
-                        htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
-                        {elem}
-                      </label>
-                      <input
-                        type={type}
-                        name={elem.toLowerCase()}
-                        id={elem.toLowerCase()}
-                        defaultValue={editModal.data[elem]}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required={true}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const AddModal = ({ addModal, setAddModal }) => {
-  const keys = Object.keys(addModal.data).filter(
-    (e) => e !== "S/N" && e[0] !== "_"
-  );
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    close();
-  };
-
-  const close = () => setAddModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          addModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          addModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new admin
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {keys.map((elem) => {
-                  const type = typeCheck(elem);
-
-                  if (elem === "Role") {
-                    return (
-                      <div key={elem}>
-                        <label
-                          htmlFor="roles"
-                          className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                        >
-                          Role
-                        </label>
-                        <select
-                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          id="roles"
-                        >
-                          {roles.map((item, indx) => (
-                            <option
-                              className="text-sm"
-                              key={item + indx}
-                              value={item}
-                            >
-                              {item}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={elem}>
-                      <label
-                        htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
-                        {elem}
-                      </label>
-                      <input
-                        type={type}
-                        name={elem.toLowerCase()}
-                        id={elem.toLowerCase()}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required={true}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

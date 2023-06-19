@@ -68,7 +68,7 @@ const PopupPromotion = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter((user) =>
-          user.Title.toLowerCase().includes(value.toLowerCase())
+          user.title.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -163,7 +163,7 @@ const PopupPromotion = () => {
                 />
 
                 <DropdownFilter
-                  arr={["Android", "iOS"]}
+                  arr={["Android", "IOS"]}
                   title={"Platform"}
                   toggle={togglePlatform}
                   curFilter={curFilter}
@@ -219,7 +219,7 @@ const PopupPromotion = () => {
                 )}
 
                 {/* Notification modal */}
-                {notidicationModal.isViNotification && (
+                {notidicationModal.isVisible && (
                   <NotificationModal {...{ setNotificationModal }} />
                 )}
 

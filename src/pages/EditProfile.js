@@ -24,10 +24,10 @@ const EditProfile = () => {
             </label>
             <div className="mt-1 flex flex-col items-center text-xs">
               <div className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                {user.photoUrl ? (
+                {user.profile_image ? (
                   <img
                     className="h-full w-full text-gray-300"
-                    src={user.photoUrl}
+                    src={user.profile_image}
                     alt="profile"
                   />
                 ) : (
@@ -40,6 +40,7 @@ const EditProfile = () => {
                   </svg>
                 )}
               </div>
+              <input id="profile-image" type="file" className="hidden" />
               <button
                 type="button"
                 className="bg-white py-1.5 px-3 mt-2 border border-gray-300 rounded-md shadow-sm leading-4 font-medium text-gray-700 hover:bg-gray-50"
@@ -51,38 +52,19 @@ const EditProfile = () => {
 
           <div className="col-span-1">
             <label
-              htmlFor="first-name"
+              htmlFor="name"
               className="block text-xs font-medium text-gray-700"
             >
-              First Name
+              Name
             </label>
             <div className="mt-1">
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
+                name="name"
+                id="name"
                 value={user.name.split(" ")[0]}
                 className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="John"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-1">
-            <label
-              htmlFor="last-name"
-              className="block text-xs font-medium text-gray-700"
-            >
-              Last Name
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="last-name"
-                id="last-name"
-                value={user.name.split(" ")[1]}
-                className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Doe"
               />
             </div>
           </div>
@@ -102,25 +84,6 @@ const EditProfile = () => {
                 value={user.email}
                 className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="johndoe@gmail.com"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-1">
-            <label
-              htmlFor="password"
-              className="block text-xs font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <div className="mt-1">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={user.password}
-                className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="••••••••"
               />
             </div>
           </div>

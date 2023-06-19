@@ -2,7 +2,7 @@ export const typeCheck = (elem) => {
   let str = elem.toLowerCase();
   let result = null;
 
-  if (str.includes("phone_number") || str.includes("contact_number")) {
+  if (str.includes("phone") || str.includes("contact_number")) {
     result = "tel";
   } else if (str.includes("flag_code") || str.includes("country_code")) {
     result = "text";
@@ -35,16 +35,26 @@ export const typeCheck = (elem) => {
 
 const modifyData = (data, neededProps) => {
   const keys = Object.keys(data[0]).filter(
-    (e) => e !== "created_at" && e !== "updated_at"
+    (e) =>
+      e !== "created_at" &&
+      e !== "updated_at" &&
+      e !== "profile_image" &&
+      e !== "about" &&
+      (!neededProps.includes("privilage") ? e !== "privilage" : true)
   );
+
   const updateObj = (obj) => {
     let newObj = {};
-    keys.forEach((key, indx) => (newObj[neededProps[indx]] = obj[key]));
-    console.log(obj, newObj);
+    keys.forEach((key, indx) =>
+      neededProps[indx].includes(key)
+        ? (newObj[neededProps[indx]] = obj[key])
+        : null
+    );
+
     return newObj;
   };
 
-  return data.map(({ created_at, updated_at, ...obj }) => updateObj(obj));
+  return data.map((obj) => updateObj(obj));
 };
 
 export const fetchData = async (

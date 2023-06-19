@@ -31,6 +31,7 @@ const Actions = ({
   setPaginatedData,
   setEditModal,
   setReplyModal,
+  setNotificationModal,
   setMediaModal,
   setViewModal,
   setIsViewerOpen,
@@ -187,7 +188,7 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={() =>
-              setReplyModal((prev) => ({ ...prev, isVisible: true }))
+              setNotificationModal((prev) => ({ ...prev, isVisible: true }))
             }
             className="font-medium text-gray-600 hover:text-gray-800"
           >

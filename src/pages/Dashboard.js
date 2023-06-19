@@ -76,8 +76,8 @@ const Account = ({ toggle, setSingleToggle }) => {
       onClick={() => setSingleToggle("account", !toggle.account)}
     >
       <img
-        className="min-w-[30px] min-h-[30px] rounded-full text-xs"
-        src={user.photoUrl}
+        className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
+        src={user.profile_image}
         alt="profile"
       />
       <p className="flex flex-col text-xs font-medium">
@@ -96,9 +96,7 @@ const Account = ({ toggle, setSingleToggle }) => {
               onClick={elem.clickHandler}
               className={`${
                 arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
-              } flex py-2 ${
-                !elem.markAsRead ? "font-semibold" : ""
-              } cursor-pointer text-gray-600 hover:text-black`}
+              } flex py-2 cursor-pointer text-gray-600 hover:text-black`}
             >
               {elem.icon}
               <span className="ml-2 whitespace-nowrap">{elem.title}</span>
@@ -206,7 +204,11 @@ const ContactList = () => {
             } flex flex-col items-start py-3`}
           >
             <div className="flex items-center">
-              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <img
+                className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
+                src={elem.photoUrl}
+                alt="profile"
+              />
               <p className="flex flex-col items-center text-xs font-medium ml-2">
                 {elem.title}
               </p>
@@ -265,7 +267,11 @@ const FeedbackList = () => {
             } flex flex-col items-start py-3`}
           >
             <div className="flex items-center">
-              <img className="rounded-full" src={elem.photoUrl} alt="profile" />
+              <img
+                className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
+                src={elem.photoUrl}
+                alt="profile"
+              />
               <p className="flex flex-col items-center text-xs font-medium ml-2">
                 {elem.title}
               </p>

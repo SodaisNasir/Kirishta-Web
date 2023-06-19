@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { privilegesStructure, roles, rolesData } from "../../constants/data";
-import { NestedCheckbox, Page } from "../../components";
+import { privilegesStructure, roles } from "../../constants/data";
+import { NestedCheckbox, Page, Actions, Loader } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
-import { MdDelete, MdModeEdit } from "react-icons/md";
 import { DropdownFilter } from "../../components/helpers";
-import { transformBack } from "../../components/NestedCheckBox";
+import { transform, transformBack } from "../../components/NestedCheckBox";
+import { fetchData } from "../../utils";
+import { base_url } from "../../utils/url";
+
+const showAllBanners = `${base_url}/role-privilage`;
+const editUrl = `${base_url}/role-edit`;
+const createUrl = `${base_url}/create-role`;
+const deleteUrl = `${base_url}/role-privilage-delete`;
 
 const Roles = () => {
   const initial_filters = {
@@ -24,9 +30,12 @@ const Roles = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data });
-  const [addModal, setAddModal] = useState({
+  const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
-    data: null,
+    data: {
+      role: null,
+      privilage: null,
+    },
   });
   const { searchInput, toggleRole } = filters;
 
@@ -45,7 +54,7 @@ const Roles = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter((item) =>
-          item.Role.toLowerCase().includes(value.toLowerCase())
+          item.role.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -69,12 +78,10 @@ const Roles = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = ["id", "role", "privilage"];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: rolesData }));
-      setData(rolesData);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
   }, []);
 
   return (
@@ -83,6 +90,8 @@ const Roles = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -131,7 +140,7 @@ const Roles = () => {
 
                 <button
                   onClick={() =>
-                    setAddModal((prev) => ({
+                    setCreateNewModal((prev) => ({
                       ...prev,
                       isVisible: true,
                     }))
@@ -140,14 +149,31 @@ const Roles = () => {
                 >
                   Add Role
                 </button>
-                {/* Add modal */}
-                {addModal.isVisible && (
-                  <AddModal {...{ addModal, setAddModal }} />
+
+                {/* Create new modal */}
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      setData,
+                      setPaginatedData,
+                      createUrl,
+                    }}
+                  />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      setData,
+                      setPaginatedData,
+                      editUrl,
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -158,13 +184,66 @@ const Roles = () => {
   );
 };
 
-const EditModal = ({ editModal, setEditModal }) => {
-  const [selectedChecks, setSelectedChecks] = useState(null);
+const EditModal = ({
+  editModal,
+  setEditModal,
+  setData,
+  setPaginatedData,
+  editUrl,
+}) => {
+  const [role, setRole] = useState(editModal.data.role);
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [selectedChecks, setSelectedChecks] = useState(
+    JSON.parse(editModal.data.privilage)
+  );
 
-  const handleSubmit = (e) => {
+  console.log(selectedChecks);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setToggleBtn(true);
 
-    setEditModal({ data: transformBack(selectedChecks), isVisible: false });
+    const privilage = !Array.isArray(selectedChecks)
+      ? transformBack(selectedChecks)
+      : selectedChecks;
+
+    try {
+      let formdata = new FormData();
+      formdata.append("role", role);
+      formdata.append("privilage", JSON.stringify(privilage));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(editUrl, requestOptions);
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        const data = { role, privilage, id: json.success.data.id };
+
+        setData((prev) => prev.map((e) => (e.id === data.id ? data : e)));
+        setPaginatedData((prev) => ({
+          ...prev,
+          items: prev.items.map((e) => (e.id === data.id ? data : e)),
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    } finally {
+      setEditModal((prev) => ({
+        ...prev,
+        isVisible: false,
+      }));
+    }
   };
 
   const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
@@ -172,6 +251,7 @@ const EditModal = ({ editModal, setEditModal }) => {
   return (
     <>
       <div
+        onClick={close}
         className={`${
           editModal.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
@@ -180,9 +260,9 @@ const EditModal = ({ editModal, setEditModal }) => {
         tabIndex="-1"
         className={`${
           editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
       >
-        <div className="relative w-full max-w-lg max-h-full">
+        <div className="relative w-full max-w-lg max-h-full pointer-events-auto">
           {/* Modal content */}
           <form
             action="#"
@@ -215,12 +295,16 @@ const EditModal = ({ editModal, setEditModal }) => {
                   <input
                     name="role"
                     id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
                 </div>
                 <NestedCheckbox
                   data={privilegesStructure}
+                  selectedChecks={selectedChecks}
                   setSelectedChecks={setSelectedChecks}
+                  type="edit"
                 />
               </div>
             </div>
@@ -228,9 +312,17 @@ const EditModal = ({ editModal, setEditModal }) => {
             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}
               >
-                Update
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Updating
+                  </>
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </form>
@@ -240,31 +332,84 @@ const EditModal = ({ editModal, setEditModal }) => {
   );
 };
 
-const AddModal = ({ addModal, setAddModal }) => {
+const CreateNewModal = ({
+  createNewModal,
+  setCreateNewModal,
+  setData,
+  setPaginatedData,
+  createUrl,
+}) => {
+  const initial_state = createNewModal.data;
+  const [role, setRole] = useState("");
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setToggleBtn(true);
 
-    setAddModal({ isVisible: false, data: transformBack(selectedChecks) });
+    const privilage = transformBack(selectedChecks);
+
+    try {
+      let formdata = new FormData();
+      formdata.append("role", role);
+      formdata.append("privilage", JSON.stringify(privilage));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(createUrl, requestOptions);
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        const data = {
+          role,
+          privilage: JSON.stringify(privilage),
+          id: json.success.data.id,
+        };
+        setData((prev) => [...prev, data]);
+        setPaginatedData((prev) => ({
+          ...prev,
+          items: [...prev.items, data],
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    } finally {
+      setCreateNewModal({
+        data: initial_state,
+        isVisible: false,
+      });
+    }
   };
 
-  const close = () => setAddModal((prev) => ({ ...prev, isVisible: false }));
+  const close = () =>
+    setCreateNewModal((prev) => ({ ...prev, isVisible: false }));
 
   return (
     <>
       <div
+        onClick={close}
         className={`${
-          addModal.isVisible ? "" : "hidden"
+          createNewModal.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
       />
       <div
         tabIndex="-1"
         className={`${
-          addModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+          createNewModal.isVisible ? "" : "hidden"
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
       >
-        <div className="relative w-full max-w-lg max-h-full">
+        <div className="relative w-full max-w-lg max-h-full pointer-events-auto">
           {/* Modal content */}
           <form
             action="#"
@@ -285,8 +430,8 @@ const AddModal = ({ addModal, setAddModal }) => {
               </button>
             </div>
             {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[70vh] overflow-y-auto">
-              <div className="grid grid-cols-1 gap-3  text-xs">
+            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-auto">
+              <div className="grid grid-cols-1 gap-3 text-xs">
                 <div className="col-span-2">
                   <label
                     htmlFor="role"
@@ -297,6 +442,8 @@ const AddModal = ({ addModal, setAddModal }) => {
                   <input
                     name="role"
                     id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required={true}
                   />
@@ -311,53 +458,22 @@ const AddModal = ({ addModal, setAddModal }) => {
             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}
               >
-                Create
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Creating
+                  </>
+                ) : (
+                  "Create"
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal((prev) => ({ ...prev, isVisible: true }))}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdDelete />
-        </button>
-      </td>
     </>
   );
 };

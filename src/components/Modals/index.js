@@ -75,12 +75,11 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
                     </p>
                     <p
                       className={`block font-medium ${
-                        elem === "Country Flag" ? "font-emoji" : "text-xs"
+                        elem === "flag_code" ? "font-emoji" : "text-xs"
                       } text-gray-700 dark:text-white`}
                     >
                       {typeof data[elem] === "string" &&
-                      (data[elem].includes("https://") ||
-                        data[elem].includes("http://")) ? (
+                      elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
                       ) : (
                         data[elem]
@@ -95,7 +94,7 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
               <button
                 onClick={close}
                 type="button"
-                className="w-full text-white bg-red-500 hover:bg-red-600 focus:ring-2 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 close
               </button>
@@ -195,7 +194,7 @@ export const NotificationModal = ({ setNotificationModal }) => {
       />
       <div
         tabIndex="-1"
-        className={`fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+        className={`fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
       >
         <form
           onSubmit={handleSubmit}
@@ -204,13 +203,12 @@ export const NotificationModal = ({ setNotificationModal }) => {
           {/* Modal header */}
           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Reply
+              Push Notification
             </h3>
             <button
               onClick={close}
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              data-modal-hide="editUserModal"
             >
               <VscClose />
             </button>
@@ -474,7 +472,7 @@ export const EditModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("Role"))
+                  else if (key.includes("role"))
                     return (
                       <RoleField
                         {...{
@@ -743,7 +741,7 @@ export const CreateNewModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("Role"))
+                  else if (key.includes("role"))
                     return (
                       <RoleField
                         {...{

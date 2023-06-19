@@ -19,7 +19,7 @@ export const transformBack = (data) => {
   return result;
 };
 
-const transform = (data, parent) => {
+export const transform = (data, parent) => {
   return Object.keys(data).map((key) => {
     const value = data[key];
     const node = {
@@ -88,9 +88,15 @@ const findNode = (nodes, label, ancestors) => {
   return node?.childrenNodes.filter((node) => node.label === label)[0];
 };
 
-const NestedCheckbox = ({ data, setSelectedChecks }) => {
-  const initialNodes = transform(data);
-  const [nodes, setNodes] = useState(initialNodes);
+const NestedCheckbox = ({
+  data,
+  selectedChecks,
+  setSelectedChecks,
+  type = "create",
+}) => {
+  const [nodes, setNodes] = useState(
+    type === "edit" ? transform(selectedChecks) : transform(data)
+  );
   // navigator.clipboard.writeText(nodes);
 
   const handleBoxChecked = (e, ancestors) => {
@@ -101,8 +107,9 @@ const NestedCheckbox = ({ data, setSelectedChecks }) => {
     toggleDescendants(node);
     updateAncestors(node);
 
-    setNodes(cloneDeep(nodes));
-    setSelectedChecks(cloneDeep(nodes));
+    const clone = cloneDeep(nodes);
+    setNodes(clone);
+    setSelectedChecks(clone);
   };
 
   return (
