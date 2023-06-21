@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { faqs, languages } from "../../constants/data";
-import { Page } from "../../components";
+import { languages } from "../../constants/data";
+import { CreateNewModal, EditModal, Page, Actions } from "../../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { MdDelete, MdModeEdit } from "react-icons/md";
 import { GoChevronDown } from "react-icons/go";
 import { DropdownContainer } from "../../components/helpers";
+import { base_url } from "../../utils/url";
+import { fetchData } from "../../utils";
+
+const showAllfaqs = `${base_url}/faq`;
+const editUrl = `${base_url}/edit-faq`;
+const createUrl = `${base_url}/create-faq`;
+const deleteUrl = `${base_url}/delete-faq`;
 
 const FAQManagement = () => {
   const initial_filters = {
@@ -24,9 +29,13 @@ const FAQManagement = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
-  const [createPromoModal, setCreatePromoModal] = useState({
+  const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
-    data: {},
+    data: {
+      question: null,
+      answer: null,
+      language: "English",
+    },
   });
   const { searchInput, toggleLanguage } = filters;
 
@@ -35,7 +44,7 @@ const FAQManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -71,12 +80,10 @@ const FAQManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = ["id", "question", "answer", "language"];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: faqs }));
-      setData(faqs);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllfaqs);
   }, []);
 
   return (
@@ -85,6 +92,8 @@ const FAQManagement = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -136,7 +145,7 @@ const FAQManagement = () => {
 
                 <button
                   onClick={() =>
-                    setCreatePromoModal((prev) => ({
+                    setCreateNewModal((prev) => ({
                       ...prev,
                       isVisible: true,
                     }))
@@ -145,16 +154,33 @@ const FAQManagement = () => {
                 >
                   Create new
                 </button>
+
                 {/* Create new modal */}
-                {createPromoModal.isVisible && (
-                  <CreatePromoModal
-                    {...{ createPromoModal, setCreatePromoModal }}
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      createUrl,
+                      setData,
+                      setPaginatedData,
+                      gridCols: 1,
+                    }}
                   />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      editUrl,
+                      setData,
+                      setPaginatedData,
+                      gridCols: 1,
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -162,244 +188,6 @@ const FAQManagement = () => {
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEditModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="editUserModal"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="question"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Question
-                  </label>
-                  <input
-                    type="text"
-                    name="question"
-                    id="question"
-                    value={editModal.data.question}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="answer"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Answer
-                  </label>
-                  <input
-                    type="text"
-                    name="answer"
-                    id="answer"
-                    value={editModal.data.answer}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="language"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Language
-                  </label>
-                  <input
-                    list="languages"
-                    name="language"
-                    id="language"
-                    defaultValue={editModal.data.language}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                  <datalist id="languages">
-                    {languages.map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const CreatePromoModal = ({ createPromoModal, setCreatePromoModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setCreatePromoModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () =>
-    setCreatePromoModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          createPromoModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          createPromoModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Create new FAQ
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="editUserModal"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="question"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Question
-                  </label>
-                  <input
-                    type="text"
-                    name="question"
-                    id="question"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="answer"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Answer
-                  </label>
-                  <input
-                    type="text"
-                    name="answer"
-                    id="answer"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="language"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Language
-                  </label>
-                  <input
-                    list="languages"
-                    name="language"
-                    id="language"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required={true}
-                  />
-                  <datalist id="languages">
-                    {languages.map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
   );
 };
 
@@ -455,45 +243,6 @@ const LanguageFilter = ({ toggle, setToggle, curFilter, handleClick }) => {
         </DropdownContainer>
       )}
     </button>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 dark:text-gray-500"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

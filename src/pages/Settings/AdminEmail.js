@@ -24,7 +24,7 @@ const AdminEmail = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
 
     if (value === "") {

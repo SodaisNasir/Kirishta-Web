@@ -17,6 +17,8 @@ import {
   MdNotificationAdd,
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { DropdownContainer } from "./helpers";
+import Loader from "./Loaders/Loader";
 
 const Actions = ({
   actionCols,
@@ -37,6 +39,7 @@ const Actions = ({
   setIsViewerOpen,
   setDependantsModal,
   setCallCentersModal,
+  statusChangeUrl,
 }) => {
   const navigate = useNavigate();
   const [blockUser, setBlockUser] = useState(false);
@@ -73,6 +76,19 @@ const Actions = ({
 
   return (
     <>
+      {actionCols.includes("status") && (
+        <td className="text-center text-xs px-6 py-4">
+          <StatusDropdown
+            {...{
+              id,
+              value: data["_status"],
+              statusChangeUrl,
+              setPaginatedData,
+              setData,
+            }}
+          />
+        </td>
+      )}
       {actionCols.includes("Details") && (
         <td className="text-center text-base px-6 py-4">
           <button
@@ -220,7 +236,7 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={() => setBlockUser(!blockUser)}
-            className="font-medium text-red-600 dark:text-red-500"
+            className="font-medium text-blue-600 dark:text-blue-500"
             title={blockUser ? "Unblock user" : "Block user"}
           >
             {blockUser ? <CgUnblock /> : <MdBlock />}
@@ -228,6 +244,87 @@ const Actions = ({
         </td>
       )}
     </>
+  );
+};
+
+const StatusDropdown = ({
+  id,
+  value,
+  statusChangeUrl,
+  setPaginatedData,
+  setData,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [state, setState] = useState({ toggle: false, value: value });
+
+  const handleClick = async (e) => {
+    try {
+      setIsLoading(true);
+
+      let formdata = new FormData();
+      formdata.append("status", e.target.innerText);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+      console.log(statusChangeUrl + id);
+      const res = await fetch(statusChangeUrl + id, requestOptions);
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        setState({ toggle: false, value: e.target.innerText });
+        setData((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, _status: e.target.innerText } : item
+          )
+        );
+        setPaginatedData((prev) => ({
+          ...prev,
+          items: prev.items.map((item) =>
+            item.id === id ? { ...item, _status: e.target.innerText } : item
+          ),
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div
+      onClick={() => setState((prev) => ({ ...prev, toggle: !state.toggle }))}
+      className="relative inline-block text-blue-500 hover:underline cursor-pointer"
+    >
+      {state.value}
+
+      {state.toggle && (
+        <DropdownContainer extraStyles="!top-auto !right-auto !left-[130%] bottom-[-100%]">
+          {["New", "Pending", "Resolved"].map((elem, indx) => (
+            <li
+              key={elem + indx}
+              onClick={handleClick}
+              role="option"
+              aria-selected={elem === state.value}
+              className={`${
+                indx !== 2 ? "border-b" : ""
+              } p-1 text-gray-900 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
+              {elem}
+            </li>
+          ))}
+          {isLoading && <Loader />}
+        </DropdownContainer>
+      )}
+    </div>
   );
 };
 

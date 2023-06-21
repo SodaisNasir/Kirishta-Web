@@ -82,7 +82,7 @@ const Account = ({ toggle, setSingleToggle }) => {
       />
       <p className="flex flex-col text-xs font-medium">
         {user.name}
-        <span className="text-[10px] font-light">Admin</span>
+        <span className="text-[10px] font-light">{user.role}</span>
       </p>
       <FaChevronDown
         className={`text-xs ${toggle.account ? "rotate-180" : ""}`}

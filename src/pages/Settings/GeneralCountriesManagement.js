@@ -37,7 +37,7 @@ const GeneralCountriesManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
 
     if (value === "") {
@@ -125,11 +125,12 @@ const GeneralCountriesManagement = () => {
                 {createNewModal.isVisible && (
                   <CreateNewModal
                     {...{
+                      setData,
                       createNewModal,
                       setCreateNewModal,
-                      createUrl,
                       setPaginatedData,
-                      setData,
+                      createUrl,
+                      page: "General Countries",
                     }}
                   />
                 )}
@@ -138,11 +139,12 @@ const GeneralCountriesManagement = () => {
                 {editModal.isVisible && (
                   <EditModal
                     {...{
+                      setData,
                       editModal,
                       setEditModal,
-                      editUrl,
                       setPaginatedData,
-                      setData,
+                      editUrl,
+                      page: "General Countries",
                     }}
                   />
                 )}

@@ -2022,7 +2022,15 @@ export const parishCountryCategories = [
 ];
 
 // Languages
-export const languages = ["Latin", "English", "Afrikaans", "Spanish"];
+export const languages = [
+  "English",
+  "Español",
+  "Fula",
+  "Français",
+  "Hausa",
+  "Português",
+  "Pidgin",
+];
 
 // Admins
 export const admins = [

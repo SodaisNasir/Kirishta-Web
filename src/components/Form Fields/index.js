@@ -1,4 +1,4 @@
-import { generalCountries, roles } from "../../constants/data";
+import { languages, roles } from "../../constants/data";
 
 export const RoleField = ({ defaultValue = "Admin", state, setState }) => {
   return (
@@ -57,11 +57,87 @@ export const DeviceField = ({
   );
 };
 
-export const CountryField = ({
+export const MapField = ({ state, setState }) => {
+  const isStateString = typeof state === "string";
+  const stateCopy = isStateString && JSON.parse(state);
+
+  return (
+    <div>
+      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+        Map (lat - long)
+      </label>
+      <div className="flex space-x-2">
+        <input
+          type="text"
+          value={isStateString ? JSON.parse(state)?.latitude : state?.latitude}
+          onChange={(e) =>
+            isStateString
+              ? setState({ ...stateCopy, latitude: e.target.value })
+              : setState({ ...state, latitude: e.target.value })
+          }
+          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="4.5461"
+          required={true}
+        />
+        <input
+          type="text"
+          value={
+            isStateString ? JSON.parse(state)?.longitude : state?.longitude
+          }
+          onChange={(e) =>
+            isStateString
+              ? setState({ ...stateCopy, longitude: e.target.value })
+              : setState({ ...state, longitude: e.target.value })
+          }
+          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="2.6436"
+          required={true}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const TimeField = ({ state, setState, title }) => {
+  return (
+    <div>
+      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+        {title.replace(/_/g, " ")}
+      </label>
+      <input
+        type="time"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required={true}
+      />
+    </div>
+  );
+};
+
+export const DateField = ({ state, setState, title }) => {
+  return (
+    <div>
+      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+        {title.replace(/_/g, " ")}
+      </label>
+      <input
+        type="date"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required={true}
+      />
+    </div>
+  );
+};
+
+export const GeneralCountryField = ({
   defaultValue = "Nigeria",
-  title = "Country Name",
+  title = "Country",
   state,
   setState,
+  generalCountries,
 }) => {
   return (
     <div>
@@ -81,10 +157,10 @@ export const CountryField = ({
         {generalCountries.map((item, indx) => (
           <option
             className="text-sm"
-            key={item.title + indx}
-            value={item.title}
+            key={item.country_name + indx}
+            value={item.country_name}
           >
-            {item.title}
+            {item.country_name}
           </option>
         ))}
       </select>
@@ -92,7 +168,85 @@ export const CountryField = ({
   );
 };
 
-export const FeaturedField = ({ defaultValue = "Yes", state, setState }) => {
+export const ParishCountriesField = ({ state, setState, parishCountries }) => {
+  return (
+    <div>
+      <label
+        htmlFor="parish-countries"
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+      >
+        Country
+      </label>
+      <select
+        required={true}
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        id="parish-countries"
+      >
+        {parishCountries.map((item) => (
+          <option className="text-sm" key={item.id} value={item.country}>
+            {item.country}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const ParishProvincesField = ({ state, setState, parishProvinces }) => {
+  return (
+    <div>
+      <label
+        htmlFor="parish-countries"
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+      >
+        Province
+      </label>
+      <select
+        required={true}
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        id="parish-countries"
+      >
+        {parishProvinces.map((item) => (
+          <option className="text-sm" key={item.id} value={item.province}>
+            {item.province}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const ParishRegionsField = ({ state, setState, parishRegions }) => {
+  return (
+    <div>
+      <label
+        htmlFor="parish-regions"
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+      >
+        Region
+      </label>
+      <select
+        required={true}
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        id="parish-regions"
+      >
+        {parishRegions.map((item) => (
+          <option className="text-sm" key={item.id} value={item.region}>
+            {item.region}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const FeaturedField = ({ state, setState }) => {
   return (
     <div>
       <label
@@ -102,7 +256,6 @@ export const FeaturedField = ({ defaultValue = "Yes", state, setState }) => {
         Featured
       </label>
       <select
-        defaultValue={defaultValue}
         value={state}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -143,6 +296,66 @@ export const PlatformField = ({
         {["Android", "iOS"].map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const LanguageField = ({ state, setState }) => {
+  return (
+    <div className="col-span-2 sm:col-span-1">
+      <label
+        htmlFor="languages"
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+      >
+        Language
+      </label>
+      <select
+        id="languages"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        required={true}
+      >
+        {languages.map((item, indx) => (
+          <option className="text-sm" key={item + indx} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const ParishCategoriesField = ({
+  parishCategories,
+  state,
+  setState,
+}) => {
+  return (
+    <div className="col-span-2 sm:col-span-1">
+      <label
+        htmlFor="parish-categories"
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+      >
+        Category
+      </label>
+      <select
+        id="parish-categories"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        required={true}
+      >
+        {parishCategories.map((item, indx) => (
+          <option
+            className="text-sm"
+            key={item.category + indx}
+            value={item.category}
+          >
+            {item.category}
           </option>
         ))}
       </select>
@@ -212,9 +425,15 @@ export const UploadField = ({
   );
 };
 
-export const TextArea = ({ elem, defaultValue = "", state, setState }) => {
+export const TextArea = ({
+  elem,
+  defaultValue = "",
+  gridCols,
+  state,
+  setState,
+}) => {
   return (
-    <div className="col-span-2">
+    <div className={gridCols === 1 ? "col-span-1" : "col-span-2"}>
       <label
         htmlFor={elem.toLowerCase()}
         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"

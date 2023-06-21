@@ -3,17 +3,20 @@ import AdvancedTable from "../components/Tables/AdvancedTable";
 import {
   bookCategories,
   bookLanguages,
-  books,
   parishCountries,
 } from "../constants/data";
-import { CreateEPUB, Page } from "../components";
-
+import { CreateEPUB, Page, Actions, Loader } from "../components";
 import { BiSearch } from "react-icons/bi";
 import { CountryFilter } from "../components";
 import { DropdownFilter } from "../components/helpers";
-import { MdDelete, MdEdit } from "react-icons/md";
 import { VscClose } from "react-icons/vsc";
-import { AiFillEye } from "react-icons/ai";
+import { base_url } from "../utils/url";
+import { fetchData } from "../utils";
+
+const showAllBooks = `${base_url}/books`;
+const editUrl = `${base_url}/edit-book`;
+const createUrl = `${base_url}/books-store`;
+const deleteUrl = `${base_url}/delete-book`;
 
 const BooksManagement = () => {
   const initial_filters = {
@@ -39,7 +42,7 @@ const BooksManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -50,8 +53,8 @@ const BooksManagement = () => {
         ...prev,
         items: data.filter(
           (user) =>
-            user.Title.toLowerCase().includes(value.toLowerCase()) ||
-            user._About.toLowerCase().includes(value.toLowerCase())
+            user.title.toLowerCase().includes(value.toLowerCase()) ||
+            user._about.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -75,12 +78,20 @@ const BooksManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = [
+    "id",
+    "title",
+    "_author",
+    "cover_image",
+    "category",
+    "_release_year",
+    "_language",
+    "_about",
+    "status",
+  ];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: books }));
-      setData(books);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllBooks);
   }, []);
 
   return (
@@ -89,11 +100,13 @@ const BooksManagement = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditUser, setViewModal },
+            props: { setEditModal: setEditUser, setViewModal },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -118,7 +131,7 @@ const BooksManagement = () => {
             {/* Dropdown Filters Start */}
             <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
               <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                {paginatedData.items.length} sresults
+                {paginatedData.items.length} results
               </div>
 
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
@@ -130,7 +143,7 @@ const BooksManagement = () => {
                       setSingleFilter("toggleCountry", !toggleCountry),
                     handleClick: (data) =>
                       setCurFilter({
-                        filter: data === null ? null : "_Country",
+                        filter: data === null ? null : "_country",
                         value: data === null ? null : data.title,
                       }),
                   }}
@@ -145,12 +158,20 @@ const BooksManagement = () => {
                     setSingleFilter("toggleStatus", !toggleStatus)
                   }
                   handleClick={(value) =>
-                    setCurFilter({ filter: value ? "Status" : null, value })
+                    setCurFilter({ filter: value ? "status" : null, value })
                   }
                 />
                 {/* Edit User modal */}
                 {editUser.isVisible && (
-                  <EditUserModal {...{ editUser, setEditUser }} />
+                  <EditUserModal
+                    {...{
+                      editUser,
+                      setEditUser,
+                      editUrl,
+                      setData,
+                      setPaginatedData,
+                    }}
+                  />
                 )}
 
                 {/* View modal */}
@@ -175,6 +196,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
   return (
     <>
       <div
+        onClick={close}
         className={`${
           viewModal.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
@@ -183,9 +205,9 @@ const ViewModal = ({ viewModal, setViewModal }) => {
         tabIndex="-1"
         className={`${
           viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
       >
-        <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
@@ -209,13 +231,11 @@ const ViewModal = ({ viewModal, setViewModal }) => {
                     key={elem}
                     className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
                   >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
-                      {elem.replace(/_/, (m) => "")}
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
+                      {elem.replace(/_/g, " ")}
                     </p>
                     <p className="block text-xs font-medium text-gray-700 dark:text-white">
-                      {typeof data[elem] === "string" &&
-                      (data[elem].includes("https://") ||
-                        data[elem].includes("http://")) ? (
+                      {elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
                       ) : (
                         data[elem]
@@ -242,18 +262,63 @@ const ViewModal = ({ viewModal, setViewModal }) => {
   );
 };
 
-const EditUserModal = ({ editUser, setEditUser }) => {
+const EditUserModal = ({
+  editUser,
+  setEditUser,
+  editUrl,
+  setPaginatedData,
+  setData,
+}) => {
+  const initial_state = editUser.data;
   const initialState = [{ title: "", body: "" }];
+  const [state, setState] = useState(initial_state);
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [editCheckbox, setEditCheckbox] = useState(false);
   const [epubState, setEpubState] = useState(initialState);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const keys = Object.keys(state);
 
-    setEditUser({
-      isVisible: false,
-      data: {},
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setToggleBtn(true);
+
+    try {
+      let formdata = new FormData();
+      keys.forEach((key) => formdata.append(key, state[key]));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
+      const json = await res.json();
+
+      if (json.success.status == 200) {
+        console.log(json.success.data);
+        const data = keys.includes("image")
+          ? { ...state, image: json.success.data.image }
+          : state;
+        setEditUser({ data, isVisible: false });
+        setData((prev) => prev.map((e) => (e.id === data.id ? data : e)));
+        setPaginatedData((prev) => ({
+          ...prev,
+          items: prev.items.map((e) => (e.id === data.id ? data : e)),
+        }));
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    } finally {
+      setEditUser({
+        data: initial_state,
+        isVisible: false,
+      });
+    }
   };
 
   const handleSave = () => {
@@ -265,6 +330,7 @@ const EditUserModal = ({ editUser, setEditUser }) => {
   return (
     <>
       <div
+        onClick={close}
         className={`${
           editUser.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
@@ -273,9 +339,9 @@ const EditUserModal = ({ editUser, setEditUser }) => {
         tabIndex="-1"
         className={`${
           editUser.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
       >
-        <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div
             // action="#"
@@ -571,62 +637,22 @@ const EditUserModal = ({ editUser, setEditUser }) => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}
               >
-                Update
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Updating
+                  </>
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </div>
         </div>
       </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditUser,
-  setViewModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setViewModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <AiFillEye />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditUser({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdDelete />
-        </button>
-      </td>
     </>
   );
 };

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { contacts } from "../constants/data";
-import { Page } from "../components";
-
+import { Page, ReplyModal, ViewModal, Actions } from "../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { AiFillEye } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import { DropdownFilter } from "../components/helpers";
-import { FaReplyAll } from "react-icons/fa";
+import { base_url } from "../utils/url";
+import { fetchData } from "../utils";
+
+const showAllContacts = `${base_url}/contact`;
+const statusChangeUrl = `${base_url}/contact-status/`;
+const deleteUrl = `${base_url}/contact-delete`;
 
 const ContactManagement = () => {
   const initial_filters = {
@@ -34,7 +34,7 @@ const ContactManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -45,9 +45,9 @@ const ContactManagement = () => {
         ...prev,
         items: data.filter(
           (user) =>
-            user.Name.toLowerCase().includes(value.toLowerCase()) ||
-            user.Subject.toLowerCase().includes(value.toLowerCase()) ||
-            user._Message.toLowerCase().includes(value.toLowerCase())
+            user.name.toLowerCase().includes(value.toLowerCase()) ||
+            user.subject.toLowerCase().includes(value.toLowerCase()) ||
+            user._message.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -71,12 +71,18 @@ const ContactManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = [
+    "id",
+    "name",
+    "email",
+    "_phone_number",
+    "subject",
+    "_message",
+    "_status",
+  ];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: contacts }));
-      setData(contacts);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllContacts);
   }, []);
 
   return (
@@ -84,26 +90,15 @@ const ContactManagement = () => {
       <main>
         <AdvancedTable
           {...{
+            page: "Contact Management",
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
-            tableTemplate: {
-              "_S/N": null,
-              id: null,
-              Device: null,
-              Name: null,
-              Email: null,
-              _Phone: null,
-              Subject: null,
-              _Message: null,
-              _Response: null,
-              _Timestamp: null,
-              Status: null,
-              _Featured: null,
-            },
-            actionCols: ["View", "Reply", "Delete"],
-            props: { setViewModal, setReplyModal },
+            actionCols: ["status", "View", "Reply", "Delete"],
+            props: { setViewModal, setReplyModal, statusChangeUrl },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -143,7 +138,7 @@ const ContactManagement = () => {
                     setSingleFilter("toggleStatus", !toggleStatus)
                   }
                   handleClick={(value) =>
-                    setCurFilter({ filter: value ? "Status" : null, value })
+                    setCurFilter({ filter: value ? "_status" : null, value })
                   }
                 />
 
@@ -153,212 +148,13 @@ const ContactManagement = () => {
                 )}
 
                 {/* Edit user modal */}
-                {replyModal && <ReplyModal {...{ setReplyModal }} />}
+                {replyModal.isVisible && <ReplyModal {...{ setReplyModal }} />}
               </div>
             </div>
           </div>
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const ReplyModal = ({ setReplyModal }) => {
-  const close = () => setReplyModal(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setReplyModal(false);
-  };
-
-  return (
-    <>
-      <div
-        onClick={close}
-        className={`fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <form
-          onSubmit={handleSubmit}
-          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg"
-        >
-          {/* Modal header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Reply
-            </h3>
-            <button
-              onClick={close}
-              type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              data-modal-hide="editUserModal"
-            >
-              <VscClose />
-            </button>
-          </div>
-          {/* Modal content */}
-          <div className="grid grid-cols-1 gap-4 overflow-y-scroll p-5">
-            <div>
-              <label
-                htmlFor="message"
-                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                rows="8"
-                className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write message here..."
-              ></textarea>
-            </div>
-          </div>
-
-          {/* Modal footer */}
-          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-            <button
-              type="submit"
-              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Send
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
-  );
-};
-
-const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data);
-  const data = viewModal.data;
-
-  const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-3">
-                {keys.map((elem) => (
-                  <div
-                    key={elem}
-                    className={`${
-                      elem === "Subject" ||
-                      elem === "_Message" ||
-                      elem === "_Response"
-                        ? "col-span-6 min-h-[65px]"
-                        : "col-span-6 sm:col-span-3"
-                    } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
-                  >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
-                      {elem.replace(/_/, (m) => "")}
-                    </p>
-                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
-                      {typeof data[elem] === "string" &&
-                      (data[elem].includes("https://") ||
-                        data[elem].includes("http://")) ? (
-                        <img className="h-10" src={data[elem]} alt="cover" />
-                      ) : (
-                        data[elem]
-                      )}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                onClick={close}
-                type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setViewModal,
-  setReplyModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["_S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setViewModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <AiFillEye />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setReplyModal(true)}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <FaReplyAll />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

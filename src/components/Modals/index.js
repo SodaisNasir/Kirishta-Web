@@ -1,25 +1,41 @@
 import { VscClose } from "react-icons/vsc";
 import { typeCheck } from "../../utils";
 import {
-  CountryField,
+  DateField,
   DeviceField,
   FeaturedField,
+  GeneralCountryField,
+  LanguageField,
+  MapField,
+  ParishCategoriesField,
+  ParishCountriesField,
+  ParishProvincesField,
+  ParishRegionsField,
   PlatformField,
   RoleField,
   StatusField,
   TextArea,
+  TimeField,
   UploadField,
 } from "../Form Fields";
 import { useState } from "react";
 import Loader from "../Loaders/Loader";
 
-export const ViewModal = ({ viewModal, setViewModal }) => {
+export const ViewModal = ({ viewModal, setViewModal, page }) => {
   const keys = Object.keys(viewModal.data).filter(
     (e) => e !== "_media" && e !== "_dependants"
   );
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
+
+  const mapProperty = (data) => {
+    let json = typeof data === "string" ? JSON.parse(data) : data;
+    json = typeof json === "string" ? JSON.parse(json) : json;
+
+    console.log(data, json);
+    return `${json.latitude} - ${json.longitude}`;
+  };
 
   return (
     <>
@@ -60,9 +76,8 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
                     className={`${
                       elem.includes("Subject") ||
                       elem.includes("Comment") ||
-                      elem.includes("Problem Statement") ||
-                      elem.includes("Situation Suggestion") ||
-                      elem.includes("Proposed Outcome") ||
+                      (elem.includes("about") && page !== "Events Mangement") ||
+                      elem.includes("address") ||
                       elem.includes("Response") ||
                       elem.includes("Feedback") ||
                       elem.includes("Report Details")
@@ -71,7 +86,9 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
                     } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
                   >
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
-                      {elem.replace("_", " ")}
+                      {elem === "id" && page !== "Users Management"
+                        ? "S/N"
+                        : elem.replaceAll("_", " ")}
                     </p>
                     <p
                       className={`block font-medium ${
@@ -81,6 +98,10 @@ export const ViewModal = ({ viewModal, setViewModal }) => {
                       {typeof data[elem] === "string" &&
                       elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : elem === "_map" ? (
+                        mapProperty(data[elem])
+                      ) : data[elem] === null ? (
+                        "No data!"
                       ) : (
                         data[elem]
                       )}
@@ -313,13 +334,20 @@ export const EditModal = ({
   gridCols = 2,
   statusType = "pending/resolved",
   canUploadMultipleImages = false,
+  page,
+  parishCategories,
+  parishCountries,
+  parishRegions,
+  parishProvinces,
+  generalCountries,
 }) => {
   const initial_state = editModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
   const [state, setState] = useState(initial_state);
-  console.log(state);
 
-  const keys = Object.keys(initial_state).filter((e) => e !== "id");
+  const keys = Object.keys(initial_state).filter(
+    (item) => item !== "id" && !item.includes("email_verified_at")
+  );
 
   const setValue = (key, val) => setState((prev) => ({ ...prev, [key]: val }));
 
@@ -329,7 +357,13 @@ export const EditModal = ({
 
     try {
       let formdata = new FormData();
-      keys.forEach((key) => formdata.append(key, state[key]));
+      keys.forEach((key) => {
+        if (key === "_map") {
+          formdata.append("map", JSON.stringify(state[key]));
+        } else {
+          formdata.append(key.replace("_", ""), state[key]);
+        }
+      });
 
       let requestOptions = {
         headers: {
@@ -421,7 +455,6 @@ export const EditModal = ({
                       <DeviceField
                         {...{
                           key: elem,
-                          title: key,
                           state: state[key],
                           setState: (val) => setValue(key, val),
                         }}
@@ -430,6 +463,106 @@ export const EditModal = ({
                   else if (key.includes("featured"))
                     return (
                       <FeaturedField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("province") &&
+                    page !== "Provinces Management"
+                  )
+                    return (
+                      <ParishProvincesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishProvinces,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("category") &&
+                    page === "Parish Countries"
+                  )
+                    return (
+                      <ParishCategoriesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishCategories,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("country") &&
+                    page !== "General Countries" &&
+                    page !== "Parish Countries"
+                  )
+                    return page === "Regions Management" ||
+                      page === "Parish Management" ? (
+                      <ParishCountriesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishCountries,
+                        }}
+                      />
+                    ) : (
+                      <GeneralCountryField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          generalCountries,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("region") &&
+                    (page === "Provinces Management" ||
+                      page === "Parish Management")
+                  )
+                    return (
+                      <ParishRegionsField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishRegions,
+                        }}
+                      />
+                    );
+                  else if (key === "start_date" || key === "end_date")
+                    return (
+                      <DateField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          title: key,
+                        }}
+                      />
+                    );
+                  else if (key === "start_time" || key === "end_time")
+                    return (
+                      <TimeField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          title: key,
+                        }}
+                      />
+                    );
+                  else if (key.includes("map"))
+                    return (
+                      <MapField
                         {...{
                           key: elem,
                           state: state[key],
@@ -447,6 +580,19 @@ export const EditModal = ({
                         }}
                       />
                     );
+                  else if (
+                    key.includes("language") &&
+                    page !== "Book Languages"
+                  )
+                    return (
+                      <LanguageField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
                   else if (key.includes("status"))
                     return (
                       <StatusField
@@ -455,20 +601,6 @@ export const EditModal = ({
                           state: state[key],
                           setState: (val) => setValue(key, val),
                           statusType,
-                        }}
-                      />
-                    );
-                  else if (
-                    key.includes("country_name") &&
-                    !keys.includes("flag_code")
-                  )
-                    return (
-                      <CountryField
-                        {...{
-                          key: elem,
-                          title: key,
-                          state: state[key],
-                          setState: (val) => setValue(key, val),
                         }}
                       />
                     );
@@ -493,7 +625,11 @@ export const EditModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("description"))
+                  else if (
+                    key.includes("description") ||
+                    key.includes("about") ||
+                    key.includes("answer")
+                  )
                     return (
                       <TextArea
                         {...{
@@ -501,6 +637,7 @@ export const EditModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          gridCols,
                         }}
                       />
                     );
@@ -511,7 +648,9 @@ export const EditModal = ({
                         htmlFor={elem.toLowerCase()}
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
                       >
-                        {elem.replace("_", " ")}
+                        {elem === "_map"
+                          ? "Map (lat-long)"
+                          : elem.replaceAll("_", " ")}
                       </label>
                       <input
                         type={type}
@@ -530,11 +669,12 @@ export const EditModal = ({
                             : "p-2.5 text-xs"
                         } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         placeholder={
-                          elem.toLowerCase().includes("flag_code")
+                          elem.includes("flag_code")
                             ? "e.g. 🇧🇸"
+                            : elem.includes("_map")
+                            ? "5.3664-2.5464"
                             : ""
                         }
-                        required={true}
                       />
                     </div>
                   );
@@ -576,11 +716,16 @@ export const CreateNewModal = ({
   statusType = "pending/resolved",
   canUploadMultipleImages = false,
   fileRequired = true,
+  page,
+  parishCategories,
+  parishCountries,
+  parishRegions,
+  parishProvinces,
+  generalCountries,
 }) => {
   const initial_state = createNewModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
   const [state, setState] = useState(initial_state);
-  console.log(state);
 
   const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
@@ -592,7 +737,13 @@ export const CreateNewModal = ({
 
     try {
       let formdata = new FormData();
-      keys.forEach((key) => formdata.append(key.replace(/^_/, ""), state[key]));
+      keys.forEach((key) => {
+        if (key === "_map") {
+          formdata.append("map", JSON.stringify(state[key]));
+        } else {
+          formdata.append(key.replace(/^_/, ""), state[key]);
+        }
+      });
 
       let requestOptions = {
         headers: {
@@ -609,13 +760,14 @@ export const CreateNewModal = ({
       console.log(json);
 
       if (json.success.status == 200) {
-        const data = keys.includes("image")
-          ? {
-              ...state,
-              id: json.success.data.id,
-              image: json.success.data.image,
-            }
-          : { ...state, id: json.success.data.id };
+        const updatedData = json.success.data;
+        let data = { id: null, ...state };
+        Object.keys(data).forEach(
+          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+        );
+
+        console.log("createNewModal =============>", data);
+
         setData((prev) => [...prev, data]);
         setPaginatedData((prev) => ({
           ...prev,
@@ -690,7 +842,6 @@ export const CreateNewModal = ({
                       <DeviceField
                         {...{
                           key: elem,
-                          title: key,
                           state: state[key],
                           setState: (val) => setValue(key, val),
                         }}
@@ -699,6 +850,84 @@ export const CreateNewModal = ({
                   else if (key.includes("featured"))
                     return (
                       <FeaturedField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("province") &&
+                    page !== "Provinces Management"
+                  )
+                    return (
+                      <ParishProvincesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishProvinces,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("category") &&
+                    page === "Parish Countries"
+                  )
+                    return (
+                      <ParishCategoriesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishCategories,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("country") &&
+                    page !== "General Countries" &&
+                    page !== "Parish Countries"
+                  )
+                    return page === "Regions Management" ||
+                      page === "Parish Management" ? (
+                      <ParishCountriesField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishCountries,
+                        }}
+                      />
+                    ) : (
+                      <GeneralCountryField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          generalCountries,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("region") &&
+                    (page === "Provinces Management" ||
+                      page === "Parish Management")
+                  )
+                    return (
+                      <ParishRegionsField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          parishRegions,
+                        }}
+                      />
+                    );
+                  else if (key.includes("map"))
+                    return (
+                      <MapField
                         {...{
                           key: elem,
                           state: state[key],
@@ -716,6 +945,19 @@ export const CreateNewModal = ({
                         }}
                       />
                     );
+                  else if (
+                    key.includes("language") &&
+                    page !== "Book Languages"
+                  )
+                    return (
+                      <LanguageField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
                   else if (key.includes("status"))
                     return (
                       <StatusField
@@ -724,20 +966,6 @@ export const CreateNewModal = ({
                           state: state[key],
                           setState: (val) => setValue(key, val),
                           statusType,
-                        }}
-                      />
-                    );
-                  else if (
-                    key.includes("country_name") &&
-                    !keys.includes("flag_code")
-                  )
-                    return (
-                      <CountryField
-                        {...{
-                          key: elem,
-                          title: key,
-                          state: state[key],
-                          setState: (val) => setValue(key, val),
                         }}
                       />
                     );
@@ -758,12 +986,16 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          fileRequired: true,
                           canUploadMultipleImages,
-                          fileRequired,
                         }}
                       />
                     );
-                  else if (key.includes("description"))
+                  else if (
+                    key.includes("description") ||
+                    key.includes("about") ||
+                    key.includes("answer")
+                  )
                     return (
                       <TextArea
                         {...{
@@ -771,6 +1003,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          gridCols,
                         }}
                       />
                     );
@@ -781,7 +1014,9 @@ export const CreateNewModal = ({
                         htmlFor={elem}
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
                       >
-                        {elem.replace("_", " ")}
+                        {elem === "_map"
+                          ? "Map (lat-long)"
+                          : elem.replaceAll("_", " ")}
                       </label>
                       <input
                         type={type}
@@ -800,7 +1035,11 @@ export const CreateNewModal = ({
                             : "p-2.5 text-xs"
                         } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         placeholder={
-                          elem.includes("flag_code") ? "e.g. 🇧🇸" : ""
+                          elem.includes("flag_code")
+                            ? "e.g. 🇧🇸"
+                            : elem.includes("_map")
+                            ? "5.3664-2.5464"
+                            : ""
                         }
                         required={true}
                       />

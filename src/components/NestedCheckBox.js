@@ -95,7 +95,7 @@ const NestedCheckbox = ({
   type = "create",
 }) => {
   const [nodes, setNodes] = useState(
-    type === "edit" ? transform(selectedChecks) : transform(data)
+    transform(type === "edit" ? selectedChecks : data)
   );
   // navigator.clipboard.writeText(nodes);
 

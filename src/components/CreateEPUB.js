@@ -27,8 +27,7 @@ const CreateEPUB = ({ state, setState, saveBtn = false, handleSave }) => {
   };
 
   const closeSection = (index) =>
-    state.length > 1 &&
-    setState((prev) => prev.filter((_, idx) => idx !== index));
+    state.length > 1 && setState(state.filter((_, idx) => idx !== index));
 
   return (
     <div className="col-span-6">

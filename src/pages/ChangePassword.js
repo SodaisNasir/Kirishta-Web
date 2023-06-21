@@ -21,7 +21,7 @@ const ChangePassword = () => {
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
     message.value && setMessage({ theme: "", value: "" });
     if (name === "newPassword") {

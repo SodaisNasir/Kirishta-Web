@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
-import { events } from "../constants/data";
-import { Page } from "../components";
-
+import {
+  Page,
+  ViewModal,
+  Actions,
+  CreateNewModal,
+  EditModal,
+} from "../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { AiFillEye } from "react-icons/ai";
-import { MdDelete, MdModeEdit } from "react-icons/md";
 import { DropdownFilter } from "../components/helpers";
+import { base_url } from "../utils/url";
+import { fetchData } from "../utils";
+
+const showAllEvents = `${base_url}/events`;
+const createUrl = `${base_url}/event-store`;
+const editUrl = `${base_url}/event-edit`;
+const deleteUrl = `${base_url}/event-delete`;
 
 const EventsManagement = () => {
   const initial_filters = {
@@ -23,9 +31,25 @@ const EventsManagement = () => {
     value: null,
   });
   const [data, setData] = useState([]);
-  const [addUser, setAddUser] = useState({ isVisible: false, data: {} });
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
+  const [createNewModal, setCreateNewModal] = useState({
+    isVisible: false,
+    data: {
+      image: "",
+      title: "",
+      start_date: "",
+      _end_date: "",
+      start_time: "",
+      _end_time: "",
+      _location: "",
+      _address: "",
+      _map: { latitude: "", longitude: "" },
+      status: "ACTIVE",
+      featured: "Yes",
+      _about: "",
+    },
+  });
   const [filters, setFilters] = useState(initial_filters);
   const { searchInput, toggleStatus } = filters;
 
@@ -34,7 +58,7 @@ const EventsManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -45,10 +69,10 @@ const EventsManagement = () => {
         ...prev,
         items: data.filter(
           (item) =>
-            item.Title.toLowerCase().includes(value.toLowerCase()) ||
-            item._About.toLowerCase().includes(value.toLowerCase()) ||
-            item._Location.toLowerCase().includes(value.toLowerCase()) ||
-            item._Address.toLowerCase().includes(value.toLowerCase())
+            item.title.toLowerCase().includes(value.toLowerCase()) ||
+            item._about.toLowerCase().includes(value.toLowerCase()) ||
+            item._location.toLowerCase().includes(value.toLowerCase()) ||
+            item._address.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -72,12 +96,24 @@ const EventsManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
+  const neededProps = [
+    "id",
+    "image",
+    "title",
+    "start_date",
+    "_end_date",
+    "start_time",
+    "_end_time",
+    "_location",
+    "_address",
+    "_map",
+    "status",
+    "featured",
+    "_about",
+  ];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: events }));
-      setData(events);
-    }, 2000);
+    fetchData(setPaginatedData, setData, neededProps, showAllEvents);
   }, []);
 
   return (
@@ -86,6 +122,8 @@ const EventsManagement = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -130,30 +168,50 @@ const EventsManagement = () => {
                     setSingleFilter("toggleStatus", !toggleStatus)
                   }
                   handleClick={(value) =>
-                    setCurFilter({ filter: value ? "Status" : null, value })
+                    setCurFilter({ filter: value ? "status" : null, value })
                   }
                 />
 
                 <button
                   onClick={() =>
-                    setAddUser((prev) => ({ ...prev, isVisible: true }))
+                    setCreateNewModal((prev) => ({ ...prev, isVisible: true }))
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-100 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-700/40"
                 >
-                  Add Event
+                  Create new
                 </button>
-                {addUser.isVisible && (
-                  <AddUserModal {...{ addUser, setAddUser }} />
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      setData,
+                      setPaginatedData,
+                      statusType: "active/inactive",
+                      createUrl,
+                    }}
+                  />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      setData,
+                      setPaginatedData,
+                      statusType: "active/inactive",
+                      editUrl,
+                    }}
+                  />
                 )}
 
                 {/* View modal */}
                 {viewModal.isVisible && (
-                  <ViewModal {...{ viewModal, setViewModal }} />
+                  <ViewModal
+                    {...{ viewModal, setViewModal, page: "Events Mangement" }}
+                  />
                 )}
               </div>
             </div>
@@ -161,646 +219,6 @@ const EventsManagement = () => {
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEditModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="image"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="image"
-                    type="file"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="date-start"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Date (Start)
-                  </label>
-                  <input
-                    type="date"
-                    name="date-start"
-                    id="date-start"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="2/6/2020"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="date-end"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Date (End)
-                  </label>
-                  <input
-                    type="date"
-                    name="date-end"
-                    id="date-end"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="6/7/2021"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="time-start"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Time (Start)
-                  </label>
-                  <input
-                    type="time"
-                    name="time-start"
-                    id="time-start"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="2/6/2020"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="time-end"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Time (End)
-                  </label>
-                  <input
-                    type="time"
-                    name="time-end"
-                    id="time-end"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="6/7/2021"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="location"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Abuja"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="address"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="map"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Map
-                  </label>
-                  <input
-                    type="text"
-                    name="map"
-                    id="map"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="41°24'12.2'N - 2°10'26.5'E"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Status
-                  </label>
-                  <select
-                    defaultValue={editModal.data.Status}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="status"
-                  >
-                    {["ACTIVE", "INACTIVE"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="featured"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <select
-                    defaultValue={editModal.data._Featured}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="featured"
-                  >
-                    {["Yes", "No"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6">
-                  <label
-                    htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    About
-                  </label>
-                  <textarea
-                    id="about"
-                    rows="8"
-                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write about this book..."
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data);
-  const data = viewModal.data;
-
-  const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-3">
-                {keys.map((elem) => (
-                  <div
-                    key={elem}
-                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
-                  >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white">
-                      {elem.replace(/_/, (m) => "")}
-                    </p>
-                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
-                      {typeof data[elem] === "string" &&
-                      (data[elem].includes("https://") ||
-                        data[elem].includes("http://")) ? (
-                        <img className="h-10" src={data[elem]} alt="cover" />
-                      ) : (
-                        data[elem]
-                      )}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                onClick={close}
-                type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const AddUserModal = ({ addUser, setAddUser }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setAddUser({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setAddUser((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          addUser.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          addUser.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new event
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="image"
-                  >
-                    Image
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="image"
-                    type="file"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Lorem ipsum"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="date-start"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Date (Start)
-                  </label>
-                  <input
-                    type="date"
-                    name="date-start"
-                    id="date-start"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="2/6/2020"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="date-end"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Date (End)
-                  </label>
-                  <input
-                    type="date"
-                    name="date-end"
-                    id="date-end"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="6/7/2021"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="time-start"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Time (Start)
-                  </label>
-                  <input
-                    type="time"
-                    name="time-start"
-                    id="time-start"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="2/6/2020"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="time-end"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Time (End)
-                  </label>
-                  <input
-                    type="time"
-                    name="time-end"
-                    id="time-end"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="6/7/2021"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="location"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Abuja"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="address"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="steet no.3, Abuja, southie"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="map"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Map
-                  </label>
-                  <input
-                    type="text"
-                    name="map"
-                    id="map"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="41°24'12.2'N - 2°10'26.5'E"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Status
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="status"
-                  >
-                    {["ACTIVE", "INACTIVE"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="featured"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="featured"
-                  >
-                    {["Yes", "No"].map((elem) => (
-                      <option className="text-sm" key={elem} value={elem}>
-                        {elem}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-span-6">
-                  <label
-                    htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    About
-                  </label>
-                  <textarea
-                    id="about"
-                    rows="8"
-                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write about this book..."
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Create
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-  setViewModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setViewModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <AiFillEye />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

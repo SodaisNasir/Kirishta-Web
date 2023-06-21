@@ -5,7 +5,7 @@ import { NestedCheckbox, Page, Actions, Loader } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { DropdownFilter } from "../../components/helpers";
-import { transform, transformBack } from "../../components/NestedCheckBox";
+import { transformBack } from "../../components/NestedCheckBox";
 import { fetchData } from "../../utils";
 import { base_url } from "../../utils/url";
 
@@ -44,7 +44,7 @@ const Roles = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -197,13 +197,11 @@ const EditModal = ({
     JSON.parse(editModal.data.privilage)
   );
 
-  console.log(selectedChecks);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setToggleBtn(true);
 
-    const privilage = !Array.isArray(selectedChecks)
+    const privilage = Array.isArray(selectedChecks)
       ? transformBack(selectedChecks)
       : selectedChecks;
 

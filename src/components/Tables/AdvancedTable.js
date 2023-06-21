@@ -3,8 +3,10 @@ import Loader from "../Loaders/Loader";
 import { DropdownContainer } from "../helpers";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
+import { base_url } from "../../utils/url";
 
 const AdvancedTable = ({
+  page,
   data,
   paginatedData,
   setPaginatedData,
@@ -104,6 +106,7 @@ const AdvancedTable = ({
               {paginatedData.curItems.length ? (
                 <Users
                   {...{
+                    page,
                     tableStructure,
                     selectedUsers,
                     setSelectedUsers,
@@ -135,6 +138,7 @@ const AdvancedTable = ({
 };
 
 const Users = ({
+  page,
   tableStructure,
   selectedUsers,
   setSelectedUsers,
@@ -151,6 +155,7 @@ const Users = ({
         <SingleUser
           key={indx}
           {...{
+            page,
             tableStructure,
             data: user,
             id:
@@ -175,6 +180,7 @@ const Users = ({
         <SingleUser
           key={indx}
           {...{
+            page,
             tableStructure,
             data: user,
             id:
@@ -220,6 +226,7 @@ const Users = ({
 // };
 
 const SingleUser = ({
+  page,
   tableStructure,
   data,
   setData,
@@ -265,14 +272,15 @@ const SingleUser = ({
               } whitespace-nowrap md:whitespace-normal`}
             >
               {key.includes("image") || key === "Media File" ? (
-                <img
-                  className="w-10 mx-auto"
-                  src={data[key]}
-                  alt={data.Title}
-                />
-              ) : key === "status" &&
-                (data[key] === "PENDING" || data[key] === "RESOLVED") ? (
-                <StatusDropdown {...{ value: data[key] }} />
+                data[key] ? (
+                  <img
+                    className="w-10 mx-auto"
+                    src={data[key]}
+                    alt={data.Title}
+                  />
+                ) : (
+                  "No Image!"
+                )
               ) : key === "privilage" ? (
                 "true"
               ) : key === "app_page" ? (
@@ -290,6 +298,8 @@ const SingleUser = ({
                 </a>
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
+              ) : data[key] === null ? (
+                "No data!"
               ) : (
                 data[key]
               )}
@@ -314,39 +324,6 @@ const SingleUser = ({
         />
       )}
     </tr>
-  );
-};
-
-const StatusDropdown = ({ value }) => {
-  const [state, setState] = useState({ toggle: false, value: value });
-  const handleClick = (e) =>
-    setState({ toggle: false, value: e.target.innerText });
-
-  return (
-    <div
-      onClick={() => setState((prev) => ({ ...prev, toggle: !state.toggle }))}
-      className="relative inline-block text-blue-500 hover:underline cursor-pointer"
-    >
-      {state.value}
-
-      {state.toggle && (
-        <DropdownContainer extraStyles="!top-auto !right-auto !left-[130%] bottom-[-100%]">
-          {["NEW", "PENDING", "RESOLVED"].map((elem, indx) => (
-            <li
-              key={elem + indx}
-              onClick={handleClick}
-              role="option"
-              aria-selected={elem === state.value}
-              className={`${
-                indx !== 2 ? "border-b" : ""
-              } p-1 text-gray-900 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
-            >
-              {elem}
-            </li>
-          ))}
-        </DropdownContainer>
-      )}
-    </div>
   );
 };
 

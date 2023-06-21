@@ -73,7 +73,7 @@ export const LanguageSelector = ({ language, setLanguage }) => {
           {languages.map((elem, indx) => (
             <li
               key={elem + indx}
-              onClick={() => setLanguage((prev) => ({ ...prev, value: elem }))}
+              onClick={() => setLanguage({ state: false, value: elem })}
               role="option"
               aria-selected={elem === language.value}
               className={`${

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import {
-  parishCountriesPageData,
-  parishCountryCategories,
-} from "../../constants/data";
-import { Page } from "../../components";
-
+import { CreateNewModal, EditModal, Page, Actions } from "../../components";
 import { BiSearch } from "react-icons/bi";
-import { VscClose } from "react-icons/vsc";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { base_url } from "../../utils/url";
+import { fetchData } from "../../utils";
+
+const showAllCountries = `${base_url}/parish-country`;
+const editUrl = `${base_url}/edit-parish-country`;
+const createUrl = `${base_url}/create-parish-country`;
+const deleteUrl = `${base_url}/delete-parish-country`;
 
 const ParishCountriesManagement = () => {
   const initial_filters = {
@@ -20,10 +20,14 @@ const ParishCountriesManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [parishCategories, setParishCategories] = useState([]);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
-  const [addModal, setAddModal] = useState({
+  const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
-    data: {},
+    data: {
+      country: "",
+      category: parishCategories[0],
+    },
   });
   const { searchInput } = filters;
 
@@ -32,7 +36,7 @@ const ParishCountriesManagement = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
 
     if (value === "") {
@@ -42,19 +46,39 @@ const ParishCountriesManagement = () => {
         ...prev,
         items: data.filter(
           (item) =>
-            item["country name"].toLowerCase().includes(value.toLowerCase()) ||
-            item["country code"].toLowerCase().includes(value.toLowerCase())
+            item.country.toLowerCase().includes(value.toLowerCase()) ||
+            item.category.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(`${base_url}/parish-category`);
+      const json = await res.json();
+
+      if (json.success) {
+        const data = json.success.data;
+        setParishCategories(data);
+        setCreateNewModal({
+          isVisible: false,
+          data: {
+            country: "",
+            category: data[0].category,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const neededProps = ["id", "country", "category"];
+
   useEffect(() => {
-    // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: parishCountriesPageData }));
-      setData(parishCountriesPageData);
-    }, 2000);
+    fetchCategories();
+    fetchData(setPaginatedData, setData, neededProps, showAllCountries);
   }, []);
 
   return (
@@ -63,6 +87,8 @@ const ParishCountriesManagement = () => {
         <AdvancedTable
           {...{
             data,
+            setData,
+            deleteUrl,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -100,23 +126,46 @@ const ParishCountriesManagement = () => {
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <button
                   onClick={() =>
-                    setAddModal((prev) => ({
+                    setCreateNewModal((prev) => ({
                       ...prev,
                       isVisible: true,
                     }))
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >
-                  Add Country
+                  Create new
                 </button>
-                {/* Add modal */}
-                {addModal.isVisible && (
-                  <AddModal {...{ addModal, setAddModal }} />
+
+                {/* Create new modal */}
+                {createNewModal.isVisible && (
+                  <CreateNewModal
+                    {...{
+                      createNewModal,
+                      setCreateNewModal,
+                      createUrl,
+                      setData,
+                      setPaginatedData,
+                      gridCols: 1,
+                      page: "Parish Countries",
+                      parishCategories,
+                    }}
+                  />
                 )}
 
                 {/* Edit user modal */}
                 {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
+                  <EditModal
+                    {...{
+                      editModal,
+                      setEditModal,
+                      editUrl,
+                      setData,
+                      setPaginatedData,
+                      gridCols: 1,
+                      page: "Parish Countries",
+                      parishCategories,
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -124,359 +173,6 @@ const ParishCountriesManagement = () => {
         </AdvancedTable>
       </main>
     </Page>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEditModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-lg max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-1 gap-6">
-                <div>
-                  <label
-                    htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Category
-                  </label>
-                  <select
-                    defaultValue={editModal.data.category}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="categories"
-                  >
-                    {parishCountryCategories.map((item) => (
-                      <option
-                        className="text-sm"
-                        key={item.category}
-                        value={item.category}
-                      >
-                        {item.category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Country Name
-                  </label>
-                  <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    defaultValue={editModal.data["country name"]}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigeria"
-                    required={true}
-                  />
-                </div>
-                {/* <div>
-                  <label
-                    htmlFor="country-code"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Country Code
-                  </label>
-                  <input
-                    type="text"
-                    name="country-code"
-                    id="country-code"
-                    defaultValue={editModal.data["country code"]}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="NG"
-                    required={true}
-                  />
-                </div>
-                <div>
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
-                  >
-                    Country Flag
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
-                    required={true}
-                  />
-                </div> */}
-                {/* <div>
-                  <label
-                    htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
-                    defaultValue={editModal.data.featured}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
-                </div> */}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 px-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const AddModal = ({ addModal, setAddModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setAddModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setAddModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          addModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          addModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-lg max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Add new country
-              </h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-5 space-y-6 max-h-[72vh] overflow-y-scroll">
-              <div className="grid grid-cols-1 gap-6">
-                <div>
-                  <label
-                    htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Category
-                  </label>
-                  <select
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="categories"
-                  >
-                    {parishCountryCategories.map((item) => (
-                      <option
-                        className="text-sm"
-                        key={item.category}
-                        value={item.category}
-                      >
-                        {item.category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Country Name
-                  </label>
-                  <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Nigeria"
-                    required={true}
-                  />
-                </div>
-                {/* <div>
-                  <label
-                    htmlFor="country-code"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Country Code
-                  </label>
-                  <input
-                    type="text"
-                    name="country-code"
-                    id="country-code"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="NG"
-                    required={true}
-                  />
-                </div>
-                <div>
-                  <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="flag"
-                  >
-                    Country Flag
-                  </label>
-                  <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                    id="flag"
-                    type="file"
-                    required={true}
-                  />
-                </div> */}
-                {/* <div>
-                  <label
-                    htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Featured
-                  </label>
-                  <input
-                    list="featured"
-                    name="feature"
-                    id="feature"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="No"
-                    required={true}
-                  />
-                  <datalist id="featured">
-                    {["Yes", "No"].map((item) => (
-                      <option key={item} value={item} />
-                    ))}
-                  </datalist>
-                </div> */}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center px-6 py-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-}) => {
-  const remove = () => {
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((user) => user["S/N"] !== SN),
-    }));
-  };
-
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdDelete />
-        </button>
-      </td>
-    </>
   );
 };
 

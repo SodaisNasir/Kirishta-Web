@@ -3,7 +3,6 @@ import AdvancedTable from "../../components/Tables/AdvancedTable";
 import {
   CreateNewModal,
   EditModal,
-  NotificationModal,
   Actions,
   Page,
   ViewModal,
@@ -13,7 +12,7 @@ import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { fetchData } from "../../utils";
 
-const showAllBanners = `${base_url}/popup`;
+const showAllPopups = `${base_url}/popup`;
 const editUrl = `${base_url}/popup-edit`;
 const createUrl = `${base_url}/popup-store`;
 const deleteUrl = `${base_url}/popup-delete`;
@@ -36,10 +35,6 @@ const PopupPromotion = () => {
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
-  const [notidicationModal, setNotificationModal] = useState({
-    isVisible: false,
-    message: null,
-  });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
@@ -58,7 +53,7 @@ const PopupPromotion = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -103,7 +98,7 @@ const PopupPromotion = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
+    fetchData(setPaginatedData, setData, neededProps, showAllPopups);
   }, []);
 
   return (
@@ -117,8 +112,8 @@ const PopupPromotion = () => {
             setPaginatedData,
             deleteUrl,
             Actions,
-            actionCols: ["View", "Push Notification", "Edit", "Delete"],
-            props: { setEditModal, setNotificationModal, setViewModal },
+            actionCols: ["View", "Edit", "Delete"],
+            props: { setEditModal, setViewModal },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -216,11 +211,6 @@ const PopupPromotion = () => {
                       statusType: "active/inactive",
                     }}
                   />
-                )}
-
-                {/* Notification modal */}
-                {notidicationModal.isVisible && (
-                  <NotificationModal {...{ setNotificationModal }} />
                 )}
 
                 {/* View modal */}

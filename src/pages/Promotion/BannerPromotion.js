@@ -4,7 +4,6 @@ import {
   CreateNewModal,
   EditModal,
   Page,
-  NotificationModal,
   ViewModal,
   Actions,
 } from "../../components";
@@ -36,10 +35,6 @@ const BannerPromotion = () => {
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
-  const [notidicationModal, setNotificationModal] = useState({
-    isVisible: false,
-    message: null,
-  });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
@@ -58,7 +53,7 @@ const BannerPromotion = () => {
   };
 
   const filterUsersBySearch = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     setSingleFilter("searchInput", value);
     setCurFilter({ filter: "searchInput", value });
 
@@ -68,9 +63,9 @@ const BannerPromotion = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter(
-          (user) =>
-            user.title.toLowerCase().includes(value.toLowerCase()) ||
-            user._tag.toLowerCase().includes(value.toLowerCase())
+          (item) =>
+            item.title.toLowerCase().includes(value.toLowerCase()) ||
+            item._tag.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -119,8 +114,8 @@ const BannerPromotion = () => {
             setPaginatedData,
             deleteUrl,
             Actions,
-            actionCols: ["View", "Push Notification", "Edit", "Delete"],
-            props: { setEditModal, setNotificationModal, setViewModal },
+            actionCols: ["View", "Edit", "Delete"],
+            props: { setEditModal, setViewModal },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -218,11 +213,6 @@ const BannerPromotion = () => {
                       statusType: "active/inactive",
                     }}
                   />
-                )}
-
-                {/* Notification modal */}
-                {notidicationModal.isViNotification && (
-                  <NotificationModal {...{ setNotificationModal }} />
                 )}
 
                 {/* View modal */}

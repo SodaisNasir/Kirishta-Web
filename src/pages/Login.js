@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import { AppContext } from "../context";
 import Logo from "../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
     message.value && setMessage({ theme: "", value: "" });
     if (name === "email") {
@@ -63,6 +63,11 @@ const Login = () => {
           ...data,
           profile_image: "https://i.pravatar.cc/30",
         });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ ...data, profile_image: "https://i.pravatar.cc/30" })
+        );
+
         setTimeout(() => {
           navigate("/dashboard");
         }, 1500);
@@ -80,6 +85,15 @@ const Login = () => {
       setToggleBtn(false);
     }
   };
+
+  useLayoutEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+      setUser(user);
+      navigate("/dashboard");
+    }
+  }, []);
 
   return (
     <OtherPage
