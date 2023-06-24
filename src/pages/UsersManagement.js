@@ -148,7 +148,7 @@ const UsersManagement = () => {
                 />
 
                 <DropdownFilter
-                  arr={["Active", "Inactive"]}
+                  arr={["Active", "InActive"]}
                   title={"Status"}
                   toggle={toggleStatus}
                   curFilter={curFilter}
@@ -173,6 +173,7 @@ const UsersManagement = () => {
                       setPaginatedData,
                       editUrl,
                       statusType: "active/inactive",
+                      page: "Users Management",
                       generalCountries,
                     }}
                   />

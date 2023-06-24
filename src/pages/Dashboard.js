@@ -1,47 +1,159 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DropdownContainer } from "../components/helpers";
 import { MdFeedback, MdLock, MdLogout } from "react-icons/md";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaUser } from "react-icons/fa";
 import { RiEdit2Fill } from "react-icons/ri";
 import { AppContext } from "../context";
-import {
-  contactListItems,
-  dashboardCards,
-  feedbackListItems,
-  notifications,
-} from "../constants/data";
+import { dashboardCards } from "../constants/data";
 import { useNavigate } from "react-router-dom";
+import { base_url } from "../utils/url";
+import { Loader } from "../components";
 
 const Dashboard = () => {
   const initialState = { notifications: false, account: false };
   const [toggle, setToggle] = useState(initialState);
+  const [contacts, setContacts] = useState(null);
+  const [feedbacks, setFeedbacks] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+  const [notifications, setNotifications] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const setSingleToggle = (key, value) =>
     setToggle({ ...initialState, [key]: value });
 
+  const fetchAnalytics = async () => {
+    const url = base_url + "/count";
+
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (json.success) {
+        const data = json.success.data;
+        return data;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchFeedbacks = async () => {
+    const url = base_url + "/feedback";
+
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (json.success) {
+        const data = json.success.data;
+        return data;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchContacts = async () => {
+    const url = base_url + "/contact";
+
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (json.success.status == 200) {
+        const data = json.success.data;
+        return data;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    const url = base_url + "/show-admin-notification";
+
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (json.success) {
+        const data = json.success.data;
+        return data;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchData = async () => {
+    const analytics = await fetchAnalytics();
+    const contacts = await fetchContacts();
+    const feedbacks = await fetchFeedbacks();
+    // const notifications = await fetchNotifications();
+
+    // console.log("Analytics =============>", analytics);
+    // console.log("Feedbacks ========>", feedbacks);
+    // console.log("Contacts ========>", contacts);
+    console.log("Notificaitons ========>", notifications);
+
+    setAnalytics(analytics);
+    setContacts(contacts);
+    setFeedbacks(feedbacks);
+    // setNotifications(notifications);
+
+    if (analytics && feedbacks && contacts) setIsLoading(false);
+  };
+
   useEffect(() => {
     document.title = "Dashboard - Kirista";
+
+    fetchData();
   }, []);
 
   return (
-    <>
-      <header className="flex justify-between items-center p-3 pt-0 md:px-6 md:pt-8">
-        <h1 className="text-lg font-bold text-[#314156]">Dashboard</h1>
-        <div className="flex items-center space-x-5">
-          {/* Notifications dropdown */}
-          <Notifications {...{ toggle, setSingleToggle }} />
+    <div
+      className={`relative ${
+        isLoading ? "flex justify-center items-center min-h-[90vh]" : ""
+      }`}
+    >
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <header className="flex justify-between items-center p-3 pt-0 md:px-6 md:pt-8">
+            <h1 className="text-lg font-bold text-[#314156]">Dashboard</h1>
+            <div className="flex items-center space-x-5">
+              <Notifications {...{ toggle, setSingleToggle, notifications }} />
+              <Account {...{ toggle, setSingleToggle }} />
+            </div>
+          </header>
 
-          {/* Account dropdown */}
-          <Account {...{ toggle, setSingleToggle }} />
-        </div>
-      </header>
-      <main className="grid grid-cols-2 gap-3 gap-x-4 sm:gap-x-8 bg-[#EEF2F5] p-8">
-        <DashboardCards arr={dashboardCards} />
-        <ContactList />
-        <FeedbackList />
-      </main>
-    </>
+          <main className="grid grid-cols-2 gap-3 gap-x-4 sm:gap-x-8 bg-[#EEF2F5] p-8">
+            <DashboardCards {...{ arr: dashboardCards, analytics }} />
+            <ContactList contacts={contacts} />
+            <FeedbackList feedbacks={feedbacks} />
+          </main>
+        </>
+      )}
+    </div>
   );
+};
+
+const DashboardCards = ({ arr, analytics }) => {
+  return arr.map(({ title, icon, colSpan }) => (
+    <div
+      key={title}
+      className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}
+    >
+      <div className="flex items-center">
+        {icon}
+        <span className="text-xs font-medium text-[#8B8B93] ml-2 capitalize">
+          {title.replaceAll("_", " ")}
+        </span>
+      </div>
+      <span className="text-base font-semibold">{analytics[title]}</span>
+    </div>
+  ));
 };
 
 const Account = ({ toggle, setSingleToggle }) => {
@@ -50,6 +162,7 @@ const Account = ({ toggle, setSingleToggle }) => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   const arr = [
@@ -76,13 +189,13 @@ const Account = ({ toggle, setSingleToggle }) => {
       onClick={() => setSingleToggle("account", !toggle.account)}
     >
       <img
-        className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
+        className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
         src={user.profile_image}
         alt="profile"
       />
-      <p className="flex flex-col text-xs font-medium">
+      <p className="flex flex-col text-xs font-medium capitalize">
         {user.name}
-        <span className="text-[10px] font-light">{user.role}</span>
+        <span className="text-[10px] font-light capitalize">{user.role}</span>
       </p>
       <FaChevronDown
         className={`text-xs ${toggle.account ? "rotate-180" : ""}`}
@@ -108,7 +221,7 @@ const Account = ({ toggle, setSingleToggle }) => {
   );
 };
 
-const Notifications = ({ toggle, setSingleToggle }) => {
+const Notifications = ({ toggle, setSingleToggle, notifications }) => {
   return (
     <button
       className="relative flex items-center space-x-3"
@@ -152,22 +265,7 @@ const Notifications = ({ toggle, setSingleToggle }) => {
   );
 };
 
-const DashboardCards = ({ arr }) => {
-  return arr.map(({ title, icon, num, colSpan }, indx) => (
-    <div
-      key={title + indx}
-      className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}
-    >
-      <div className="flex items-center">
-        {icon}
-        <span className="text-xs font-medium text-[#8B8B93] ml-2">{title}</span>
-      </div>
-      <span className="text-base font-semibold">{num}</span>
-    </div>
-  ));
-};
-
-const ContactList = () => {
+const ContactList = ({ contacts }) => {
   const [toggleRead, setToggleRead] = useState([]);
 
   return (
@@ -190,33 +288,37 @@ const ContactList = () => {
             fill="currentColor"
           />
         </svg>
-        Contacts ({contactListItems.length})
+        Contacts ({contacts.length})
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
-        {contactListItems.map((elem, indx) => (
+        {contacts.map(({ name, message, profile_image }, indx) => (
           <div
-            key={elem.title + indx}
+            key={name + indx}
             className={`${
-              contactListItems.length - 1 !== indx
-                ? "border-b border-[#F2F2F2]"
-                : ""
+              contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
             } flex flex-col items-start py-3`}
           >
             <div className="flex items-center">
-              <img
-                className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
-                src={elem.photoUrl}
-                alt="profile"
-              />
+              {profile_image ? (
+                <img
+                  className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                  src={profile_image}
+                  alt="profile"
+                />
+              ) : (
+                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                  <FaUser />
+                </div>
+              )}
               <p className="flex flex-col items-center text-xs font-medium ml-2">
-                {elem.title}
+                {name}
               </p>
             </div>
             <p className="mt-2 text-xs ml-10">
-              {toggleRead.includes(indx) ? (
+              {toggleRead.includes(indx) && message.length > 25 ? (
                 <>
-                  {elem.text}
+                  {message}
                   &nbsp;
                   <em
                     onClick={() =>
@@ -227,9 +329,9 @@ const ContactList = () => {
                     read less
                   </em>
                 </>
-              ) : (
+              ) : message.length > 25 ? (
                 <>
-                  {elem.text.slice(0, elem.text.length / 2) + "... "}
+                  {message.slice(0, message.length / 2) + "... "}
                   <em
                     onClick={() => setToggleRead((prev) => [...prev, indx])}
                     className="text-blue-500 hover:underline cursor-pointer"
@@ -237,6 +339,8 @@ const ContactList = () => {
                     read more
                   </em>
                 </>
+              ) : (
+                message
               )}
             </p>
           </div>
@@ -246,40 +350,44 @@ const ContactList = () => {
   );
 };
 
-const FeedbackList = () => {
+const FeedbackList = ({ feedbacks }) => {
   const [toggleRead, setToggleRead] = useState([]);
 
   return (
     <div className="col-span-2 sm:col-span-1 flex flex-col mt-5 p-2 rounded-xl bg-white">
       <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
         <MdFeedback className="text-lg text-blue-500 mr-2" />
-        Feedbacks ({feedbackListItems.length})
+        Feedbacks ({feedbacks.length})
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
-        {feedbackListItems.map((elem, indx) => (
+        {feedbacks.map(({ name, text, profile_image }, indx) => (
           <div
-            key={elem.title + indx}
+            key={name + indx}
             className={`${
-              feedbackListItems.length - 1 !== indx
-                ? "border-b border-[#F2F2F2]"
-                : ""
+              feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
             } flex flex-col items-start py-3`}
           >
             <div className="flex items-center">
-              <img
-                className="min-w-[30px] min-h-[30px] rounded-full text-xs bg-gray-100"
-                src={elem.photoUrl}
-                alt="profile"
-              />
+              {profile_image ? (
+                <img
+                  className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                  src={profile_image}
+                  alt="profile"
+                />
+              ) : (
+                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                  <FaUser />
+                </div>
+              )}
               <p className="flex flex-col items-center text-xs font-medium ml-2">
-                {elem.title}
+                {name}
               </p>
             </div>
             <p className="mt-2 text-xs ml-10">
-              {toggleRead.includes(indx) ? (
+              {toggleRead.includes(indx) && text.length > 25 ? (
                 <>
-                  {elem.text}
+                  {text}
                   &nbsp;
                   <em
                     onClick={() =>
@@ -290,9 +398,9 @@ const FeedbackList = () => {
                     read less
                   </em>
                 </>
-              ) : (
+              ) : text.length > 25 ? (
                 <>
-                  {elem.text.slice(0, elem.text.length / 2) + "... "}
+                  {text.slice(0, text.length / 2) + "... "}
                   <em
                     onClick={() => setToggleRead((prev) => [...prev, indx])}
                     className="text-blue-500 hover:underline cursor-pointer"
@@ -300,6 +408,8 @@ const FeedbackList = () => {
                     read more
                   </em>
                 </>
+              ) : (
+                text
               )}
             </p>
           </div>

@@ -56,7 +56,7 @@ const ParishManagement = () => {
       country: "",
       _province: "",
       _region: "",
-      status: "",
+      status: "ACTIVE",
       _about: "",
     },
   });

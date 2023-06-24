@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { OtherPage } from "../components";
+import { useNavigate, Navigate } from "react-router-dom";
+import { Loader, OtherPage } from "../components";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { themes } from "../constants/data";
+import { base_url } from "../utils/url";
+import { useContext } from "react";
+import { AppContext } from "../context";
+import { useEffect } from "react";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
-
-  // Email to change password of user account
-  const { email } = useParams();
+  const { user, otpData } = useContext(AppContext);
   const [message, setMessage] = useState({ theme: "", value: "" });
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [newPassword, setNewPassword] = useState({
     isVisible: false,
     value: "",
@@ -42,20 +45,77 @@ const ChangePassword = () => {
   const toggleConfirmPassword = () =>
     setConfirmPassword((prev) => ({ ...prev, isVisible: !prev.isVisible }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const url = `${base_url}/adminresetpassword/${
+      user ? user?.id : otpData.id
+    }`;
     e.preventDefault();
-    if (newPassword.value === confirmPassword.value) {
-      setMessage({
-        theme: themes.success,
-        value: "Your password changed successfully!",
-      });
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
-    } else {
-      setMessage({ theme: themes.error, value: "Password doesn't match!" });
+    setToggleBtn(true);
+
+    // if (newPassword.value === confirmPassword.value) {
+    //   setMessage({
+    //     theme: themes.success,
+    //     value: "Your password changed successfully!",
+    //   });
+    //   setTimeout(() => {
+    //     navigate("/login");
+    //   }, 1500);
+    // } else if (newPassword.value !== confirmPassword.value) {
+    //   setMessage({ theme: themes.error, value: "Password doesn't match!" });
+    // } else {
+    //   setMessage({ theme: themes.error, value: "An error occurred!" });
+    // }
+
+    try {
+      let formdata = new FormData();
+      formdata.append("password", newPassword.value);
+      formdata.append("password_confirmation", confirmPassword.value);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(url, requestOptions);
+      const json = await res.json();
+
+      if (json.success) {
+        setMessage({ theme: themes.success, value: json.success.message });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+        console.log("data =============>", json);
+      } else {
+        setMessage({ theme: themes.error, value: json.error.message });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBtn(false);
     }
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue =
+        "Are you sure you want to leave? You'll need to verify your email again";
+    };
+
+    !user && document.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      !user && document.addEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  if (!user && !otpData) {
+    return <Navigate to="/forgot-password" />;
+  }
 
   return (
     <OtherPage
@@ -148,9 +208,17 @@ const ChangePassword = () => {
 
             <button
               type="submit"
-              className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 disabled:bg-blue-400 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              disabled={toggleBtn}
             >
-              Finish
+              {toggleBtn ? (
+                <>
+                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  Changing
+                </>
+              ) : (
+                "Change"
+              )}
             </button>
           </form>
         </div>

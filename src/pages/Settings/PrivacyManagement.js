@@ -7,7 +7,7 @@ import { fetchDataByLang } from "../../utils";
 
 const PrivacyManagement = () => {
   const type = "Privacy";
-  const [toggleBtn, setToggleBtn] = useState(true);
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState({ value: "" });
   const [language, setLanguage] = useState({ state: false, value: "English" });

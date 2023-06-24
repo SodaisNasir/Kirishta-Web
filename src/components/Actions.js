@@ -42,20 +42,81 @@ const Actions = ({
   statusChangeUrl,
 }) => {
   const navigate = useNavigate();
-  const [blockUser, setBlockUser] = useState(false);
+  const [blockUser, setBlockUser] = useState(
+    data?.status?.toLowerCase() == "inactive"
+  );
+  const [toggleBlockBtn, setToggleBlockBtn] = useState(false);
+
+  const handleBlock = async () => {
+    setToggleBlockBtn(true);
+
+    try {
+      const requestOptions = {
+        headers: {
+          accept: "application/json",
+        },
+        method: "POST",
+        redirect: "follow",
+      };
+      const res = await fetch(
+        `https://sassolution.org/kirista/api/block/${id}`,
+        requestOptions
+      );
+      const json = await res.json();
+      console.log("data =======>", data);
+
+      if (json.success) {
+        const data = json;
+        setBlockUser(!blockUser);
+        setPaginatedData({
+          ...paginatedData,
+          items: paginatedData.items.map((user) =>
+            user.id == id
+              ? {
+                  ...user,
+                  status:
+                    user.status.toLowerCase() === "active"
+                      ? "InActive"
+                      : "Active",
+                }
+              : user
+          ),
+        });
+        setData((prev) =>
+          prev.map((user) =>
+            user.id == id
+              ? {
+                  ...user,
+                  status:
+                    user.status.toLowerCase() === "active"
+                      ? "InActive"
+                      : "Active",
+                }
+              : user
+          )
+        );
+        console.log("block/unblock data =======>", data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBlockBtn(false);
+    }
+  };
 
   const remove = async () => {
     try {
       const requestOptions = {
         headers: {
-          Accept: "application/json",
+          accept: "application/json",
         },
         method: "POST",
+        redirect: "follow",
       };
       const res = await fetch(`${deleteUrl}/${id}`, requestOptions);
       const json = await res.json();
 
-      if (json.success.status == 200) {
+      if (json.success) {
         setData((prev) => prev.filter((e) => e.id !== id));
         setPaginatedData((prev) => ({
           ...prev,
@@ -65,11 +126,6 @@ const Actions = ({
     } catch (err) {
       console.error(err);
     }
-
-    setPaginatedData((prev) => ({
-      ...prev,
-      items: prev.items.filter((item) => item.id !== id),
-    }));
   };
 
   const redirect = () => navigate("/users-management/user-details/" + data._id);
@@ -81,7 +137,7 @@ const Actions = ({
           <StatusDropdown
             {...{
               id,
-              value: data["_status"],
+              value: data._status || data.status,
               statusChangeUrl,
               setPaginatedData,
               setData,
@@ -192,7 +248,11 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={() =>
-              setReplyModal((prev) => ({ ...prev, isVisible: true }))
+              setReplyModal((prev) => ({
+                ...prev,
+                isVisible: true,
+                id: data.id,
+              }))
             }
             className="font-medium text-gray-600 hover:text-gray-800"
           >
@@ -204,7 +264,11 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={() =>
-              setNotificationModal((prev) => ({ ...prev, isVisible: true }))
+              setNotificationModal((prev) => ({
+                ...prev,
+                isVisible: true,
+                data,
+              }))
             }
             className="font-medium text-gray-600 hover:text-gray-800"
           >
@@ -235,9 +299,10 @@ const Actions = ({
       {actionCols.includes("Block/Unblock") && (
         <td className="text-center text-base px-6 py-4">
           <button
-            onClick={() => setBlockUser(!blockUser)}
+            onClick={handleBlock}
             className="font-medium text-blue-600 dark:text-blue-500"
             title={blockUser ? "Unblock user" : "Block user"}
+            disabled={toggleBlockBtn}
           >
             {blockUser ? <CgUnblock /> : <MdBlock />}
           </button>
@@ -255,7 +320,7 @@ const StatusDropdown = ({
   setData,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [state, setState] = useState({ toggle: false, value: value });
+  const [toggle, setToggle] = useState(false);
 
   const handleClick = async (e) => {
     try {
@@ -272,14 +337,14 @@ const StatusDropdown = ({
         body: formdata,
         redirect: "follow",
       };
-      console.log(statusChangeUrl + id);
+
       const res = await fetch(statusChangeUrl + id, requestOptions);
       const json = await res.json();
 
       console.log(json);
 
       if (json.success.status == 200) {
-        setState({ toggle: false, value: e.target.innerText });
+        setToggle(false);
         setData((prev) =>
           prev.map((item) =>
             item.id === id ? { ...item, _status: e.target.innerText } : item
@@ -301,19 +366,19 @@ const StatusDropdown = ({
 
   return (
     <div
-      onClick={() => setState((prev) => ({ ...prev, toggle: !state.toggle }))}
+      onClick={() => setToggle(!toggle)}
       className="relative inline-block text-blue-500 hover:underline cursor-pointer"
     >
-      {state.value}
+      {value}
 
-      {state.toggle && (
+      {toggle && (
         <DropdownContainer extraStyles="!top-auto !right-auto !left-[130%] bottom-[-100%]">
           {["New", "Pending", "Resolved"].map((elem, indx) => (
             <li
               key={elem + indx}
               onClick={handleClick}
               role="option"
-              aria-selected={elem === state.value}
+              aria-selected={elem === value}
               className={`${
                 indx !== 2 ? "border-b" : ""
               } p-1 text-gray-900 hover:text-gray-600 cursor-pointer whitespace-nowrap`}

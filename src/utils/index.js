@@ -1,6 +1,6 @@
 import { base_url } from "./url";
 
-export const typeCheck = (elem) => {
+export const typeCheck = (elem, page) => {
   let str = elem.toLowerCase();
   let result = null;
 
@@ -12,6 +12,8 @@ export const typeCheck = (elem) => {
     result = "date";
   } else if (str.includes("app_page")) {
     result = "url";
+  } else if (str.includes("code") && page === "Provinces Management") {
+    result = "text";
   } else if (
     str.includes("id") ||
     str.includes("number") ||
@@ -49,11 +51,14 @@ export const modifyData = (data, neededProps) => {
 
   const updateObj = (obj) => {
     let newObj = {};
-    keys.forEach((key, indx) =>
-      neededProps[indx]?.includes(key)
-        ? (newObj[neededProps[indx]] = obj[key])
-        : null
-    );
+    keys.forEach((key) => {
+      const index =
+        neededProps?.indexOf(key) !== -1
+          ? neededProps?.indexOf(key)
+          : neededProps?.indexOf(`_${key}`);
+
+      return index !== -1 ? (newObj[neededProps[index]] = obj[key]) : null;
+    });
 
     return newObj;
   };
@@ -116,6 +121,44 @@ export const fetchDataByLang = async (
     console.error(error);
   } finally {
     setIsLoading(false);
+  }
+};
+
+export const fetchChapters = async (setState, id) => {
+  try {
+    const res = await fetch(`${base_url}/book-chapter/${id}`);
+    const json = await res.json();
+
+    if (json.success) {
+      const data = json.success.data;
+      setState && setState(data);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchBooks = async (setBooks) => {
+  try {
+    const res = await fetch(`${base_url}/books`);
+    const json = await res.json();
+
+    if (json.success) {
+      const data = json.success.data;
+      setBooks &&
+        setBooks(
+          data
+            .filter((e) => e.status.toLowerCase() == "inactive")
+            .map((obj) => {
+              let newObj = { ...obj };
+              delete newObj.updated_at;
+              delete newObj.created_at;
+              return newObj;
+            })
+        );
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

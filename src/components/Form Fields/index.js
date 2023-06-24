@@ -59,7 +59,9 @@ export const DeviceField = ({
 
 export const MapField = ({ state, setState }) => {
   const isStateString = typeof state === "string";
-  const stateCopy = isStateString && JSON.parse(state);
+  let stateCopy = isStateString && JSON.parse(state);
+  stateCopy = typeof stateCopy === "string" && JSON.parse(state);
+  console.log(state);
 
   return (
     <div>
@@ -379,7 +381,7 @@ export const StatusField = ({ state, setState, statusType }) => {
       </label>
       <select
         required={true}
-        value={state}
+        value={state.toUpperCase()}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="status"

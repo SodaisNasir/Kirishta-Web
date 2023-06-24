@@ -9,6 +9,7 @@ import { base_url } from "../utils/url";
 const showAllFeedbacks = `${base_url}/feedback`;
 const statusChangeUrl = `${base_url}/feedback-status/`;
 const deleteUrl = `${base_url}/feedback-delete`;
+const replyUrl = `${base_url}/reply-feedback/`;
 
 const FeedbackManagement = () => {
   const initial_filters = {
@@ -26,6 +27,7 @@ const FeedbackManagement = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [replyModal, setReplyModal] = useState({
+    id: null,
     isVisible: false,
     message: "",
   });
@@ -133,7 +135,7 @@ const FeedbackManagement = () => {
 
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <DropdownFilter
-                  arr={["RESOLVED", "PENDING"]}
+                  arr={["New", "Resolved", "Pending"]}
                   title={"Status"}
                   toggle={toggleStatus}
                   curFilter={curFilter}
@@ -151,7 +153,9 @@ const FeedbackManagement = () => {
                 )}
 
                 {/* Reply modal */}
-                {replyModal.isVisible && <ReplyModal {...{ setReplyModal }} />}
+                {replyModal.isVisible && (
+                  <ReplyModal {...{ replyModal, setReplyModal, replyUrl }} />
+                )}
               </div>
             </div>
           </div>

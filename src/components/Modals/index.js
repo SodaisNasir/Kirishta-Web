@@ -127,12 +127,42 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
   );
 };
 
-export const ReplyModal = ({ setReplyModal }) => {
-  const close = () => setReplyModal((prev) => ({ ...prev, isVisible: false }));
+export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
+  const url = replyUrl + replyModal.id;
+  const [message, setMessage] = useState("");
+  const [toggleBtn, setToggleBtn] = useState(false);
 
-  const handleSubmit = (e) => {
+  const close = () => setReplyModal({ message: "", isVisible: false });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    close();
+    setToggleBtn(true);
+
+    try {
+      let formdata = new FormData();
+      formdata.append("message", message);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(url, requestOptions);
+      const json = await res.json();
+
+      if (json.success.status == 200) {
+        close();
+        setToggleBtn(false);
+        console.log("ReplyModal =============>", json);
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    }
   };
 
   return (
@@ -158,7 +188,6 @@ export const ReplyModal = ({ setReplyModal }) => {
               onClick={close}
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              data-modal-hide="editUserModal"
             >
               <VscClose />
             </button>
@@ -176,6 +205,8 @@ export const ReplyModal = ({ setReplyModal }) => {
                 name="message"
                 id="message"
                 rows={10}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write message here..."
                 required={true}
@@ -187,9 +218,17 @@ export const ReplyModal = ({ setReplyModal }) => {
           <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button
               type="submit"
-              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              disabled={toggleBtn}
             >
-              Send
+              {toggleBtn ? (
+                <>
+                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  Sending
+                </>
+              ) : (
+                "Send"
+              )}
             </button>
           </div>
         </form>
@@ -198,13 +237,70 @@ export const ReplyModal = ({ setReplyModal }) => {
   );
 };
 
-export const NotificationModal = ({ setNotificationModal }) => {
-  const close = () =>
-    setNotificationModal((prev) => ({ ...prev, isVisible: false }));
+export const NotificationModal = ({
+  notificationModal,
+  setNotificationModal,
+  paginatedData,
+  notificationUrl,
+  notificationUrlBulk,
+  selected,
+  setSelected,
+}) => {
+  const isNotificationBulk = selected.length > 1;
+  const url = isNotificationBulk
+    ? notificationUrlBulk
+    : notificationUrl + notificationModal.data.id;
+  const [message, setMessage] = useState("");
+  const [toggleBtn, setToggleBtn] = useState(false);
 
-  const handleSubmit = (e) => {
+  const close = () => setNotificationModal({ message: "", isVisible: false });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    close();
+    setToggleBtn(true);
+
+    // console.log(
+    //   "first",
+    //   JSON.stringify(
+    //     paginatedData.items
+    //       .filter((e) => selected.includes(e.id))
+    //       .map((e) => e.device_token)
+    //   )
+    // );
+
+    try {
+      let formdata = new FormData();
+      formdata.append("message", message);
+      isNotificationBulk &&
+        formdata.append(
+          "device_token",
+          JSON.stringify(
+            paginatedData.items
+              .filter((e) => selected.includes(e.id))
+              .map((e) => e.device_token)
+          )
+        );
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(url, requestOptions);
+      const json = await res.json();
+
+      if (json.success) {
+        close();
+        console.log("NotificationModal =============>", json);
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    }
   };
 
   return (
@@ -247,6 +343,8 @@ export const NotificationModal = ({ setNotificationModal }) => {
                 name="message"
                 id="message"
                 rows={10}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write message here..."
                 required={true}
@@ -258,9 +356,17 @@ export const NotificationModal = ({ setNotificationModal }) => {
           <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button
               type="submit"
-              className="w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              disabled={toggleBtn}
             >
-              Send
+              {toggleBtn ? (
+                <>
+                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  Sending
+                </>
+              ) : (
+                "Send"
+              )}
             </button>
           </div>
         </form>
@@ -345,6 +451,8 @@ export const EditModal = ({
   const [toggleBtn, setToggleBtn] = useState(false);
   const [state, setState] = useState(initial_state);
 
+  console.log("state", state);
+
   const keys = Object.keys(initial_state).filter(
     (item) => item !== "id" && !item.includes("email_verified_at")
   );
@@ -359,7 +467,14 @@ export const EditModal = ({
       let formdata = new FormData();
       keys.forEach((key) => {
         if (key === "_map") {
-          formdata.append("map", JSON.stringify(state[key]));
+          formdata.append(
+            "map",
+            `${state[key].latitude},${state[key].longitude}`
+          );
+          console.log(
+            "map2 ======> ",
+            `${state[key].latitude},${state[key].longitude}`
+          );
         } else {
           formdata.append(key.replace("_", ""), state[key]);
         }
@@ -378,15 +493,20 @@ export const EditModal = ({
       const json = await res.json();
 
       if (json.success.status == 200) {
-        console.log(json.success.data);
-        const data = keys.includes("image")
-          ? { ...state, image: json.success.data.image }
-          : state;
-        setEditModal({ data, isVisible: false });
-        setData((prev) => prev.map((e) => (e.id === data.id ? data : e)));
+        const updatedData = json.success.data;
+        let data = { id: null, ...state };
+        Object.keys(data).forEach(
+          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+        );
+
+        console.log("EditModal =============>", data);
+
+        setData((prev) =>
+          prev.map((item) => (item.id === state.id ? data : item))
+        );
         setPaginatedData((prev) => ({
           ...prev,
-          items: prev.items.map((e) => (e.id === data.id ? data : e)),
+          items: prev.items.map((item) => (item.id === state.id ? data : item)),
         }));
       }
     } catch (err) {
@@ -449,6 +569,12 @@ export const EditModal = ({
                 {keys.map((elem) => {
                   const type = typeCheck(elem);
                   const key = elem;
+
+                  if (
+                    page === "Users Management" &&
+                    (key.includes("status") || key.includes("device"))
+                  )
+                    return;
 
                   if (key.includes("device"))
                     return (
@@ -656,7 +782,7 @@ export const EditModal = ({
                         type={type}
                         name={elem.toLowerCase()}
                         id={elem.toLowerCase()}
-                        value={state[elem]}
+                        value={state[elem] || ""}
                         onChange={(e) =>
                           setState((prev) => ({
                             ...prev,
@@ -727,6 +853,8 @@ export const CreateNewModal = ({
   const [toggleBtn, setToggleBtn] = useState(false);
   const [state, setState] = useState(initial_state);
 
+  console.log("state ========>", state);
+
   const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
   const setValue = (key, val) => setState((prev) => ({ ...prev, [key]: val }));
@@ -739,7 +867,14 @@ export const CreateNewModal = ({
       let formdata = new FormData();
       keys.forEach((key) => {
         if (key === "_map") {
-          formdata.append("map", JSON.stringify(state[key]));
+          formdata.append(
+            "map",
+            `${state[key].latitude},${state[key].longitude}`
+          );
+          console.log(
+            "map2 ======> ",
+            `${state[key].latitude},${state[key].longitude}`
+          );
         } else {
           formdata.append(key.replace(/^_/, ""), state[key]);
         }
@@ -834,7 +969,7 @@ export const CreateNewModal = ({
                 } gap-5`}
               >
                 {keys.map((elem) => {
-                  const type = typeCheck(elem);
+                  const type = typeCheck(elem, page);
                   const key = elem;
 
                   if (key.includes("device"))

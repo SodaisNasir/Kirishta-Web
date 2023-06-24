@@ -1,15 +1,69 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { OtherPage } from "../components";
+import { Loader, OtherPage } from "../components";
+import { themes } from "../constants/data";
+import { useContext } from "react";
+import { AppContext } from "../context";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { setOtpData } = useContext(AppContext);
   const [email, setEmail] = useState("");
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [message, setMessage] = useState({ theme: "", value: "" });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    setEmail(value);
+    setMessage({ theme: "", value: "" });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate(`/email-verification/${email}`);
+    setToggleBtn(true);
+    let json = null;
+
+    try {
+      let formdata = new FormData();
+      formdata.append("email", email);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(
+        "https://sassolution.org/kirista/api/adminEmail",
+        requestOptions
+      );
+      json = await res.json();
+
+      console.log(json);
+
+      if (json.success) {
+        const data = json.success;
+        setOtpData(data);
+
+        navigate("/email-verification");
+      } else if (json.error) {
+        setMessage({
+          theme: themes.error,
+          value: json.error.message.toLowerCase().includes("email not")
+            ? "Email doesn't exist!"
+            : json.error.message,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBtn(false);
+    }
   };
 
   return (
@@ -20,6 +74,14 @@ const ForgotPassword = () => {
       <main className="flex justify-center w-full h-full p-3 font-poppins">
         <div className="w-full max-w-md p-4">
           <h2 className="font-semibold text-lg mb-2">Reset Password</h2>
+
+          {message.value && (
+            <p
+              className={`w-full p-2.5 my-2 text-xs rounded-md border ${message.theme}`}
+            >
+              {message.value}
+            </p>
+          )}
 
           <p className="text-xs mb-3">
             Please enter your email address, and we will send you an OTP to
@@ -37,7 +99,7 @@ const ForgotPassword = () => {
               type="email"
               name="email"
               id="email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               value={email}
               className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="example@gmail.com"
@@ -46,8 +108,12 @@ const ForgotPassword = () => {
 
             <button
               type="submit"
-              className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed disabled:bg-blue-400"
+              disabled={toggleBtn}
             >
+              {toggleBtn && (
+                <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+              )}
               Next
             </button>
           </form>

@@ -1,15 +1,91 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ConfirmationCodeFeilds, OtherPage } from "../components";
+import { Navigate, useNavigate } from "react-router-dom";
+import { ConfirmationCodeFeilds, Loader, OtherPage } from "../components";
+import { useContext } from "react";
+import { AppContext } from "../context";
+import { themes } from "../constants/data";
 
 const EmailVerification = () => {
-  const { email } = useParams();
   const navigate = useNavigate();
-  const onChange = (value) => console.log(value);
+  const { otpData, setOtpData } = useContext(AppContext);
+  const [state, setState] = useState(null);
+  const [counter, setCounter] = useState(600);
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [message, setMessage] = useState({ theme: "", value: "" });
+
+  const minutes = Math.floor(counter / 60);
+  const seconds = counter % 60;
+
+  const onChange = (val) => {
+    setMessage({ theme: "", value: "" });
+    setState(val);
+  };
+
+  const handleResend = async () => {
+    setToggleBtn(true);
+
+    try {
+      let formdata = new FormData();
+      formdata.append("email", otpData.email);
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(
+        "https://sassolution.org/kirista/api/adminEmail",
+        requestOptions
+      );
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success) {
+        const data = json.success;
+        setMessage({ theme: themes.success, value: json.success.message });
+        setOtpData(data);
+        setCounter(600);
+      } else if (json.error) {
+        setMessage({
+          theme: themes.error,
+          value: json.error.message.toLowerCase().includes("email not")
+            ? "Email doesn't exist!"
+            : json.error.message,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBtn(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/change-password/${email}`);
+    setToggleBtn(true);
+
+    console.log("state", state);
+
+    if (otpData.Reset_code == state) {
+      setMessage({
+        theme: themes.success,
+        value: "Email verification completed!",
+      });
+      setTimeout(() => {
+        navigate(`/change-password`);
+      }, 2000);
+    } else {
+      setToggleBtn(false);
+      setMessage({
+        theme: themes.error,
+        value: "OTP doesn't match! Please try again.",
+      });
+    }
   };
 
   const config = {
@@ -19,18 +95,29 @@ const EmailVerification = () => {
     onChange,
   };
 
-  const [counter, setCounter] = useState(600);
-
   useEffect(() => {
     const timer =
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
   }, [counter]);
 
-  const minutes = Math.floor(counter / 60);
-  const seconds = counter % 60;
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue =
+        "Are you sure you want to leave? You'll need to verify your email again";
+    };
 
-  return (
+    document.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      document.addEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  return otpData === null ? (
+    <Navigate to={"/forgot-password"} />
+  ) : (
     <OtherPage
       title="Email Verification"
       extraClasses="bg-[url('../src/assets/images/login_bg.webp')] pt-10 bg-cover bg-top h-screen"
@@ -39,9 +126,17 @@ const EmailVerification = () => {
         <div className="w-full max-w-md p-4">
           <h2 className="font-semibold text-lg mb-2">Email Verification</h2>
 
+          {message.value && (
+            <p
+              className={`w-full p-2.5 my-2 text-xs rounded-md border ${message.theme}`}
+            >
+              {message.value}
+            </p>
+          )}
+
           <p className="text-xs mb-3">
             We have sent one-time password to{" "}
-            <span className="font-semibold">{email}</span>
+            <span className="font-semibold">{otpData.email}</span>
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -56,7 +151,7 @@ const EmailVerification = () => {
 
             {counter === 0 && (
               <button
-                onClick={() => setCounter(600)}
+                onClick={handleResend}
                 className="block mx-auto text-[11px] mt-2 text-blue-500 hover:underline font-medium text-center"
               >
                 Resend
@@ -66,8 +161,12 @@ const EmailVerification = () => {
             <button
               type="submit"
               id="continue"
-              className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-4 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+              className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-4 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed disabled:bg-blue-400"
+              disabled={toggleBtn}
             >
+              {toggleBtn && (
+                <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+              )}
               Continue
             </button>
           </form>

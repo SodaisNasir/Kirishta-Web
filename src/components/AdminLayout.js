@@ -28,8 +28,8 @@ const AdminLayout = () => {
         <div
           onClick={() => setToggle(false)}
           className={`${
-            toggle ? "" : "hidden"
-          } md:hidden fixed inset-0 bg-black/40 z-[2]`}
+            toggle ? "" : "opacity-0 pointer-events-none"
+          } md:hidden fixed inset-0 transition-all duration-300 bg-black/40 z-[2]`}
         />
 
         <Outlet />

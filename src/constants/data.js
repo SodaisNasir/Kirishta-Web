@@ -139,6 +139,7 @@ export const navLinks = [
     items: [
       { title: "Banner", path: "/promotion-management/banner" },
       { title: "Pop-up", path: "/promotion-management/popup" },
+      { title: "Notification", path: "/promotion-management/notification" },
     ],
   },
   {
@@ -422,7 +423,7 @@ export const notifications = [
 // Dashboard Analytics
 export const dashboardCards = [
   {
-    title: "Total Countries",
+    title: "total_country",
     icon: (
       <svg
         className="w-5 h-5"
@@ -450,11 +451,10 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 53,
     colSpan: "col-span-2",
   },
   {
-    title: "Total Users",
+    title: "total_user",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"
@@ -482,17 +482,15 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Parish Countries",
+    title: "total_parish_country",
     icon: <HiGlobe className="text-xl text-blue-500" />,
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Android Users",
+    title: "total_android_user",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"
@@ -508,11 +506,10 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Parish Categories",
+    title: "total_parish_category",
     icon: (
       <svg
         className="w-5 h-5 text-blue-500"
@@ -522,11 +519,10 @@ export const dashboardCards = [
         <path d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm10 10h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zM17 3c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zM7 13c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z"></path>
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total IOS Users",
+    title: "total_ios_user",
     icon: (
       <svg
         className="w-4 h-4"
@@ -551,11 +547,10 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Regions",
+    title: "total_region",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -571,11 +566,10 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Books",
+    title: "total_books",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500 mt-0.5"
@@ -591,17 +585,15 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Provinces",
+    title: "total_province",
     icon: <FaReadme className="text-lg text-blue-500" />,
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Contacts",
+    title: "total_contact",
     icon: (
       <svg
         className="h-4 w-4 text-blue-500"
@@ -621,11 +613,10 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Parishes",
+    title: "total_parish",
     icon: (
       <svg
         className="w-5 h-5 text-blue-500"
@@ -637,17 +628,15 @@ export const dashboardCards = [
         <path d="M10 22v-4a2 2 0 0 1 4 0v4h4V12a1 1 0 0 0-.485-.857L13 8.434V6h2V4h-2V2h-2v2H9v2h2v2.434l-4.515 2.709A1 1 0 0 0 6 12v10h4zm-7 0h2v-8.118l-2.447 1.224A.998.998 0 0 0 2 16v5a1 1 0 0 0 1 1zm18.447-6.895L19 13.882V22h2a1 1 0 0 0 1-1v-5c0-.379-.214-.725-.553-.895z"></path>
       </svg>
     ),
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Feedbacks",
+    title: "total_feedback",
     icon: <MdFeedback className="text-lg text-blue-500" />,
-    num: 138148,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "Total Events",
+    title: "total_event",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"
@@ -667,7 +656,6 @@ export const dashboardCards = [
         />
       </svg>
     ),
-    num: 355131,
     colSpan: "col-span-2 sm:col-span-1",
   },
 ];

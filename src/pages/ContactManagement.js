@@ -9,6 +9,7 @@ import { fetchData } from "../utils";
 const showAllContacts = `${base_url}/contact`;
 const statusChangeUrl = `${base_url}/contact-status/`;
 const deleteUrl = `${base_url}/contact-delete`;
+const replyUrl = `${base_url}/reply-contact/`;
 
 const ContactManagement = () => {
   const initial_filters = {
@@ -130,7 +131,7 @@ const ContactManagement = () => {
 
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <DropdownFilter
-                  arr={["RESOLVED", "PENDING"]}
+                  arr={["New", "Resolved", "Pending"]}
                   title={"Status"}
                   toggle={toggleStatus}
                   curFilter={curFilter}
@@ -148,7 +149,9 @@ const ContactManagement = () => {
                 )}
 
                 {/* Edit user modal */}
-                {replyModal.isVisible && <ReplyModal {...{ setReplyModal }} />}
+                {replyModal.isVisible && (
+                  <ReplyModal {...{ replyModal, setReplyModal, replyUrl }} />
+                )}
               </div>
             </div>
           </div>

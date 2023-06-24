@@ -7,7 +7,7 @@ import { fetchDataByLang } from "../../utils";
 
 const AboutRCCGContinent2 = () => {
   const type = "RCCG Continent 2";
-  const [toggleBtn, setToggleBtn] = useState(true);
+  const [toggleBtn, setToggleBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState({ value: "" });
   const [language, setLanguage] = useState({ state: false, value: "English" });

@@ -6,6 +6,7 @@ import SubAdmin from "./Access/SubAdmin";
 import Roles from "./Access/Roles";
 import BannerPromotion from "./Promotion/BannerPromotion";
 import PopupPromotion from "./Promotion/PopupPromotion";
+import Notification from "./Promotion/Notification";
 import UsersManagement from "./UsersManagement";
 import BooksManagement from "./BooksManagement";
 import PublishBook from "./PublishBook";
@@ -36,6 +37,7 @@ export {
   Dashboard,
   BannerPromotion,
   PopupPromotion,
+  Notification,
   Login,
   UsersManagement,
   FeedbackManagement,

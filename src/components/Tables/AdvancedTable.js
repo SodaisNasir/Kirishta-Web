@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
-import { DropdownContainer } from "../helpers";
-import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
-import { base_url } from "../../utils/url";
 
 const AdvancedTable = ({
   page,
@@ -15,11 +12,13 @@ const AdvancedTable = ({
   deleteUrl,
   tableTemplate,
   actionCols,
+  selected = [],
+  setSelected,
   props,
   children,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(selected);
   const [tableStructure, setTableStructure] = useState(null);
 
   const handleCheckChange = (e) => {
@@ -42,6 +41,10 @@ const AdvancedTable = ({
       setIsLoading(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    setSelected && setSelected(selectedUsers);
+  }, [selectedUsers]);
 
   return (
     <>
@@ -72,6 +75,9 @@ const AdvancedTable = ({
                       id="checkbox-all-search"
                       type="checkbox"
                       onChange={handleCheckChange}
+                      checked={
+                        paginatedData.curItems.length === selectedUsers.length
+                      }
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                     />
                     <label htmlFor="checkbox-all-search" className="sr-only">
@@ -89,7 +95,9 @@ const AdvancedTable = ({
                         scope="col"
                         className="text-center px-6 py-3"
                       >
-                        {key === "id" ? "S/N" : key.replace("_", " ")}
+                        {key === "id" && page !== "Notification Promotion"
+                          ? "S/N"
+                          : key.replace("_", " ")}
                       </th>
                     )
                 )}

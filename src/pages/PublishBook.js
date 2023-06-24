@@ -1,36 +1,150 @@
 import React, { useEffect } from "react";
 import Page from "../components/Page Templates/Page";
 import { useState } from "react";
-import { CreateEPUB, Loader } from "../components";
-import { MdEdit } from "react-icons/md";
+import { CreateEPUB, EditModal, Loader } from "../components";
 import { base_url } from "../utils/url";
+import CommonTable from "../components/Tables/CommonTable";
+import { fetchBooks } from "../utils";
+
+const publishBookUrl = `${base_url}/create-book-publish`;
+const saveBookUrl = `${base_url}/create-book-save`;
 
 const PublishBook = () => {
-  const initialEPUBState = [{ title: "", body: "" }];
+  const initialEPUBState = [{ title: "", description: "" }];
   const initialState = {
     title: "",
     author: "",
-    cover_image: "",
+    cover_image: null,
     category: "",
     release_year: "",
     language: "",
     about: "",
-    epub: initialEPUBState,
   };
-  const [bookCategories, setBookCategories] = useState([]);
-  const [bookLanguages, setBookLanguages] = useState([]);
-  const [ePUB, setEPUB] = useState({ type: "file", file: "" });
+  const [togglePublishBtn, setTogglePublishBtn] = useState(false);
+  const [toggleSaveBtn, setToggleSaveBtn] = useState(false);
+  const [bookCategories, setBookCategories] = useState(null);
+  const [bookLanguages, setBookLanguages] = useState(null);
+  const [epub, setEpub] = useState({ type: "epub", value: null });
+  const [savedBooks, setSavedBooks] = useState(null);
+  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [state, setState] = useState(initialState);
 
+  console.log("state", state);
+  console.log("epub", epub);
+
   const handleChange = (e) => {
-    const name = e.target.name;
+    const key = e.target.name;
     const value = e.target.value;
 
-    setState((prev) => ({ ...prev, [name]: value }));
+    setState((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSave = async () => {
+    console.log("Save", state);
+
+    try {
+      let formdata = new FormData();
+      Object.keys(state).forEach((key) =>
+        formdata.append(key.replace(/^_/, ""), state[key])
+      );
+
+      if (epub.type === "chapters") {
+        Object.keys(epub.value).forEach((key) => {
+          formdata.append(`chapters[${key}][title]`, epub.value[key].title);
+          formdata.append(
+            `chapters[${key}][description]`,
+            epub.value[key].description
+          );
+        });
+      } else {
+        formdata.append("epub", epub.value);
+      }
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(saveBookUrl, requestOptions);
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        const updatedData = json.success.data;
+        let data = { id: null, ...state };
+        Object.keys(data).forEach(
+          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+        );
+
+        setState(initialState);
+        setEpub({ type: "epub", value: null });
+
+        console.log("createNewModal =============>", data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleSaveBtn(false);
+    }
+  };
+
+  const handlePublish = async () => {
     console.log("Submit", state);
+
+    try {
+      let formdata = new FormData();
+      Object.keys(state).forEach((key) =>
+        formdata.append(key.replace(/^_/, ""), state[key])
+      );
+
+      if (epub.type === "chapters") {
+        Object.keys(epub.value).forEach((key) => {
+          formdata.append(`chapters[${key}][title]`, epub.value[key].title);
+          formdata.append(
+            `chapters[${key}][description]`,
+            epub.value[key].description
+          );
+        });
+      } else {
+        formdata.append("epub", epub.value);
+      }
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(publishBookUrl, requestOptions);
+      const json = await res.json();
+
+      console.log(json);
+
+      if (json.success.status == 200) {
+        const updatedData = json.success.data;
+        let data = { id: null, ...state };
+        Object.keys(data).forEach(
+          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+        );
+
+        setState(initialState);
+        setEpub({ type: "epub", value: null });
+
+        console.log("createNewModal =============>", data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTogglePublishBtn(false);
+    }
   };
 
   const fetchBookCategories = async () => {
@@ -39,7 +153,9 @@ const PublishBook = () => {
       const json = await res.json();
 
       if (json.success) {
-        setBookCategories(json.success.data);
+        const data = json.success.data;
+        setBookCategories(data);
+        setState((prev) => ({ ...prev, category: data[0].category }));
       }
     } catch (error) {
       console.error(error);
@@ -52,7 +168,9 @@ const PublishBook = () => {
       const json = await res.json();
 
       if (json.success) {
-        setBookLanguages(json.success.data);
+        const data = json.success.data;
+        setBookLanguages(data);
+        setState((prev) => ({ ...prev, language: data[0].language }));
       }
     } catch (error) {
       console.error(error);
@@ -60,72 +178,44 @@ const PublishBook = () => {
   };
 
   useEffect(() => {
-    if (ePUB.type !== "create-epub") {
-      setState(initialState);
-    }
-  }, [ePUB.type]);
-
-  useEffect(() => {
     fetchBookCategories();
     fetchBookLanguages();
+    fetchBooks(setSavedBooks);
   }, []);
 
   return (
     <Page title="Publish Book">
       <main className="relative min-h-[80vh]">
-        {bookCategories && bookLanguages ? (
+        {bookCategories && bookLanguages && savedBooks ? (
           <>
             {/* Saved Books Table */}
             <div className="relative overflow-x-auto rounded-xl mt-4">
-              <table className="w-full text-xs text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="text-center px-6 py-3">
-                      Book Name
-                    </th>
-                    <th scope="col" className="text-center px-6 py-3">
-                      Author
-                    </th>
-                    <th scope="col" className="text-center px-6 py-3">
-                      Category
-                    </th>
-                    <th scope="col" className="text-center px-6 py-3">
-                      Edit
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center text-base px-6 py-2.5">
-                      <button className="font-medium text-gray-600 hover:text-gray-800">
-                        <MdEdit />
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center px-6 py-2.5">lorem ipsum</td>
-                    <td className="text-center text-base px-6 py-2.5">
-                      <button className="font-medium text-gray-600 hover:text-gray-800">
-                        <MdEdit />
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <CommonTable
+                {...{
+                  state: savedBooks,
+                  template: { title: "", author: "", category: "" },
+                  actionCols: ["Edit"],
+                  props: { setEditModal },
+                }}
+              />
             </div>
+
+            {/* Edit Modal */}
+            {editModal.isVisible && (
+              <EditModal
+                {...{
+                  editModal,
+                  setEditModal,
+                  statusType: "active/inactive",
+                  bookCategories,
+                  bookLanguages,
+                }}
+              />
+            )}
 
             {/* Book Details */}
             <div className="relative w-full mx-auto max-w-3xl max-h-full">
-              <div
-                // action="#"
-                // onSubmit={handleSubmit}
-                className="relative mt-2 dark:bg-gray-700"
-              >
+              <div className="relative mt-2 dark:bg-gray-700">
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
@@ -173,10 +263,15 @@ const PublishBook = () => {
                       </label>
                       <input
                         className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        value={state.cover_image}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          setState((prev) => ({
+                            ...prev,
+                            cover_image: e.target.files[0],
+                          }))
+                        }
                         id="cover_image"
                         name="cover_image"
+                        accept="image/*"
                         type="file"
                       />
                     </div>
@@ -259,7 +354,7 @@ const PublishBook = () => {
                       <textarea
                         id="about"
                         name="about"
-                        rows="8"
+                        rows="10"
                         value={state.about}
                         onChange={handleChange}
                         className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -271,13 +366,11 @@ const PublishBook = () => {
                         <input
                           id="epub-type-1"
                           type="radio"
-                          value="file"
+                          value="epub"
                           onChange={(e) =>
-                            setEPUB({
-                              type: e.target.value,
-                            })
+                            setEpub({ type: "epub", value: null })
                           }
-                          checked={ePUB.type === "file"}
+                          checked={epub.type === "epub"}
                           name="epub-type"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
                         />
@@ -292,13 +385,14 @@ const PublishBook = () => {
                         <input
                           id="epub-type-2"
                           type="radio"
-                          value="create-epub"
+                          value="chapters"
                           onChange={(e) =>
-                            setEPUB({
-                              type: e.target.value,
+                            setEpub({
+                              type: "chapters",
+                              value: initialEPUBState,
                             })
                           }
-                          checked={ePUB.type === "create-epub"}
+                          checked={epub.type === "chapters"}
                           name="epub-type"
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
                         />
@@ -310,7 +404,7 @@ const PublishBook = () => {
                         </label>
                       </div>
                     </div>
-                    {ePUB.type === "file" ? (
+                    {epub.type === "epub" ? (
                       <div className="col-span-6 w-full sm:w-1/2 mx-auto">
                         <label
                           className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
@@ -324,20 +418,21 @@ const PublishBook = () => {
                           type="file"
                           accept=".epub"
                           onChange={(e) =>
-                            setEPUB((prev) => ({
-                              ...prev,
-                              file: e.target.files[0],
-                            }))
+                            setEpub({
+                              type: "epub",
+                              value: e.target.files[0],
+                            })
                           }
                           placeholder="https://www.example.com"
+                          required={true}
                         />
                       </div>
                     ) : (
                       <CreateEPUB
                         {...{
-                          state: state.epub,
-                          setState: (data) =>
-                            setState((prev) => ({ ...prev, epub: data })),
+                          state: epub.value,
+                          setState: (value) =>
+                            setEpub({ type: "chapters", value }),
                         }}
                       />
                     )}
@@ -345,17 +440,34 @@ const PublishBook = () => {
                 </div>
                 <div className="w-full grid grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300 dark:border-gray-600">
                   <button
+                    onClick={handleSave}
                     type="button"
-                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    disabled={toggleSaveBtn}
                   >
-                    Save
+                    {toggleSaveBtn ? (
+                      <>
+                        <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                        Saving
+                      </>
+                    ) : (
+                      "Save"
+                    )}
                   </button>
                   <button
-                    onClick={handleSubmit}
+                    onClick={handlePublish}
                     type="button"
-                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    disabled={togglePublishBtn}
                   >
-                    Publish
+                    {togglePublishBtn ? (
+                      <>
+                        <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                        Publishing
+                      </>
+                    ) : (
+                      "Publish"
+                    )}
                   </button>
                 </div>
               </div>

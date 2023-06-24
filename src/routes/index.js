@@ -34,12 +34,19 @@ import {
   GeneralCountriesManagement,
   ParishCountriesManagement,
   ParishCategories,
+  Notification,
 } from "../pages";
 import { AppContext } from "../context";
 import { AdminLayout } from "../components";
+import { useLayoutEffect } from "react";
 
 const Router = () => {
-  const { user } = useContext(AppContext);
+  const { user, setUser } = useContext(AppContext);
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  useLayoutEffect(() => {
+    if (userData) setUser(userData);
+  }, []);
 
   return (
     <BrowserRouter>
@@ -47,7 +54,9 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route
           path="/"
-          element={user ? <AdminLayout /> : <Navigate to="/login" />}
+          element={
+            user || userData ? <AdminLayout /> : <Navigate to="/login" />
+          }
         >
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route index path="/dashboard" element={<Dashboard />} />
@@ -60,6 +69,10 @@ const Router = () => {
             <Route
               path="/promotion-management/popup"
               element={<PopupPromotion />}
+            />
+            <Route
+              path="/promotion-management/notification"
+              element={<Notification />}
             />
           </Route>
           <Route path="/access">
@@ -115,11 +128,22 @@ const Router = () => {
             <Route path="/settings/faq" element={<FAQManagement />} />
           </Route>
         </Route>
-        <Route path="/change-password/:email" element={<ChangePassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route
-          path="/email-verification/:email"
-          element={<EmailVerification />}
+          path="/forgot-password"
+          element={
+            user || userData ? <Navigate to="/dashboard" /> : <ForgotPassword />
+          }
+        />
+        <Route
+          path="/email-verification"
+          element={
+            user || userData ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <EmailVerification />
+            )
+          }
         />
       </Routes>
     </BrowserRouter>

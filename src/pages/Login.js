@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../context";
 import Logo from "../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -59,14 +59,8 @@ const Login = () => {
       if (json.success.status == 200) {
         const data = json.success.data;
         setMessage({ theme: themes.success, value: "Loign successful!" });
-        setUser({
-          ...data,
-          profile_image: "https://i.pravatar.cc/30",
-        });
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ ...data, profile_image: "https://i.pravatar.cc/30" })
-        );
+        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data);
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -85,15 +79,6 @@ const Login = () => {
       setToggleBtn(false);
     }
   };
-
-  useLayoutEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
-
-    if (user) {
-      setUser(user);
-      navigate("/dashboard");
-    }
-  }, []);
 
   return (
     <OtherPage

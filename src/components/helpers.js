@@ -24,13 +24,15 @@ export const DropdownFilter = ({
     <button
       onClick={setToggle}
       className={`relative flex items-center text-black ${
-        curFilter.filter === title
+        curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
           ? "bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300"
           : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600"
       } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center`}
     >
-      {curFilter.filter === title ? curFilter.value : title}
-      <FaChevronUp className={`${toggle ? "" : "rotate-180"} ml-1`} />
+      {curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
+        ? curFilter.value
+        : title}
+      <FaChevronUp className={`${toggle ? "" : "rotate-180"} ml-2`} />
       {toggle && (
         <DropdownContainer extraStyles="text-black font-medium text-xs text-left">
           <li

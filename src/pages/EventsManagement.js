@@ -52,6 +52,7 @@ const EventsManagement = () => {
   });
   const [filters, setFilters] = useState(initial_filters);
   const { searchInput, toggleStatus } = filters;
+  console.log(data);
 
   const setSingleFilter = (key, value) => {
     setFilters({ ...initial_filters, [key]: value });

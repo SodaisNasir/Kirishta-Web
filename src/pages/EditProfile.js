@@ -1,12 +1,61 @@
 import React, { useContext } from "react";
-import { Page } from "../components";
+import { Loader, Page } from "../components";
 import { AppContext } from "../context";
+import { useState } from "react";
+import { base_url } from "../utils/url";
 
 const EditProfile = () => {
-  const { user } = useContext(AppContext);
+  const { user, setUser } = useContext(AppContext);
+  console.log("user", user);
+  const [image, setImage] = useState("");
+  const [state, setState] = useState(user);
+  const [toggleBtn, setToggleBtn] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setToggleBtn(true);
+
+    try {
+      const url = `${base_url}/admin-profile-edit/${user.id}`;
+      let formdata = new FormData();
+      Object.keys(state).forEach((key) => formdata.append(key, state[key]));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(url, requestOptions);
+      const json = await res.json();
+
+      if (json.success.status == 200) {
+        const data = json.success.data;
+        setUser(data);
+        console.log("Response =============>", data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBtn(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+
+    if (key === "profile_image") {
+      const file = e.target.files[0];
+
+      setImage(URL.createObjectURL(file));
+      setState({ ...state, profile_image: file });
+    } else {
+      setState({ ...state, [key]: value });
+    }
   };
 
   return (
@@ -15,19 +64,17 @@ const EditProfile = () => {
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-          action="#"
-          method="POST"
         >
           <div className="col-span-2">
-            <label className="block text-xs text-center font-medium text-gray-700">
+            <label className="block text-sm text-center font-medium text-gray-700">
               Photo
             </label>
             <div className="mt-1 flex flex-col items-center text-xs">
               <div className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                {user.profile_image ? (
+                {image || state.profile_image ? (
                   <img
                     className="h-full w-full text-gray-300"
-                    src={user.profile_image}
+                    src={image || state.profile_image}
                     alt="profile"
                   />
                 ) : (
@@ -40,8 +87,16 @@ const EditProfile = () => {
                   </svg>
                 )}
               </div>
-              <input id="profile-image" type="file" className="hidden" />
+              <input
+                id="profile_image"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                name="profile_image"
+                onChange={handleChange}
+              />
               <button
+                onClick={() => document.getElementById("profile_image").click()}
                 type="button"
                 className="bg-white py-1.5 px-3 mt-2 border border-gray-300 rounded-md shadow-sm leading-4 font-medium text-gray-700 hover:bg-gray-50"
               >
@@ -62,32 +117,32 @@ const EditProfile = () => {
                 type="text"
                 name="name"
                 id="name"
-                value={user.name.split(" ")[0]}
+                value={state.name}
+                onChange={handleChange}
                 className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="John"
+                placeholder="John Doe"
               />
             </div>
           </div>
-
           <div className="col-span-1">
             <label
-              htmlFor="email"
+              htmlFor="phone_number"
               className="block text-xs font-medium text-gray-700"
             >
-              Email
+              Phone Number
             </label>
             <div className="mt-1">
               <input
-                type="email"
-                name="email"
-                id="email"
-                value={user.email}
+                type="tel"
+                name="phone_number"
+                id="phone_number"
+                value={state.phone_number}
+                onChange={handleChange}
                 className="p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="johndoe@gmail.com"
+                placeholder="+021 656 4848 315"
               />
             </div>
           </div>
-
           <div className="col-span-2">
             <label
               htmlFor="about"
@@ -101,19 +156,29 @@ const EditProfile = () => {
                 id="about"
                 name="about"
                 rows="10"
-                value={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at ante ut risus tincidunt accumsan vel vitae massa. Pellentesque feugiat tortor nec quam mattis, at ultricies justo euismod. Nunc libero ipsum, vehicula sit amet posuere non, suscipit eget turpis. Donec ut aliquet erat. Quisque vel consequat erat, a fringilla turpis. Aenean faucibus fermentum interdum. Vestibulum velit diam, vehicula sed egestas non, aliquet quis felis. Quisque at turpis eleifend, luctus ipsum vel, dignissim felis. Sed condimentum mollis metus, sit amet scelerisque enim dictum ac. Nulla suscipit ac turpis vitae tristique. Vestibulum fringilla nunc sed pulvinar commodo. \n\nPellentesque dui elit, ultricies a interdum sed, sodales ut tellus. Vivamus sollicitudin tempor pellentesque. Nam vitae ante accumsan dolor tempor laoreet et in lacus."
-                }
-                placeholder="you@example.com"
+                value={state.about || ""}
+                onChange={handleChange}
+                placeholder="Write about yourself here..."
               ></textarea>
             </div>
           </div>
+
           <div className="text-right col-span-2">
             <button
               type="submit"
-              className="inline-flex justify-center py-1.5 px-4 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600"
+              className={`inline-flex justify-center items-center py-2 px-5 ${
+                toggleBtn ? "pl-1.5" : ""
+              } border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed`}
+              disabled={toggleBtn}
             >
-              Save
+              {toggleBtn ? (
+                <>
+                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  Updating
+                </>
+              ) : (
+                "Update"
+              )}
             </button>
           </div>
         </form>
