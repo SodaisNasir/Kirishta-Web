@@ -49,8 +49,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
         tabIndex="-1"
         className={`${
           viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full`}
-      >
+        } fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full`}>
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -62,8 +61,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <VscClose />
               </button>
             </div>
@@ -83,8 +81,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                       elem.includes("Report Details")
                         ? "col-span-6"
                         : "col-span-6 sm:col-span-3"
-                    } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
-                  >
+                    } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}>
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
                       {elem === "id" && page !== "Users Management"
                         ? "S/N"
@@ -93,8 +90,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                     <p
                       className={`block font-medium ${
                         elem === "flag_code" ? "font-emoji" : "text-xs"
-                      } text-gray-700 dark:text-white`}
-                    >
+                      } text-gray-700 dark:text-white`}>
                       {typeof data[elem] === "string" &&
                       elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
@@ -115,8 +111,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
               <button
                 onClick={close}
                 type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                 close
               </button>
             </div>
@@ -173,12 +168,10 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
       />
       <div
         tabIndex="-1"
-        className={`fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
+        className={`fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}>
         <form
           onSubmit={handleSubmit}
-          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto"
-        >
+          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto">
           {/* Modal header */}
           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -187,8 +180,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
             <button
               onClick={close}
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
               <VscClose />
             </button>
           </div>
@@ -197,8 +189,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
             <div>
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Message
               </label>
               <textarea
@@ -209,8 +200,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
                 onChange={(e) => setMessage(e.target.value)}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write message here..."
-                required={true}
-              ></textarea>
+                required={true}></textarea>
             </div>
           </div>
 
@@ -219,8 +209,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
             <button
               type="submit"
               className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-              disabled={toggleBtn}
-            >
+              disabled={toggleBtn}>
               {toggleBtn ? (
                 <>
                   <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -311,12 +300,10 @@ export const NotificationModal = ({
       />
       <div
         tabIndex="-1"
-        className={`fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
-      >
+        className={`fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
         <form
           onSubmit={handleSubmit}
-          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto"
-        >
+          className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto">
           {/* Modal header */}
           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -325,8 +312,7 @@ export const NotificationModal = ({
             <button
               onClick={close}
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
               <VscClose />
             </button>
           </div>
@@ -335,8 +321,7 @@ export const NotificationModal = ({
             <div>
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Message
               </label>
               <textarea
@@ -347,8 +332,7 @@ export const NotificationModal = ({
                 onChange={(e) => setMessage(e.target.value)}
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write message here..."
-                required={true}
-              ></textarea>
+                required={true}></textarea>
             </div>
           </div>
 
@@ -357,8 +341,7 @@ export const NotificationModal = ({
             <button
               type="submit"
               className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-              disabled={toggleBtn}
-            >
+              disabled={toggleBtn}>
               {toggleBtn ? (
                 <>
                   <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -446,6 +429,8 @@ export const EditModal = ({
   parishRegions,
   parishProvinces,
   generalCountries,
+  roles,
+  languages,
 }) => {
   const initial_state = editModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -534,18 +519,15 @@ export const EditModal = ({
         tabIndex="-1"
         className={`${
           editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full pointer-events-none`}
-      >
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full pointer-events-none`}>
         <div
           className={`relative w-full ${
             gridCols === 1 ? "max-w-lg" : "max-w-2xl"
-          } max-h-full pointer-events-auto`}
-        >
+          } max-h-full pointer-events-auto`}>
           {/* Modal content */}
           <form
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -554,8 +536,7 @@ export const EditModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <VscClose />
               </button>
             </div>
@@ -564,8 +545,7 @@ export const EditModal = ({
               <div
                 className={`grid ${
                   gridCols === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"
-                } gap-5`}
-              >
+                } gap-5`}>
                 {keys.map((elem) => {
                   const type = typeCheck(elem);
                   const key = elem;
@@ -716,6 +696,7 @@ export const EditModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          languages,
                         }}
                       />
                     );
@@ -737,6 +718,7 @@ export const EditModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          roles,
                         }}
                       />
                     );
@@ -772,8 +754,7 @@ export const EditModal = ({
                     <div key={elem}>
                       <label
                         htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
                         {elem === "_map"
                           ? "Map (lat-long)"
                           : elem.replaceAll("_", " ")}
@@ -812,8 +793,7 @@ export const EditModal = ({
               <button
                 type="submit"
                 className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}
-              >
+                disabled={toggleBtn}>
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -848,6 +828,8 @@ export const CreateNewModal = ({
   parishRegions,
   parishProvinces,
   generalCountries,
+  roles,
+  languages,
 }) => {
   const initial_state = createNewModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -894,7 +876,7 @@ export const CreateNewModal = ({
 
       console.log(json);
 
-      if (json.success.status == 200) {
+      if (json.success) {
         const updatedData = json.success.data;
         let data = { id: null, ...state };
         Object.keys(data).forEach(
@@ -935,19 +917,16 @@ export const CreateNewModal = ({
         tabIndex="-1"
         className={`${
           createNewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full pointer-events-none`}
-      >
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-full pointer-events-none`}>
         <div
           className={`relative w-full ${
             gridCols === 1 ? "max-w-lg" : "max-w-2xl"
-          } max-h-full pointer-events-auto`}
-        >
+          } max-h-full pointer-events-auto`}>
           {/* Modal content */}
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -956,8 +935,7 @@ export const CreateNewModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <VscClose />
               </button>
             </div>
@@ -966,8 +944,7 @@ export const CreateNewModal = ({
               <div
                 className={`grid ${
                   gridCols === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"
-                } gap-5`}
-              >
+                } gap-5`}>
                 {keys.map((elem) => {
                   const type = typeCheck(elem, page);
                   const key = elem;
@@ -1090,6 +1067,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          languages,
                         }}
                       />
                     );
@@ -1111,6 +1089,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          roles,
                         }}
                       />
                     );
@@ -1147,8 +1126,7 @@ export const CreateNewModal = ({
                     <div key={elem}>
                       <label
                         htmlFor={elem}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
                         {elem === "_map"
                           ? "Map (lat-long)"
                           : elem.replaceAll("_", " ")}
@@ -1188,8 +1166,7 @@ export const CreateNewModal = ({
               <button
                 type="submit"
                 className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}
-              >
+                disabled={toggleBtn}>
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />

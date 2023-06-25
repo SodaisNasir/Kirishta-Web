@@ -94,9 +94,9 @@ const NestedCheckbox = ({
   setSelectedChecks,
   type = "create",
 }) => {
-  const [nodes, setNodes] = useState(
-    transform(type === "edit" ? selectedChecks : data)
-  );
+  const initialNodes =
+    type === "create" ? transform(data) : transform(selectedChecks);
+  const [nodes, setNodes] = useState(initialNodes);
   // navigator.clipboard.writeText(nodes);
 
   const handleBoxChecked = (e, ancestors) => {
@@ -150,8 +150,7 @@ const NestedCheckboxHelper = ({
             <div
               className={`flex py-0.5 ${styles} ${
                 nestedStyles ? nestedStyles : ""
-              }`}
-            >
+              }`}>
               <input
                 type="checkbox"
                 name={id}

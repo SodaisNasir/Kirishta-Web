@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { Page, Actions, EditModal, CreateNewModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
-import { fetchData } from "../../utils";
+import { fetchData, fetchRoles } from "../../utils";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 
-const showAllBanners = `${base_url}/admin`;
+const showAllAdmins = `${base_url}/admin`;
 const editUrl = `${base_url}/admin-edit`;
 const createUrl = `${base_url}/create-admin`;
 const deleteUrl = `${base_url}/admin-delete`;
@@ -33,13 +33,14 @@ const SubAdmin = () => {
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
-      name: null,
-      email: null,
-      password: null,
-      phone_number: null,
-      role: "Admin",
+      name: "",
+      email: "",
+      password: "",
+      phone_number: "",
+      role: "",
     },
   });
+  const [roles, setRoles] = useState(null);
   const { searchInput, toggleRole } = filters;
 
   const setSingleFilter = (key, value) => {
@@ -93,7 +94,10 @@ const SubAdmin = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
+    fetchRoles(setRoles, (data) =>
+      setCreateNewModal((prev) => ({ ...prev, role: data[0] }))
+    );
+    fetchData(setPaginatedData, setData, neededProps, showAllAdmins);
   }, []);
 
   return (
@@ -109,8 +113,7 @@ const SubAdmin = () => {
             Actions,
             actionCols: ["Edit", "Remove"],
             props: { setEditModal },
-          }}
-        >
+          }}>
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
@@ -140,7 +143,7 @@ const SubAdmin = () => {
 
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <DropdownFilter
-                  arr={["Admin", "Editor"]}
+                  arr={roles}
                   title={"Role"}
                   toggle={toggleRole}
                   curFilter={curFilter}
@@ -157,8 +160,7 @@ const SubAdmin = () => {
                       isVisible: true,
                     }))
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
-                >
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50">
                   Add Admin
                 </button>
 
@@ -166,11 +168,12 @@ const SubAdmin = () => {
                 {createNewModal.isVisible && (
                   <CreateNewModal
                     {...{
+                      setData,
+                      createUrl,
                       createNewModal,
                       setCreateNewModal,
-                      setData,
                       setPaginatedData,
-                      createUrl,
+                      roles,
                     }}
                   />
                 )}
@@ -184,6 +187,7 @@ const SubAdmin = () => {
                       setData,
                       setPaginatedData,
                       editUrl,
+                      roles,
                     }}
                   />
                 )}

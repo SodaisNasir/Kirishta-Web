@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import ReactQuill from "react-quill";
 import EditorToolbar, {
   formats,
@@ -8,13 +8,17 @@ import EditorToolbar, {
 import "react-quill/dist/quill.snow.css";
 
 export const Editor = ({ state, handleBodyChange, id, styles = "" }) => {
+  const onChange = (val) => {
+    handleBodyChange(val, id);
+  };
+
   return (
     <div className={`pt-8 ${styles}`}>
       <EditorToolbar id={id} />
       <ReactQuill
         theme="snow"
         value={state}
-        onChange={handleBodyChange}
+        onChange={onChange}
         placeholder={"Write here..."}
         modules={Editor.modules(id)}
         formats={formats}
@@ -39,4 +43,4 @@ Editor.modules = (id) => ({
   },
 });
 
-export default Editor;
+export default memo(Editor);

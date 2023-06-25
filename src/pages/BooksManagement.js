@@ -6,7 +6,7 @@ import { CountryFilter } from "../components";
 import { DropdownFilter } from "../components/helpers";
 import { VscClose } from "react-icons/vsc";
 import { base_url } from "../utils/url";
-import { fetchChapters, fetchData } from "../utils";
+import { fetchChapters, fetchData, fetchParishCountries } from "../utils";
 
 const showAllBooks = `${base_url}/books`;
 const editUrl = `${base_url}/update-publish`;
@@ -31,7 +31,8 @@ const BooksManagement = () => {
   const { searchInput, toggleCountry, toggleStatus } = filters;
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
-  const [editUser, setEditUser] = useState({ isVisible: false, data: null });
+  const [parishCountries, setParishCountries] = useState(null);
+  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const setSingleFilter = (key, value) => {
     setFilters({ ...initial_filters, [key]: value });
@@ -113,6 +114,8 @@ const BooksManagement = () => {
     "_release_year",
     "_language",
     "_about",
+    "country",
+    "_featured",
     "status",
     "download",
     "read",
@@ -121,6 +124,7 @@ const BooksManagement = () => {
   useEffect(() => {
     fetchBookCategories();
     fetchBookLanguages();
+    fetchParishCountries(setParishCountries);
     fetchData(setPaginatedData, setData, neededProps, showAllBooks);
   }, []);
 
@@ -136,10 +140,9 @@ const BooksManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal: setEditUser, setViewModal },
-          }}
-        >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+            props: { setEditModal, setViewModal },
+          }}>
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between dark:bg-gray-800">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -153,18 +156,18 @@ const BooksManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search for books"
               />
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+              <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length} results
               </div>
 
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+              <div className="flex justify-between w-full xs:w-auto xs:justify-normal">
                 <CountryFilter
                   {...{
                     toggle: toggleCountry,
@@ -173,7 +176,7 @@ const BooksManagement = () => {
                       setSingleFilter("toggleCountry", !toggleCountry),
                     handleClick: (data) =>
                       setCurFilter({
-                        filter: data === null ? null : "_country",
+                        filter: data === null ? null : "country",
                         value: data === null ? null : data.title,
                       }),
                   }}
@@ -192,16 +195,17 @@ const BooksManagement = () => {
                   }
                 />
                 {/* Edit User modal */}
-                {editUser.isVisible && (
-                  <EditUserModal
+                {editModal.isVisible && (
+                  <EditModal
                     {...{
-                      editUser,
-                      setEditUser,
+                      editModal,
+                      setEditModal,
                       editUrl,
                       setData,
                       setPaginatedData,
                       bookCategories,
                       bookLanguages,
+                      parishCountries,
                     }}
                   />
                 )}
@@ -237,8 +241,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
         tabIndex="-1"
         className={`${
           viewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
-      >
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -250,8 +253,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <VscClose />
               </button>
             </div>
@@ -261,8 +263,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="col-span-6 sm:col-span-3 flex flex-col justify-center p-2 border rounded-md bg-gray-50"
-                  >
+                    className="flex flex-col justify-center col-span-6 p-2 border rounded-md sm:col-span-3 bg-gray-50">
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
                       {elem === "id" ? "S/N" : elem.replace(/_/g, " ")}
                     </p>
@@ -284,8 +285,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               <button
                 onClick={close}
                 type="button"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
+                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                 close
               </button>
             </div>
@@ -296,16 +296,17 @@ const ViewModal = ({ viewModal, setViewModal }) => {
   );
 };
 
-const EditUserModal = ({
-  editUser,
-  setEditUser,
+const EditModal = ({
+  editModal,
+  setEditModal,
   editUrl,
   setPaginatedData,
   setData,
   bookCategories,
   bookLanguages,
+  parishCountries,
 }) => {
-  const initial_state = editUser.data;
+  const initial_state = editModal.data;
   const initialState = [{ title: "", description: "" }];
   const [state, setState] = useState(initial_state);
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -341,7 +342,6 @@ const EditUserModal = ({
           epubState[key].description
         );
       });
-      // formdata.append("chapters", JSON.stringify(epubState));
 
       let requestOptions = {
         headers: {
@@ -376,14 +376,16 @@ const EditUserModal = ({
       console.error(err);
       setToggleBtn(false);
     } finally {
-      setEditUser({
+      setEditModal({
         data: null,
         isVisible: false,
       });
     }
   };
 
-  const close = () => setEditUser((prev) => ({ ...prev, isVisible: false }));
+  console.log("state", state);
+
+  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
     fetchChapters(setEpubState, state.id);
@@ -394,22 +396,20 @@ const EditUserModal = ({
       <div
         onClick={close}
         className={`${
-          editUser.isVisible ? "" : "hidden"
+          editModal.isVisible ? "" : "hidden"
         } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
       />
       <div
         tabIndex="-1"
         className={`${
-          editUser.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
-      >
+          editModal.isVisible ? "" : "hidden"
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div
             // action="#"
             // onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-          >
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -418,8 +418,7 @@ const EditUserModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              >
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                 <VscClose />
               </button>
             </div>
@@ -429,12 +428,11 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="cover_image"
-                  >
+                    htmlFor="cover_image">
                     Cover Image
                   </label>
                   <input
-                    className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     onChange={handleChange}
                     id="cover_image"
                     name="cover_image"
@@ -444,8 +442,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Title
                   </label>
                   <input
@@ -456,14 +453,12 @@ const EditUserModal = ({
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Lorem ipsum"
-                    defaultValue={editUser.data.Title}
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="author"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Author
                   </label>
                   <input
@@ -474,7 +469,6 @@ const EditUserModal = ({
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Lorem ipsum"
-                    defaultValue={editUser.data.Author}
                   />
                 </div>
                 {/* {editUser.ePUB_Type === "file" && (
@@ -486,7 +480,7 @@ const EditUserModal = ({
                       Upload ePUB
                     </label>
                     <input
-                      className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                       id="ePUB"
                       name="epub"
                       onChange={handleChange}
@@ -497,8 +491,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Category
                   </label>
                   <select
@@ -506,14 +499,12 @@ const EditUserModal = ({
                     value={state.category}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="categories"
-                  >
+                    id="categories">
                     {bookCategories.map((item, indx) => (
                       <option
                         className="text-sm"
                         key={item.category + indx}
-                        value={item.category}
-                      >
+                        value={item.category}>
                         {item.category}
                       </option>
                     ))}
@@ -522,8 +513,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="languages"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Language
                   </label>
                   <select
@@ -531,47 +521,40 @@ const EditUserModal = ({
                     value={state._language}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="languages"
-                  >
+                    id="languages">
                     {bookLanguages.map((item, indx) => (
                       <option
                         className="text-sm"
                         key={item.language + indx}
-                        value={item.language}
-                      >
+                        value={item.language}>
                         {item.language}
                       </option>
                     ))}
                   </select>
                 </div>
-                {/* <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="countries"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Country
                   </label>
                   <select
-                    defaultValue={editUser.data._Country}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="countries"
-                  >
-                    {parishCountries.map((country) => (
-                      <option
-                        className="text-sm"
-                        key={country.title}
-                        value={country.title}
-                      >
-                        {country.title}
+                    id="country"
+                    name="country"
+                    value={state.country}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {parishCountries.map(({ country }) => (
+                      <option className="text-sm" key={country} value={country}>
+                        {country}
                       </option>
                     ))}
                   </select>
-                </div> */}
+                </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="downloads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Downloads
                   </label>
                   <input
@@ -587,8 +570,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="reads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Reads
                   </label>
                   <input
@@ -604,8 +586,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Status
                   </label>
                   <select
@@ -613,8 +594,7 @@ const EditUserModal = ({
                     value={state.status}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="status"
-                  >
+                    id="status">
                     {["ACTIVE", "INACTIVE"].map((elem) => (
                       <option className="text-sm" key={elem} value={elem}>
                         {elem}
@@ -625,8 +605,7 @@ const EditUserModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="release_year"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Release year
                   </label>
                   <input
@@ -640,28 +619,26 @@ const EditUserModal = ({
                     max={new Date().getFullYear()}
                   />
                 </div>
-                {/* <div className="col-span-6 sm:col-span-3">
+                <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     Featured
                   </label>
                   <select
-                  name="featured"
+                    name="featured"
                     value={state.featured}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="featured"
-                  >
+                    id="featured">
                     {["Yes", "No"].map((item) => (
                       <option className="text-sm" key={item} value={item}>
                         {item}
                       </option>
                     ))}
                   </select>
-                </div> */}
-                <div className="col-span-6 sm:col-span-3 flex items-center justify-center pt-6">
+                </div>
+                <div className="flex items-center justify-center col-span-6 pt-6 sm:col-span-3">
                   <input
                     id="edit-epub-html"
                     type="checkbox"
@@ -672,16 +649,14 @@ const EditUserModal = ({
                   />
                   <label
                     htmlFor="edit-epub-html"
-                    className="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
-                  >
+                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
                     Edit ePUB HTML
                   </label>
                 </div>
                 <div className="col-span-6">
                   <label
                     htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                     About
                   </label>
                   <textarea
@@ -691,12 +666,11 @@ const EditUserModal = ({
                     value={state._about}
                     onChange={handleChange}
                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write about this book..."
-                  ></textarea>
+                    placeholder="Write about this book..."></textarea>
                 </div>
                 {editCheckbox && (
                   <div className="col-span-6">
-                    <p className="text-sm font-semibold text-center my-3">
+                    <p className="my-3 text-sm font-semibold text-center">
                       Edit ePUB
                     </p>
                     <CreateEPUB
@@ -714,9 +688,8 @@ const EditUserModal = ({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}
-              >
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}>
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />

@@ -76,7 +76,9 @@ const AdvancedTable = ({
                       type="checkbox"
                       onChange={handleCheckChange}
                       checked={
-                        paginatedData.curItems.length === selectedUsers.length
+                        (paginatedData.items.length &&
+                          paginatedData.curItems.length) ===
+                        selectedUsers.length
                       }
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                     />
@@ -93,8 +95,7 @@ const AdvancedTable = ({
                       <th
                         key={key}
                         scope="col"
-                        className="text-center px-6 py-3"
-                      >
+                        className="text-center px-6 py-3">
                         {key === "id" && page !== "Notification Promotion"
                           ? "S/N"
                           : key.replace("_", " ")}
@@ -131,8 +132,7 @@ const AdvancedTable = ({
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td
                     colSpan={tableStructure.length + 2}
-                    className="text-center w-4 p-4"
-                  >
+                    className="text-center w-4 p-4">
                     No data found!
                   </td>
                 </tr>
@@ -277,8 +277,7 @@ const SingleUser = ({
               key={key + id}
               className={`px-6 py-4 text-center ${
                 key === "flag_code" ? "font-emoji text-2xl" : ""
-              } whitespace-nowrap md:whitespace-normal`}
-            >
+              } whitespace-nowrap md:whitespace-normal`}>
               {key.includes("image") || key === "Media File" ? (
                 data[key] ? (
                   <img
@@ -300,8 +299,7 @@ const SingleUser = ({
                   }
                   className="text-blue-400 hover:underline"
                   target="_blank"
-                  rel="noreferrer"
-                >
+                  rel="noreferrer">
                   {data[key]}
                 </a>
               ) : Array.isArray(data[key]) ? (

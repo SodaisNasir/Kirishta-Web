@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "./index";
 import { FaBars } from "react-icons/fa";
 
@@ -11,6 +11,8 @@ const AdminLayout = () => {
     setToggle(false);
   }, [location]);
 
+  if (window.location.pathname === "/") return <Navigate to="/dashboard" />;
+
   return (
     <div className="relative flex font-poppins">
       <Navbar {...{ toggle, setToggle }} />
@@ -19,8 +21,7 @@ const AdminLayout = () => {
         {/* Menu btn (bars icon) */}
         <button
           onClick={() => setToggle(true)}
-          className={`md:hidden lg:hidden pl-3 pt-5 text-[#222222]`}
-        >
+          className={`md:hidden lg:hidden pl-3 pt-5 text-[#222222]`}>
           <FaBars />
         </button>
 

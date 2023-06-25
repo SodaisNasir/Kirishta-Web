@@ -70,7 +70,8 @@ export const fetchData = async (
   setPaginatedData,
   setData,
   neededProps,
-  url
+  url,
+  page
 ) => {
   try {
     const res = await fetch(url);
@@ -79,9 +80,22 @@ export const fetchData = async (
 
     setPaginatedData((prev) => ({
       ...prev,
-      items: data,
+      items:
+        page === "Roles"
+          ? data.map((elem) => ({
+              ...elem,
+              privilage: JSON.parse(elem.privilage),
+            }))
+          : data,
     }));
-    setData(data);
+    setData(
+      page === "Roles"
+        ? data.map((elem) => ({
+            ...elem,
+            privilage: JSON.parse(elem.privilage),
+          }))
+        : data
+    );
   } catch (err) {
     console.error(err);
   }
@@ -130,7 +144,10 @@ export const fetchChapters = async (setState, id) => {
     const json = await res.json();
 
     if (json.success) {
-      const data = json.success.data;
+      const data =
+        json.success.data.length === 0
+          ? [{ title: "", description: "" }]
+          : json.success.data;
       setState && setState(data);
     }
   } catch (error) {
@@ -148,7 +165,7 @@ export const fetchBooks = async (setBooks) => {
       setBooks &&
         setBooks(
           data
-            .filter((e) => e.status.toLowerCase() == "inactive")
+            .filter((e) => e.status.toLowerCase() === "inactive")
             .map((obj) => {
               let newObj = { ...obj };
               delete newObj.updated_at;
@@ -156,6 +173,21 @@ export const fetchBooks = async (setBooks) => {
               return newObj;
             })
         );
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchRoles = async (setState, callback) => {
+  try {
+    const res = await fetch(`${base_url}/role-privilage`);
+    const json = await res.json();
+
+    if (json.success) {
+      const data = json.success.data.map((e) => e.role);
+      setState(data);
+      callback && callback(data);
     }
   } catch (error) {
     console.error(error);

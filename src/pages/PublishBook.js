@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import Page from "../components/Page Templates/Page";
 import { useState } from "react";
-import { CreateEPUB, EditModal, Loader } from "../components";
+import { CreateEPUB, Loader } from "../components";
 import { base_url } from "../utils/url";
 import CommonTable from "../components/Tables/CommonTable";
-import { fetchBooks } from "../utils";
+import { fetchBooks, fetchChapters, fetchParishCountries } from "../utils";
+import { VscClose } from "react-icons/vsc";
 
 const publishBookUrl = `${base_url}/create-book-publish`;
 const saveBookUrl = `${base_url}/create-book-save`;
+const editUrl = `${base_url}/update-publish`;
 
 const PublishBook = () => {
   const initialEPUBState = [{ title: "", description: "" }];
@@ -24,6 +26,7 @@ const PublishBook = () => {
   const [toggleSaveBtn, setToggleSaveBtn] = useState(false);
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
+  const [parishCountries, setParishCountries] = useState(null);
   const [epub, setEpub] = useState({ type: "epub", value: null });
   const [savedBooks, setSavedBooks] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
@@ -40,13 +43,11 @@ const PublishBook = () => {
   };
 
   const handleSave = async () => {
-    console.log("Save", state);
+    setToggleSaveBtn(true);
 
     try {
       let formdata = new FormData();
-      Object.keys(state).forEach((key) =>
-        formdata.append(key.replace(/^_/, ""), state[key])
-      );
+      Object.keys(state).forEach((key) => formdata.append(key, state[key]));
 
       if (epub.type === "chapters") {
         Object.keys(epub.value).forEach((key) => {
@@ -64,6 +65,7 @@ const PublishBook = () => {
         headers: {
           Accept: "application/json",
         },
+        mode: "no-cors",
         method: "POST",
         body: formdata,
         redirect: "follow",
@@ -74,17 +76,14 @@ const PublishBook = () => {
 
       console.log(json);
 
-      if (json.success.status == 200) {
-        const updatedData = json.success.data;
-        let data = { id: null, ...state };
-        Object.keys(data).forEach(
-          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
-        );
+      if (json.success) {
+        const book = json.success.book;
+        setSavedBooks((prev) => [...prev, book]);
 
-        setState(initialState);
-        setEpub({ type: "epub", value: null });
+        // setState(initialState);
+        // setEpub({ type: "epub", value: null });
 
-        console.log("createNewModal =============>", data);
+        console.log("handleSave =============>", book);
       }
     } catch (err) {
       console.error(err);
@@ -94,13 +93,11 @@ const PublishBook = () => {
   };
 
   const handlePublish = async () => {
-    console.log("Submit", state);
+    setTogglePublishBtn(true);
 
     try {
       let formdata = new FormData();
-      Object.keys(state).forEach((key) =>
-        formdata.append(key.replace(/^_/, ""), state[key])
-      );
+      Object.keys(state).forEach((key) => formdata.append(key, state[key]));
 
       if (epub.type === "chapters") {
         Object.keys(epub.value).forEach((key) => {
@@ -128,17 +125,11 @@ const PublishBook = () => {
 
       console.log(json);
 
-      if (json.success.status == 200) {
-        const updatedData = json.success.data;
-        let data = { id: null, ...state };
-        Object.keys(data).forEach(
-          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
-        );
+      if (json.success) {
+        // setState(initialState);
+        // setEpub({ type: "epub", value: null });
 
-        setState(initialState);
-        setEpub({ type: "epub", value: null });
-
-        console.log("createNewModal =============>", data);
+        console.log("publishBook =============>", json.success);
       }
     } catch (err) {
       console.error(err);
@@ -177,9 +168,13 @@ const PublishBook = () => {
     }
   };
 
+  // Answer to the following question: How can you navigate between sections in vscode?
+  // https://stackoverflow.com/questions/63488693/how-can-you-navigate-between-sections-in-vscode
+
   useEffect(() => {
     fetchBookCategories();
     fetchBookLanguages();
+    fetchParishCountries(setParishCountries);
     fetchBooks(setSavedBooks);
   }, []);
 
@@ -189,7 +184,7 @@ const PublishBook = () => {
         {bookCategories && bookLanguages && savedBooks ? (
           <>
             {/* Saved Books Table */}
-            <div className="relative overflow-x-auto rounded-xl mt-4">
+            <div className="relative mt-4 overflow-x-auto rounded-xl">
               <CommonTable
                 {...{
                   state: savedBooks,
@@ -204,25 +199,26 @@ const PublishBook = () => {
             {editModal.isVisible && (
               <EditModal
                 {...{
+                  editUrl,
                   editModal,
                   setEditModal,
-                  statusType: "active/inactive",
+                  setSavedBooks,
                   bookCategories,
                   bookLanguages,
+                  parishCountries,
                 }}
               />
             )}
 
             {/* Book Details */}
-            <div className="relative w-full mx-auto max-w-3xl max-h-full">
+            <div className="relative w-full max-w-3xl max-h-full mx-auto">
               <div className="relative mt-2 dark:bg-gray-700">
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="title"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         Title
                       </label>
                       <input
@@ -239,8 +235,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="author"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         Author
                       </label>
                       <input
@@ -257,12 +252,11 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                        htmlFor="book-cover"
-                      >
+                        htmlFor="book-cover">
                         Book Cover
                       </label>
                       <input
-                        className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         onChange={(e) =>
                           setState((prev) => ({
                             ...prev,
@@ -278,8 +272,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="categories"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         Category
                       </label>
                       <select
@@ -287,14 +280,12 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="categories"
                         name="category"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      >
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {bookCategories.map((item, indx) => (
                           <option
                             className="text-xs"
                             key={item.category + indx}
-                            value={item.category}
-                          >
+                            value={item.category}>
                             {item.category}
                           </option>
                         ))}
@@ -303,8 +294,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="languages"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         Language
                       </label>
                       <select
@@ -312,14 +302,12 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="languages"
                         name="language"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      >
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         {bookLanguages.map((item, indx) => (
                           <option
                             className="text-xs"
                             key={item.language + indx}
-                            value={item.language}
-                          >
+                            value={item.language}>
                             {item.language}
                           </option>
                         ))}
@@ -328,8 +316,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="release_year"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         Release year
                       </label>
                       <input
@@ -347,8 +334,7 @@ const PublishBook = () => {
                     <div className="col-span-6">
                       <label
                         htmlFor="about"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                      >
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                         About
                       </label>
                       <textarea
@@ -358,10 +344,9 @@ const PublishBook = () => {
                         value={state.about}
                         onChange={handleChange}
                         className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Write about this book..."
-                      ></textarea>
+                        placeholder="Write about this book..."></textarea>
                     </div>
-                    <div className="flex items-center justify-around sm:justify-between pt-5 col-span-6 w-full sm:w-1/2 sm:mx-auto">
+                    <div className="flex items-center justify-around w-full col-span-6 pt-5 sm:justify-between sm:w-1/2 sm:mx-auto">
                       <div className="flex items-center">
                         <input
                           id="epub-type-1"
@@ -376,8 +361,7 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-1"
-                          className="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
-                        >
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
                           Upload ePUB
                         </label>
                       </div>
@@ -398,18 +382,16 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-2"
-                          className="ml-2 text-xs font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
-                        >
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
                           Create ePUB
                         </label>
                       </div>
                     </div>
                     {epub.type === "epub" ? (
-                      <div className="col-span-6 w-full sm:w-1/2 mx-auto">
+                      <div className="w-full col-span-6 mx-auto sm:w-1/2">
                         <label
                           className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                          htmlFor="upload-file"
-                        >
+                          htmlFor="upload-file">
                           Upload ePUB
                         </label>
                         <input
@@ -438,13 +420,12 @@ const PublishBook = () => {
                     )}
                   </div>
                 </div>
-                <div className="w-full grid grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300 dark:border-gray-600">
+                <div className="grid w-full grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300 dark:border-gray-600">
                   <button
                     onClick={handleSave}
                     type="button"
-                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                    disabled={toggleSaveBtn}
-                  >
+                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    disabled={toggleSaveBtn}>
                     {toggleSaveBtn ? (
                       <>
                         <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -457,9 +438,8 @@ const PublishBook = () => {
                   <button
                     onClick={handlePublish}
                     type="button"
-                    className="w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                    disabled={togglePublishBtn}
-                  >
+                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    disabled={togglePublishBtn}>
                     {togglePublishBtn ? (
                       <>
                         <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -478,6 +458,406 @@ const PublishBook = () => {
         )}
       </main>
     </Page>
+  );
+};
+
+const EditModal = ({
+  editUrl,
+  editModal,
+  setEditModal,
+  setSavedBooks,
+  bookCategories,
+  bookLanguages,
+  parishCountries,
+}) => {
+  const initial_state = editModal.data;
+  const initialState = [{ title: "", description: "" }];
+  const [state, setState] = useState(initial_state);
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [editCheckbox, setEditCheckbox] = useState(false);
+  const [epubState, setEpubState] = useState(initialState);
+
+  console.log("epubState", epubState);
+
+  const keys = Object.keys(state);
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+
+    if (key === "book_cover" || key === "epub") {
+      setState({ ...state, [key]: e.target.files[0] });
+    } else {
+      setState({ ...state, [key]: value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setToggleBtn(true);
+
+    try {
+      let formdata = new FormData();
+      keys.forEach((key) => formdata.append(key, state[key]));
+      Object.keys(epubState).forEach((key) => {
+        formdata.append(`chapters[${key}][title]`, epubState[key].title);
+        formdata.append(
+          `chapters[${key}][description]`,
+          epubState[key].description
+        );
+      });
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
+      const json = await res.json();
+
+      if (json.success) {
+        const updatedData = json.success.data;
+        let data = { id: null, ...state };
+        Object.keys(data).forEach(
+          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+        );
+
+        console.log("EditModal =============>", data);
+      }
+    } catch (err) {
+      console.error(err);
+      setToggleBtn(false);
+    } finally {
+      setEditModal({
+        data: null,
+        isVisible: false,
+      });
+    }
+  };
+
+  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
+
+  useEffect(() => {
+    fetchChapters(setEpubState, state.id);
+  }, []);
+
+  return (
+    <>
+      <div
+        onClick={close}
+        className={`${
+          editModal.isVisible ? "" : "hidden"
+        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
+      />
+      <div
+        tabIndex="-1"
+        className={`${
+          editModal.isVisible ? "" : "hidden"
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
+        <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
+          {/* Modal content */}
+          <div
+            // action="#"
+            // onSubmit={handleSubmit}
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            {/* Modal header */}
+            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Edit
+              </h3>
+              <button
+                onClick={close}
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <VscClose />
+              </button>
+            </div>
+            {/* Modal body */}
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    htmlFor="cover_image">
+                    Cover Image
+                  </label>
+                  <input
+                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    onChange={handleChange}
+                    id="cover_image"
+                    name="cover_image"
+                    type="file"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="title"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    value={state.title}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Lorem ipsum"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="author"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Author
+                  </label>
+                  <input
+                    type="text"
+                    name="_author"
+                    id="author"
+                    value={state._author}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Lorem ipsum"
+                  />
+                </div>
+                {/* {editUser.ePUB_Type === "file" && (
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      htmlFor="ePUB"
+                    >
+                      Upload ePUB
+                    </label>
+                    <input
+                      className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      id="ePUB"
+                      name="epub"
+                      onChange={handleChange}
+                      type="file"
+                    />
+                  </div>
+                )} */}
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="categories"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Category
+                  </label>
+                  <select
+                    name="category"
+                    value={state.category}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="categories">
+                    {bookCategories.map((item, indx) => (
+                      <option
+                        className="text-sm"
+                        key={item.category + indx}
+                        value={item.category}>
+                        {item.category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="languages"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Language
+                  </label>
+                  <select
+                    name="_language"
+                    value={state._language}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="languages">
+                    {bookLanguages.map((item, indx) => (
+                      <option
+                        className="text-sm"
+                        key={item.language + indx}
+                        value={item.language}>
+                        {item.language}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="country"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Country
+                  </label>
+                  <select
+                    id="country"
+                    name="country"
+                    value={state.country}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {parishCountries.map(({ country }) => (
+                      <option className="text-sm" key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="downloads"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Downloads
+                  </label>
+                  <input
+                    type="number"
+                    name="download"
+                    id="downloads"
+                    value={state.download}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1613"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="reads"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Reads
+                  </label>
+                  <input
+                    type="number"
+                    name="read"
+                    id="reads"
+                    value={state.read}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="1613"
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="status"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Status
+                  </label>
+                  <select
+                    name="status"
+                    value={state.status}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="status">
+                    {["ACTIVE", "INACTIVE"].map((elem) => (
+                      <option className="text-sm" key={elem} value={elem}>
+                        {elem}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="release_year"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Release year
+                  </label>
+                  <input
+                    type="number"
+                    name="_release_year"
+                    value={state._release_year}
+                    onChange={handleChange}
+                    id="release_year"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="2020"
+                    max={new Date().getFullYear()}
+                  />
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="feature"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    Featured
+                  </label>
+                  <select
+                    name="featured"
+                    value={state.featured}
+                    onChange={handleChange}
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="featured">
+                    {["Yes", "No"].map((item) => (
+                      <option className="text-sm" key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex items-center justify-center col-span-6 pt-6 sm:col-span-3">
+                  <input
+                    id="edit-epub-html"
+                    type="checkbox"
+                    onChange={(e) => setEditCheckbox(e.target.checked)}
+                    checked={editCheckbox}
+                    value="edit-epub-html"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    htmlFor="edit-epub-html"
+                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
+                    Edit ePUB HTML
+                  </label>
+                </div>
+                <div className="col-span-6">
+                  <label
+                    htmlFor="about"
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    About
+                  </label>
+                  <textarea
+                    id="about"
+                    name="_about"
+                    rows="10"
+                    value={state._about}
+                    onChange={handleChange}
+                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Write about this book..."></textarea>
+                </div>
+                {editCheckbox && (
+                  <div className="col-span-6">
+                    <p className="my-3 text-sm font-semibold text-center">
+                      Edit ePUB
+                    </p>
+                    <CreateEPUB
+                      {...{
+                        state: epubState,
+                        setState: setEpubState,
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Modal footer */}
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                disabled={toggleBtn}>
+                {toggleBtn ? (
+                  <>
+                    <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                    Updating
+                  </>
+                ) : (
+                  "Update"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

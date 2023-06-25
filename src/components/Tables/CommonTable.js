@@ -6,21 +6,21 @@ const CommonTable = ({ template, state, actionCols, props }) => {
 
   return (
     <>
-      <div className="relative overflow-x-auto rounded-t-xl overflow-hidden">
+      <div className="relative overflow-hidden overflow-x-auto rounded-t-xl">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               {keys.map((e) => (
                 <th scope="col" className="px-6 py-3 text-center" key={e}>
-                  {e.toLocaleUpperCase()}
+                  {e.toUpperCase()}
                 </th>
               ))}
               {actionCols &&
                 actionCols.map((elem) => (
                   <th
+                    key={elem}
                     scope="col"
-                    className="px-6 py-3 justify-between uppercase text-center"
-                  >
+                    className="justify-between px-6 py-3 text-center uppercase">
                     {elem}
                   </th>
                 ))}
@@ -30,15 +30,13 @@ const CommonTable = ({ template, state, actionCols, props }) => {
             {state.length ? (
               state.map((el) => (
                 <tr
-                  className="bg-gray-50 border-b hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
-                  key={el.id}
-                >
-                  {keys.map((key) => (
+                  className="border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
+                  key={el.id}>
+                  {keys.map((elem) => (
                     <td
-                      className="px-6 py-4 whitespace-nowrap text-xs text-center"
-                      key={key + el.id}
-                    >
-                      {el[key]}
+                      className="px-6 py-4 text-xs text-center whitespace-nowrap"
+                      key={elem + el.id}>
+                      {el[elem]}
                     </td>
                   ))}
 
@@ -46,11 +44,10 @@ const CommonTable = ({ template, state, actionCols, props }) => {
                 </tr>
               ))
             ) : (
-              <tr className="text-center bg-gray-50 border-b hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
+              <tr className="text-center border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <td
                   className={`"px-6 py-4 whitespace-nowrap text-xs`}
-                  colSpan={keys.length + 1}
-                >
+                  colSpan={keys.length + 1}>
                   No results found!
                 </td>
               </tr>

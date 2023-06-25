@@ -1,5 +1,6 @@
 import { VscClose } from "react-icons/vsc";
 import Editor from "./Editor";
+import { memo } from "react";
 
 const CreateEPUB = ({ state, setState }) => {
   const handleTitleChange = (value, index) => {
@@ -36,14 +37,12 @@ const CreateEPUB = ({ state, setState }) => {
           key={index}
           className={`w-full text-sm text-gray-800 ${
             index !== 0 ? "mt-6" : ""
-          } border rounded-md overflow-hidden`}
-        >
+          } border rounded-md overflow-hidden`}>
           <header className="flex items-center justify-between font-semibold p-3 py-4 bg-gray-100">
             Section #{index + 1}
             <button
               onClick={() => closeSection(index)}
-              className="text-lg text-gray-800 hover:text-gray-600"
-            >
+              className="text-lg text-gray-800 hover:text-gray-600">
               <VscClose />
             </button>
           </header>
@@ -51,8 +50,7 @@ const CreateEPUB = ({ state, setState }) => {
             <div>
               <label
                 htmlFor={"chapter-title-" + (index + 1)}
-                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-              >
+                className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
                 Chapter Title
               </label>
               <input
@@ -64,6 +62,7 @@ const CreateEPUB = ({ state, setState }) => {
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Harry Potter"
                 autoFocus={true}
+                required={true}
               />
             </div>
             <div>
@@ -75,8 +74,8 @@ const CreateEPUB = ({ state, setState }) => {
                   id: index,
                   styles: "!pt-0",
                   state: item.description,
+                  handleBodyChange,
                 }}
-                handleBodyChange={(value) => handleBodyChange(value, index)}
               />
             </div>
           </main>
@@ -86,8 +85,7 @@ const CreateEPUB = ({ state, setState }) => {
       <div className={`flex justify-end mt-5`}>
         <button
           onClick={handleAdd}
-          className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
-        >
+          className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0">
           Add Section
         </button>
 
