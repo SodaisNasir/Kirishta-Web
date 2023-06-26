@@ -32,6 +32,7 @@ import AboutKirista from "./Settings/AboutKirista";
 import PrivacyManagement from "./Settings/PrivacyManagement";
 import TermsManagement from "./Settings/TermsManagement";
 import FAQManagement from "./Settings/FAQManagement";
+import AccessDenied from "./AccessDenied";
 
 export {
   Dashboard,
@@ -48,6 +49,7 @@ export {
   EmailVerification,
   ForgotPassword,
   FAQManagement,
+  AccessDenied,
   PrivacyManagement,
   TermsManagement,
   AboutKirista,

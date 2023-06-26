@@ -4,8 +4,14 @@ import { useState } from "react";
 import { CreateEPUB, Loader } from "../components";
 import { base_url } from "../utils/url";
 import CommonTable from "../components/Tables/CommonTable";
-import { fetchBooks, fetchChapters, fetchParishCountries } from "../utils";
+import {
+  fetchBooks,
+  fetchChapters,
+  fetchParishCountries,
+  excludeTags,
+} from "../utils";
 import { VscClose } from "react-icons/vsc";
+import { toast } from "react-hot-toast";
 
 const publishBookUrl = `${base_url}/create-book-publish`;
 const saveBookUrl = `${base_url}/create-book-save`;
@@ -43,6 +49,14 @@ const PublishBook = () => {
   };
 
   const handleSave = async () => {
+    if (
+      epub.type === "chapters" &&
+      excludeTags(epub.value.at(-1).description)
+    ) {
+      toast.error("Chapter Title and Body are required!");
+      return;
+    }
+
     setToggleSaveBtn(true);
 
     try {
@@ -65,7 +79,6 @@ const PublishBook = () => {
         headers: {
           Accept: "application/json",
         },
-        mode: "no-cors",
         method: "POST",
         body: formdata,
         redirect: "follow",
@@ -80,10 +93,10 @@ const PublishBook = () => {
         const book = json.success.book;
         setSavedBooks((prev) => [...prev, book]);
 
-        // setState(initialState);
-        // setEpub({ type: "epub", value: null });
+        setState(initialState);
+        setEpub({ type: "epub", value: null });
 
-        console.log("handleSave =============>", book);
+        console.log("handleSave =============>", json);
       }
     } catch (err) {
       console.error(err);
@@ -93,6 +106,14 @@ const PublishBook = () => {
   };
 
   const handlePublish = async () => {
+    if (
+      epub.type === "chapters" &&
+      excludeTags(epub.value.at(-1).description)
+    ) {
+      toast.error("Chapter Title and Body are required!");
+      return;
+    }
+
     setTogglePublishBtn(true);
 
     try {
@@ -126,8 +147,8 @@ const PublishBook = () => {
       console.log(json);
 
       if (json.success) {
-        // setState(initialState);
-        // setEpub({ type: "epub", value: null });
+        setState(initialState);
+        setEpub({ type: "epub", value: null });
 
         console.log("publishBook =============>", json.success);
       }
@@ -167,9 +188,6 @@ const PublishBook = () => {
       console.error(error);
     }
   };
-
-  // Answer to the following question: How can you navigate between sections in vscode?
-  // https://stackoverflow.com/questions/63488693/how-can-you-navigate-between-sections-in-vscode
 
   useEffect(() => {
     fetchBookCategories();
@@ -218,7 +236,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="title"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         Title
                       </label>
                       <input
@@ -235,7 +254,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="author"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         Author
                       </label>
                       <input
@@ -252,7 +272,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                        htmlFor="book-cover">
+                        htmlFor="book-cover"
+                      >
                         Book Cover
                       </label>
                       <input
@@ -272,7 +293,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="categories"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         Category
                       </label>
                       <select
@@ -280,12 +302,14 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="categories"
                         name="category"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
                         {bookCategories.map((item, indx) => (
                           <option
                             className="text-xs"
                             key={item.category + indx}
-                            value={item.category}>
+                            value={item.category}
+                          >
                             {item.category}
                           </option>
                         ))}
@@ -294,7 +318,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="languages"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         Language
                       </label>
                       <select
@@ -302,12 +327,14 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="languages"
                         name="language"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      >
                         {bookLanguages.map((item, indx) => (
                           <option
                             className="text-xs"
                             key={item.language + indx}
-                            value={item.language}>
+                            value={item.language}
+                          >
                             {item.language}
                           </option>
                         ))}
@@ -316,7 +343,8 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="release_year"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         Release year
                       </label>
                       <input
@@ -334,7 +362,8 @@ const PublishBook = () => {
                     <div className="col-span-6">
                       <label
                         htmlFor="about"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      >
                         About
                       </label>
                       <textarea
@@ -344,7 +373,8 @@ const PublishBook = () => {
                         value={state.about}
                         onChange={handleChange}
                         className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Write about this book..."></textarea>
+                        placeholder="Write about this book..."
+                      ></textarea>
                     </div>
                     <div className="flex items-center justify-around w-full col-span-6 pt-5 sm:justify-between sm:w-1/2 sm:mx-auto">
                       <div className="flex items-center">
@@ -361,7 +391,8 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-1"
-                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                        >
                           Upload ePUB
                         </label>
                       </div>
@@ -382,7 +413,8 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-2"
-                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                        >
                           Create ePUB
                         </label>
                       </div>
@@ -391,7 +423,8 @@ const PublishBook = () => {
                       <div className="w-full col-span-6 mx-auto sm:w-1/2">
                         <label
                           className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                          htmlFor="upload-file">
+                          htmlFor="upload-file"
+                        >
                           Upload ePUB
                         </label>
                         <input
@@ -425,7 +458,8 @@ const PublishBook = () => {
                     onClick={handleSave}
                     type="button"
                     className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                    disabled={toggleSaveBtn}>
+                    disabled={toggleSaveBtn || epub.type === "epub"}
+                  >
                     {toggleSaveBtn ? (
                       <>
                         <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -439,7 +473,8 @@ const PublishBook = () => {
                     onClick={handlePublish}
                     type="button"
                     className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                    disabled={togglePublishBtn}>
+                    disabled={togglePublishBtn}
+                  >
                     {togglePublishBtn ? (
                       <>
                         <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -557,13 +592,15 @@ const EditModal = ({
         tabIndex="-1"
         className={`${
           editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
+      >
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
           <div
             // action="#"
             // onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          >
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -572,7 +609,8 @@ const EditModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
                 <VscClose />
               </button>
             </div>
@@ -582,7 +620,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                    htmlFor="cover_image">
+                    htmlFor="cover_image"
+                  >
                     Cover Image
                   </label>
                   <input
@@ -596,7 +635,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Title
                   </label>
                   <input
@@ -612,7 +652,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="author"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Author
                   </label>
                   <input
@@ -645,7 +686,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Category
                   </label>
                   <select
@@ -653,12 +695,14 @@ const EditModal = ({
                     value={state.category}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="categories">
+                    id="categories"
+                  >
                     {bookCategories.map((item, indx) => (
                       <option
                         className="text-sm"
                         key={item.category + indx}
-                        value={item.category}>
+                        value={item.category}
+                      >
                         {item.category}
                       </option>
                     ))}
@@ -667,7 +711,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="languages"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Language
                   </label>
                   <select
@@ -675,12 +720,14 @@ const EditModal = ({
                     value={state._language}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="languages">
+                    id="languages"
+                  >
                     {bookLanguages.map((item, indx) => (
                       <option
                         className="text-sm"
                         key={item.language + indx}
-                        value={item.language}>
+                        value={item.language}
+                      >
                         {item.language}
                       </option>
                     ))}
@@ -689,7 +736,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Country
                   </label>
                   <select
@@ -697,7 +745,8 @@ const EditModal = ({
                     name="country"
                     value={state.country}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
                     {parishCountries.map(({ country }) => (
                       <option className="text-sm" key={country} value={country}>
                         {country}
@@ -708,7 +757,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="downloads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Downloads
                   </label>
                   <input
@@ -724,7 +774,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="reads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Reads
                   </label>
                   <input
@@ -740,7 +791,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Status
                   </label>
                   <select
@@ -748,7 +800,8 @@ const EditModal = ({
                     value={state.status}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="status">
+                    id="status"
+                  >
                     {["ACTIVE", "INACTIVE"].map((elem) => (
                       <option className="text-sm" key={elem} value={elem}>
                         {elem}
@@ -759,7 +812,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="release_year"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Release year
                   </label>
                   <input
@@ -776,7 +830,8 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Featured
                   </label>
                   <select
@@ -784,7 +839,8 @@ const EditModal = ({
                     value={state.featured}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="featured">
+                    id="featured"
+                  >
                     {["Yes", "No"].map((item) => (
                       <option className="text-sm" key={item} value={item}>
                         {item}
@@ -803,14 +859,16 @@ const EditModal = ({
                   />
                   <label
                     htmlFor="edit-epub-html"
-                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300">
+                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                  >
                     Edit ePUB HTML
                   </label>
                 </div>
                 <div className="col-span-6">
                   <label
                     htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     About
                   </label>
                   <textarea
@@ -820,7 +878,8 @@ const EditModal = ({
                     value={state._about}
                     onChange={handleChange}
                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write about this book..."></textarea>
+                    placeholder="Write about this book..."
+                  ></textarea>
                 </div>
                 {editCheckbox && (
                   <div className="col-span-6">
@@ -843,7 +902,8 @@ const EditModal = ({
                 type="button"
                 onClick={handleSubmit}
                 className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}>
+                disabled={toggleBtn}
+              >
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />

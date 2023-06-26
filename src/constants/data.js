@@ -347,78 +347,28 @@ export const locations = [
 ];
 
 // Notifications
-export const notifications = [
-  {
-    title: "New User Sign up",
-    icon: <FaUsers className="text-base text-blue-500" />,
-    clickHandler: null,
-    markAsRead: false,
-  },
-  {
-    title: "New Contact Recieved",
-    icon: (
-      <svg
-        width="13"
-        height="16"
-        viewBox="0 0 13 16"
+export const notificationIcons = {
+  user: <FaUsers className="text-base text-blue-500" />,
+  contact: (
+    <svg
+      width="13"
+      height="16"
+      viewBox="0 0 13 16"
+      fill="rgb(59 130 246)"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6.4 6.4C8.16731 6.4 9.6 4.96731 9.6 3.2C9.6 1.43269 8.16731 0 6.4 0C4.63269 0 3.2 1.43269 3.2 3.2C3.2 4.96731 4.63269 6.4 6.4 6.4Z"
         fill="rgb(59 130 246)"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M6.4 6.4C8.16731 6.4 9.6 4.96731 9.6 3.2C9.6 1.43269 8.16731 0 6.4 0C4.63269 0 3.2 1.43269 3.2 3.2C3.2 4.96731 4.63269 6.4 6.4 6.4Z"
-          fill="rgb(59 130 246)"
-        />
-        <path
-          d="M6.4 16C12.8 16 12.8 14.3882 12.8 12.4C12.8 10.4118 9.93462 8.8 6.4 8.8C2.86538 8.8 0 10.4118 0 12.4C0 14.3882 0 16 6.4 16Z"
-          fill="rgb(59 130 246)"
-        />
-      </svg>
-    ),
-    clickHandler: null,
-    markAsRead: false,
-  },
-  {
-    title: "New Feedback Recieved",
-    icon: <MdFeedback className="text-base text-blue-500" />,
-    clickHandler: null,
-    markAsRead: true,
-  },
-  {
-    title: "New User Sign up",
-    icon: <FaUsers className="text-base text-blue-500" />,
-    clickHandler: null,
-    markAsRead: true,
-  },
-  {
-    title: "New Contact Recieved",
-    icon: (
-      <svg
-        width="13"
-        height="16"
-        viewBox="0 0 13 16"
+      />
+      <path
+        d="M6.4 16C12.8 16 12.8 14.3882 12.8 12.4C12.8 10.4118 9.93462 8.8 6.4 8.8C2.86538 8.8 0 10.4118 0 12.4C0 14.3882 0 16 6.4 16Z"
         fill="rgb(59 130 246)"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M6.4 6.4C8.16731 6.4 9.6 4.96731 9.6 3.2C9.6 1.43269 8.16731 0 6.4 0C4.63269 0 3.2 1.43269 3.2 3.2C3.2 4.96731 4.63269 6.4 6.4 6.4Z"
-          fill="rgb(59 130 246)"
-        />
-        <path
-          d="M6.4 16C12.8 16 12.8 14.3882 12.8 12.4C12.8 10.4118 9.93462 8.8 6.4 8.8C2.86538 8.8 0 10.4118 0 12.4C0 14.3882 0 16 6.4 16Z"
-          fill="rgb(59 130 246)"
-        />
-      </svg>
-    ),
-    clickHandler: null,
-    markAsRead: true,
-  },
-  {
-    title: "New Feedback Recieved",
-    icon: <MdFeedback className="text-base text-blue-500" />,
-    clickHandler: null,
-    markAsRead: true,
-  },
-];
+      />
+    </svg>
+  ),
+  feedback: <MdFeedback className="text-base text-blue-500" />,
+};
 
 // Dashboard Analytics
 export const dashboardCards = [
@@ -1428,123 +1378,288 @@ export const privilegesStructure = {
   Dashboard: false,
   Access: {
     Roles: {
+      View: false,
+      Create: false,
       Edit: false,
       Delete: false,
-      Create: false,
     },
     "Sub-Admin": {
+      View: false,
+      Create: false,
       Edit: false,
       Delete: false,
-      Create: false,
     },
   },
   "Users Management": {
-    Create: false,
+    View: false,
     Edit: false,
     Delete: false,
   },
   "Promotion Management": {
     Banner: {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     "Pop-up": {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
+    Notification: false,
   },
   "Books Management": {
-    Create: false,
+    View: false,
     Edit: false,
     Delete: false,
   },
   "Publish Book": {
-    Create: false,
+    View: false,
     Edit: false,
-    Delete: false,
   },
   "Parish Management": {
+    View: false,
     Create: false,
     Edit: false,
     Delete: false,
   },
   "Events Management": {
+    View: false,
     Create: false,
     Edit: false,
     Delete: false,
   },
   "Feedback Management": {
-    Create: false,
-    Edit: false,
+    View: false,
     Delete: false,
   },
   "Contact Management": {
-    Create: false,
-    Edit: false,
+    View: false,
     Delete: false,
   },
   "Settings Management": {
     "Admin Email": {
+      View: false,
+      Edit: false,
+    },
+    "General Countries": {
+      View: false,
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "Parish Categories": {
+      View: false,
+      Create: false,
+      Edit: false,
+      Delete: false,
+    },
+    "Parish Countries": {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     Region: {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     Province: {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     "Book Category": {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     "Book Language": {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
     "About Kirista": {
-      Create: false,
+      View: false,
       Edit: false,
-      Delete: false,
     },
     "About RCCG": {
-      Create: false,
+      View: false,
       Edit: false,
-      Delete: false,
     },
     "About RCCG Structure": {
-      Create: false,
+      View: false,
       Edit: false,
-      Delete: false,
     },
     "About RCCG Continent 2": {
-      Create: false,
+      View: false,
       Edit: false,
-      Delete: false,
     },
     Terms: {
-      Create: false,
+      View: false,
       Edit: false,
-      Delete: false,
     },
     Privacy: {
+      View: false,
+      Edit: false,
+    },
+    FAQ: {
+      View: false,
       Create: false,
       Edit: false,
       Delete: false,
     },
+  },
+};
+
+export const adminPrivileges = {
+  Dashboard: true,
+  Access: {
+    Roles: {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Sub-Admin": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+  },
+  "Users Management": {
+    View: true,
+    Edit: true,
+    Delete: true,
+  },
+  "Promotion Management": {
+    Banner: {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Pop-up": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    Notification: true,
+  },
+  "Books Management": {
+    View: true,
+    Edit: true,
+    Delete: true,
+  },
+  "Publish Book": {
+    View: true,
+    Edit: true,
+  },
+  "Parish Management": {
+    View: true,
+    Create: true,
+    Edit: true,
+    Delete: true,
+  },
+  "Events Management": {
+    View: true,
+    Create: true,
+    Edit: true,
+    Delete: true,
+  },
+  "Feedback Management": {
+    View: true,
+    Delete: true,
+  },
+  "Contact Management": {
+    View: true,
+    Delete: true,
+  },
+  "Settings Management": {
+    "Admin Email": {
+      View: true,
+      Edit: true,
+    },
+    "General Countries": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Parish Categories": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Parish Countries": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    Region: {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    Province: {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Book Category": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "Book Language": {
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
+    },
+    "About Kirista": {
+      View: true,
+      Edit: true,
+    },
+    "About RCCG": {
+      View: true,
+      Edit: true,
+    },
+    "About RCCG Structure": {
+      View: true,
+      Edit: true,
+    },
+    "About RCCG Continent 2": {
+      View: true,
+      Edit: true,
+    },
+    Terms: {
+      View: true,
+      Edit: true,
+    },
+    Privacy: {
+      View: true,
+      Edit: true,
+    },
     FAQ: {
-      Create: false,
-      Edit: false,
-      Delete: false,
+      View: true,
+      Create: true,
+      Edit: true,
+      Delete: true,
     },
   },
 };

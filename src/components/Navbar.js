@@ -25,7 +25,7 @@ const Navbar = ({ toggle, setToggle }) => {
 
         <div className="">
           {navLinks.map((data) => (
-            <NavItem key={data.title} data={data} />
+            <NavItem key={data.title} {...{ data }} />
           ))}
         </div>
       </nav>
@@ -33,7 +33,7 @@ const Navbar = ({ toggle, setToggle }) => {
   );
 };
 
-const NavItem = ({ data }) => {
+const NavItem = ({ data, privilages }) => {
   const [toggle, setToggle] = useState(false);
 
   // if Nav item is a link

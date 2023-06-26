@@ -7,9 +7,9 @@ import EditorToolbar, {
 } from "./EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 
-export const Editor = ({ state, handleBodyChange, id, styles = "" }) => {
+export const Editor = ({ state, handleChange, id, styles = "" }) => {
   const onChange = (val) => {
-    handleBodyChange(val, id);
+    handleChange(val, id);
   };
 
   return (

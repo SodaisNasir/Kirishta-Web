@@ -6,7 +6,7 @@ import { BiSearch } from "react-icons/bi";
 import { GoChevronDown } from "react-icons/go";
 import { DropdownContainer } from "../../components/helpers";
 import { base_url } from "../../utils/url";
-import { fetchData } from "../../utils";
+import { fetchBookLanguages, fetchData } from "../../utils";
 
 const showAllfaqs = `${base_url}/faq`;
 const editUrl = `${base_url}/edit-faq`;
@@ -28,12 +28,13 @@ const FAQManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [languages, setLanguages] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
-      question: null,
-      answer: null,
+      question: "",
+      answer: "",
       language: "English",
     },
   });
@@ -83,6 +84,12 @@ const FAQManagement = () => {
   const neededProps = ["id", "question", "answer", "language"];
 
   useEffect(() => {
+    fetchBookLanguages(setLanguages, (data) =>
+      setCreateNewModal((prev) => ({
+        ...prev,
+        data: { ...prev.data, language: data[0].language },
+      }))
+    );
     fetchData(setPaginatedData, setData, neededProps, showAllfaqs);
   }, []);
 
@@ -165,6 +172,7 @@ const FAQManagement = () => {
                       setData,
                       setPaginatedData,
                       gridCols: 1,
+                      languages,
                     }}
                   />
                 )}
@@ -179,6 +187,7 @@ const FAQManagement = () => {
                       setData,
                       setPaginatedData,
                       gridCols: 1,
+                      languages,
                     }}
                   />
                 )}

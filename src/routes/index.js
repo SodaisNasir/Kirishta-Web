@@ -35,18 +35,16 @@ import {
   ParishCountriesManagement,
   ParishCategories,
   Notification,
+  AccessDenied,
 } from "../pages";
 import { AppContext } from "../context";
 import { AdminLayout } from "../components";
-import { useLayoutEffect } from "react";
 
 const Router = () => {
-  const { user, setUser } = useContext(AppContext);
-  const userData = JSON.parse(localStorage.getItem("user"));
-
-  useLayoutEffect(() => {
-    if (userData) setUser(userData);
-  }, []);
+  const { user } = useContext(AppContext);
+  let privilages = user && JSON.parse(user.privilage);
+  privilages =
+    typeof privilages === "string" ? JSON.parse(privilages) : privilages;
 
   return (
     <BrowserRouter>
@@ -54,96 +52,313 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route
           path="/"
-          element={
-            user || userData ? <AdminLayout /> : <Navigate to="/login" />
-          }
+          element={user ? <AdminLayout /> : <Navigate to="/login" />}
         >
           <Route path="/edit-profile" element={<EditProfile />} />
-          <Route index path="/dashboard" element={<Dashboard />} />
-          <Route path="/users-management" element={<UsersManagement />} />
+          <Route
+            index
+            path="/dashboard"
+            element={
+              user && privilages.Dashboard ? <Dashboard /> : <AccessDenied />
+            }
+          />
+          <Route
+            path="/users-management"
+            element={
+              user && privilages["Users Management"].View ? (
+                <UsersManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
           <Route path="/promotion-management">
             <Route
               path="/promotion-management/banner"
-              element={<BannerPromotion />}
+              element={
+                user && privilages["Promotion Management"].Banner.View ? (
+                  <BannerPromotion />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/promotion-management/popup"
-              element={<PopupPromotion />}
+              element={
+                user && privilages["Promotion Management"]["Pop-up"].View ? (
+                  <PopupPromotion />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/promotion-management/notification"
-              element={<Notification />}
+              element={
+                user && privilages["Promotion Management"].Notification ? (
+                  <Notification />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
           </Route>
           <Route path="/access">
             {/* <Route path="/access/privileges" element={<Privileges />} /> */}
-            <Route path="/access/sub-admin" element={<SubAdmin />} />
-            <Route path="/access/roles" element={<Roles />} />
+            <Route
+              path="/access/sub-admin"
+              element={
+                user && privilages.Access["Sub-Admin"].View ? (
+                  <SubAdmin />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
+            <Route
+              path="/access/roles"
+              element={
+                user && privilages.Access.Roles.View ? (
+                  <Roles />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
           </Route>
-          <Route path="/books-management" element={<BooksManagement />} />
-          <Route path="/publish-book" element={<PublishBook />} />
-          <Route path="/parish-management" element={<ParishManagement />} />
-          <Route path="/events-management" element={<EventsManagement />} />
-          <Route path="/feedback-management" element={<FeedbackManagement />} />
-          <Route path="/contact-management" element={<ContactManagement />} />
+          <Route
+            path="/books-management"
+            element={
+              user && privilages["Books Management"].View ? (
+                <BooksManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
+          <Route
+            path="/publish-book"
+            element={
+              user && privilages["Publish Book"].View ? (
+                <PublishBook />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
+          <Route
+            path="/parish-management"
+            element={
+              user && privilages["Parish Management"].View ? (
+                <ParishManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
+          <Route
+            path="/events-management"
+            element={
+              user && privilages["Events Management"].View ? (
+                <EventsManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
+          <Route
+            path="/feedback-management"
+            element={
+              user && privilages["Feedback Management"].View ? (
+                <FeedbackManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
+          <Route
+            path="/contact-management"
+            element={
+              user && privilages["Contact Management"].View ? (
+                <ContactManagement />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
           <Route path="/settings">
-            <Route path="/settings/admin-email" element={<AdminEmail />} />
+            <Route
+              path="/settings/admin-email"
+              element={
+                user &&
+                privilages["Settings Management"]["Admin Email"].View ? (
+                  <AdminEmail />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
             <Route
               path="/settings/parish-categories"
-              element={<ParishCategories />}
+              element={
+                user &&
+                privilages["Settings Management"]["Parish Categories"].View ? (
+                  <ParishCategories />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/settings/general-countries"
-              element={<GeneralCountriesManagement />}
+              element={
+                user &&
+                privilages["Settings Management"]["General Countries"].View ? (
+                  <GeneralCountriesManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/settings/parish-countries"
-              element={<ParishCountriesManagement />}
+              element={
+                user &&
+                privilages["Settings Management"]["Parish Countries"].View ? (
+                  <ParishCountriesManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
-            <Route path="/settings/region" element={<RegionsManagement />} />
+            <Route
+              path="/settings/region"
+              element={
+                user && privilages["Settings Management"].Region.View ? (
+                  <RegionsManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
             <Route
               path="/settings/province"
-              element={<ProvincesManagement />}
+              element={
+                user && privilages["Settings Management"].Province.View ? (
+                  <ProvincesManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/settings/book-category"
-              element={<BookCategoriesManagement />}
+              element={
+                user &&
+                privilages["Settings Management"]["Book Category"].View ? (
+                  <BookCategoriesManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/settings/book-language"
-              element={<BookLanguagesManagement />}
+              element={
+                user &&
+                privilages["Settings Management"]["Book Language"].View ? (
+                  <BookLanguagesManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
-            <Route path="/settings/about-rccg" element={<AboutRCCG />} />
+            <Route
+              path="/settings/about-rccg"
+              element={
+                user && privilages["Settings Management"]["About RCCG"].View ? (
+                  <AboutRCCG />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
             <Route
               path="/settings/about-rccg-structure"
-              element={<RCCGStructure />}
+              element={
+                user &&
+                privilages["Settings Management"]["About RCCG Structure"]
+                  .View ? (
+                  <RCCGStructure />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
             <Route
               path="/settings/about-rccg-continent2"
-              element={<RCCGContinent2 />}
+              element={
+                user &&
+                privilages["Settings Management"]["About RCCG Continent 2"]
+                  .View ? (
+                  <RCCGContinent2 />
+                ) : (
+                  <AccessDenied />
+                )
+              }
             />
-            <Route path="/settings/about-kirista" element={<AboutKirista />} />
-            <Route path="/settings/terms" element={<TermsManagement />} />
-            <Route path="/settings/privacy" element={<PrivacyManagement />} />
-            <Route path="/settings/faq" element={<FAQManagement />} />
+            <Route
+              path="/settings/about-kirista"
+              element={
+                user &&
+                privilages["Settings Management"]["About Kirista"].View ? (
+                  <AboutKirista />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
+            <Route
+              path="/settings/terms"
+              element={
+                user && privilages["Settings Management"].Terms.View ? (
+                  <TermsManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
+            <Route
+              path="/settings/privacy"
+              element={
+                user && privilages["Settings Management"].Privacy.View ? (
+                  <PrivacyManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
+            <Route
+              path="/settings/faq"
+              element={
+                user && privilages["Settings Management"].FAQ.View ? (
+                  <FAQManagement />
+                ) : (
+                  <AccessDenied />
+                )
+              }
+            />
           </Route>
         </Route>
         <Route path="/change-password" element={<ChangePassword />} />
         <Route
           path="/forgot-password"
-          element={
-            user || userData ? <Navigate to="/dashboard" /> : <ForgotPassword />
-          }
+          element={user ? <Navigate to="/dashboard" /> : <ForgotPassword />}
         />
         <Route
           path="/email-verification"
-          element={
-            user || userData ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <EmailVerification />
-            )
-          }
+          element={user ? <Navigate to="/dashboard" /> : <EmailVerification />}
         />
       </Routes>
     </BrowserRouter>

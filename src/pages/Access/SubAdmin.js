@@ -94,9 +94,14 @@ const SubAdmin = () => {
   ];
 
   useEffect(() => {
-    fetchRoles(setRoles, (data) =>
-      setCreateNewModal((prev) => ({ ...prev, role: data[0] }))
-    );
+    const func = (data) => {
+      setRoles(data.map((e) => e.role));
+      setCreateNewModal((prev) => ({
+        ...prev,
+        data: { ...prev.data, role: data[0].role },
+      }));
+    };
+    fetchRoles(null, func);
     fetchData(setPaginatedData, setData, neededProps, showAllAdmins);
   }, []);
 
@@ -113,7 +118,8 @@ const SubAdmin = () => {
             Actions,
             actionCols: ["Edit", "Remove"],
             props: { setEditModal },
-          }}>
+          }}
+        >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
@@ -160,7 +166,8 @@ const SubAdmin = () => {
                       isVisible: true,
                     }))
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50">
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                >
                   Add Admin
                 </button>
 

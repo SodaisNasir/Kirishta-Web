@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { privilegesStructure } from "../../constants/data";
+import { adminPrivileges, privilegesStructure } from "../../constants/data";
 import { NestedCheckbox, Page, Actions, Loader } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
@@ -79,10 +79,15 @@ const Roles = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curFilter]);
 
-  const neededProps = ["id", "role", "privilage"];
+  const neededProps = ["id", "role", "_privilage"];
+
+  console.log("data", data);
 
   useEffect(() => {
-    fetchRoles(setRoles);
+    setRoles(data.map((e) => e.role));
+  }, [data]);
+
+  useEffect(() => {
     fetchData(setPaginatedData, setData, neededProps, showAllRoles, "Roles");
   }, []);
 
@@ -99,7 +104,8 @@ const Roles = () => {
             Actions,
             actionCols: ["Edit", "Remove"],
             props: { setEditModal },
-          }}>
+          }}
+        >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
@@ -146,7 +152,8 @@ const Roles = () => {
                       isVisible: true,
                     }))
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50">
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                >
                   Add Role
                 </button>
 
@@ -194,9 +201,9 @@ const EditModal = ({
   editUrl,
 }) => {
   const privilage =
-    typeof editModal.data.privilage === "string"
-      ? JSON.parse(editModal.data.privilage)
-      : editModal.data.privilage;
+    typeof editModal.data._privilage === "string"
+      ? JSON.parse(editModal.data._privilage)
+      : editModal.data._privilage;
   const [role, setRole] = useState(editModal.data.role);
   const [toggleBtn, setToggleBtn] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState(privilage);
@@ -228,7 +235,10 @@ const EditModal = ({
       const res = await fetch(editUrl + editModal.data.id, requestOptions);
       const json = await res.json();
 
-      console.log(JSON.parse(JSON.parse(json.success.data.privilage)));
+      console.log(
+        "response ========> ",
+        JSON.parse(json.success.data._privilage)
+      );
 
       if (json.success) {
         const data = {
@@ -268,13 +278,15 @@ const EditModal = ({
         tabIndex="-1"
         className={`${
           editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
+      >
         <div className="relative w-full max-w-lg max-h-full pointer-events-auto">
           {/* Modal content */}
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          >
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -283,7 +295,8 @@ const EditModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
                 <VscClose />
               </button>
             </div>
@@ -293,7 +306,8 @@ const EditModal = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="role"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Role
                   </label>
                   <input
@@ -316,7 +330,8 @@ const EditModal = ({
               <button
                 type="submit"
                 className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}>
+                disabled={toggleBtn}
+              >
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
@@ -413,13 +428,15 @@ const CreateNewModal = ({
         tabIndex="-1"
         className={`${
           createNewModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}>
+        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full pointer-events-none`}
+      >
         <div className="relative w-full max-w-lg max-h-full pointer-events-auto">
           {/* Modal content */}
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+          >
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -428,7 +445,8 @@ const CreateNewModal = ({
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
                 <VscClose />
               </button>
             </div>
@@ -438,7 +456,8 @@ const CreateNewModal = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="role"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">
+                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  >
                     Role
                   </label>
                   <input
@@ -461,7 +480,8 @@ const CreateNewModal = ({
               <button
                 type="submit"
                 className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-                disabled={toggleBtn}>
+                disabled={toggleBtn}
+              >
                 {toggleBtn ? (
                   <>
                     <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />

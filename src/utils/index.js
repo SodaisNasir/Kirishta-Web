@@ -66,6 +66,13 @@ export const modifyData = (data, neededProps) => {
   return data.map((obj) => updateObj(obj));
 };
 
+export const excludeTags = (htmlString) => {
+  const pattern = /<\/?[a-z][^>]*>/gi;
+  const result = htmlString.replace(pattern, "");
+  console.log("result", result);
+  return result === "";
+};
+
 export const fetchData = async (
   setPaginatedData,
   setData,
@@ -78,13 +85,15 @@ export const fetchData = async (
     const json = await res.json();
     const data = modifyData(json.success.data, neededProps);
 
+    console.log("data", data);
+
     setPaginatedData((prev) => ({
       ...prev,
       items:
         page === "Roles"
           ? data.map((elem) => ({
               ...elem,
-              privilage: JSON.parse(elem.privilage),
+              _privilage: JSON.parse(elem._privilage),
             }))
           : data,
     }));
@@ -92,7 +101,7 @@ export const fetchData = async (
       page === "Roles"
         ? data.map((elem) => ({
             ...elem,
-            privilage: JSON.parse(elem.privilage),
+            _privilage: JSON.parse(elem._privilage),
           }))
         : data
     );
@@ -179,14 +188,28 @@ export const fetchBooks = async (setBooks) => {
   }
 };
 
+export const fetchBookLanguages = async (setState) => {
+  try {
+    const res = await fetch(`${base_url}/book-language`);
+    const json = await res.json();
+
+    if (json.success) {
+      const data = json.success.data;
+      setState(data);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const fetchRoles = async (setState, callback) => {
   try {
     const res = await fetch(`${base_url}/role-privilage`);
     const json = await res.json();
 
     if (json.success) {
-      const data = json.success.data.map((e) => e.role);
-      setState(data);
+      const data = json.success.data;
+      setState && setState(data);
       callback && callback(data);
     }
   } catch (error) {
