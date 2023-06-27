@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { CreateNewModal, Page, Actions, EditModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { base_url } from "../../utils/url";
 import { fetchData, fetchParishCountries } from "../../utils";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllRegions = `${base_url}/region`;
 const editUrl = `${base_url}/edit-region`;
@@ -11,6 +13,11 @@ const createUrl = `${base_url}/create-region`;
 const deleteUrl = `${base_url}/delete-region`;
 
 const RegionsManagement = () => {
+  const { user } = useContext(AppContext);
+  const regions = user.privilage["Settings Management"].Region;
+  const hasDeleteAccess = regions.Delete;
+  const hasEditAccess = regions.Edit;
+  const hasCreateAccess = regions.Create;
   const initial_filters = {
     searchInput: "",
   };
@@ -80,7 +87,7 @@ const RegionsManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit", "Remove"],
-            props: { setEditModal },
+            props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -113,10 +120,15 @@ const RegionsManagement = () => {
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

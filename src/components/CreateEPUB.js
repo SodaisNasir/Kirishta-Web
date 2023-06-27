@@ -3,7 +3,7 @@ import Editor from "./Editor";
 import { excludeTags } from "../utils";
 import { toast } from "react-hot-toast";
 
-const CreateEPUB = ({ state, setState }) => {
+const CreateEPUB = ({ state, setState, addSection = true }) => {
   const handleTitleChange = (value, index) => {
     let updatedState = [...state];
     updatedState[index] = {
@@ -84,7 +84,7 @@ const CreateEPUB = ({ state, setState }) => {
                   id: index,
                   styles: "!pt-0",
                   state: item.description,
-                  handleBodyChange,
+                  handleChange: handleBodyChange,
                 }}
               />
             </div>
@@ -92,15 +92,16 @@ const CreateEPUB = ({ state, setState }) => {
         </div>
       ))}
 
-      <div className={`flex justify-end mt-5`}>
-        <button
-          onClick={handleAdd}
-          className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
-        >
-          Add Section
-        </button>
+      {addSection && (
+        <div className={`flex justify-end mt-5`}>
+          <button
+            onClick={handleAdd}
+            className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
+          >
+            Add Section
+          </button>
 
-        {/* {saveBtn && (
+          {/* {saveBtn && (
           <button
             onClick={handleSave}
             className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
@@ -108,7 +109,8 @@ const CreateEPUB = ({ state, setState }) => {
             Save
           </button>
         )} */}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

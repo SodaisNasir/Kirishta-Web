@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { CreateEPUB, Page, Actions, Loader } from "../components";
 import { BiSearch } from "react-icons/bi";
@@ -7,17 +7,25 @@ import { DropdownFilter } from "../components/helpers";
 import { VscClose } from "react-icons/vsc";
 import { base_url } from "../utils/url";
 import {
+  excludeTags,
   fetchBookLanguages,
   fetchChapters,
   fetchData,
+  fetchGeneralCountries,
   fetchParishCountries,
 } from "../utils";
+import { AppContext } from "../context";
+import { toast } from "react-hot-toast";
 
 const showAllBooks = `${base_url}/books`;
 const editUrl = `${base_url}/update-publish`;
 const deleteUrl = `${base_url}/delete-book`;
 
 const BooksManagement = () => {
+  const { user } = useContext(AppContext);
+  const books = user.privilage["Books Management"];
+  const hasDeleteAccess = books.Delete;
+  const hasEditAccess = books.Edit;
   const initial_filters = {
     searchInput: "",
     toggleCountry: false,
@@ -37,6 +45,7 @@ const BooksManagement = () => {
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
   const [parishCountries, setParishCountries] = useState(null);
+  const [countries, setCountries] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const setSingleFilter = (key, value) => {
@@ -68,9 +77,9 @@ const BooksManagement = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter(
-          (user) =>
-            user.title.toLowerCase().includes(value.toLowerCase()) ||
-            user._about.toLowerCase().includes(value.toLowerCase())
+          (item) =>
+            item.title.toLowerCase().includes(value.toLowerCase()) ||
+            item._about.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -82,8 +91,8 @@ const BooksManagement = () => {
         ...prev,
         items: data.filter(
           (item) =>
-            item[curFilter.filter].toLowerCase() ===
-            curFilter.value.toLowerCase()
+            item[curFilter.filter]?.toLowerCase() ===
+            curFilter.value?.toLowerCase()
         ),
       }));
     } else if (curFilter.filter !== "searchInput") {
@@ -114,6 +123,7 @@ const BooksManagement = () => {
 
   useEffect(() => {
     fetchBookCategories();
+    fetchGeneralCountries(setCountries);
     fetchBookLanguages(setBookLanguages);
     fetchParishCountries(setParishCountries);
     fetchData(setPaginatedData, setData, neededProps, showAllBooks);
@@ -131,7 +141,12 @@ const BooksManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between dark:bg-gray-800">
@@ -169,8 +184,9 @@ const BooksManagement = () => {
                     handleClick: (data) =>
                       setCurFilter({
                         filter: data === null ? null : "country",
-                        value: data === null ? null : data.title,
+                        value: data === null ? null : data.country_name,
                       }),
+                    countries,
                   }}
                 />
 
@@ -326,17 +342,33 @@ const EditModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setToggleBtn(true);
 
+    if (
+      epubState.every(
+        (e) => !e.title || excludeTags(e.description, "data") === ""
+      )
+    )
+      return toast.error("Please fill chapter title and body first!", {
+        duration: 3000,
+      });
+
+    setToggleBtn(true);
     try {
       let formdata = new FormData();
-      keys.forEach((key) => formdata.append(key.replace(/^_/, ""), state[key]));
+      keys.forEach((key) => {
+        console.log("key", key.replace(/^_/, ""), state[key]);
+        formdata.append(key.replace(/^_/, ""), state[key]);
+      });
+
       Object.keys(epubState).forEach((key) => {
+        formdata.append(`chapters[${key}][id]`, epubState[key].id);
         formdata.append(`chapters[${key}][title]`, epubState[key].title);
         formdata.append(
           `chapters[${key}][description]`,
           epubState[key].description
         );
+
+        console.log("key 1", epubState[key].title);
       });
 
       let requestOptions = {
@@ -351,12 +383,14 @@ const EditModal = ({
       const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
 
+      console.log("json", json);
+
       if (json.success) {
-        const updatedData = json.success.data;
+        const updatedData = json.success.book;
         let data = { id: null, ...state };
-        Object.keys(data).forEach(
-          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
-        );
+        Object.keys(data).forEach((key) => {
+          data[key] = updatedData[key.replace(/^_/, "")];
+        });
 
         console.log("EditModal =============>", data);
 
@@ -697,6 +731,7 @@ const EditModal = ({
                       {...{
                         state: epubState,
                         setState: setEpubState,
+                        addSection: false,
                       }}
                     />
                   </div>

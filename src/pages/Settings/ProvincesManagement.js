@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { CreateNewModal, Page, Actions, EditModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { base_url } from "../../utils/url";
 import { fetchData, fetchParishRegions } from "../../utils";
+import { toast } from "react-hot-toast";
+import { AppContext } from "../../context";
 
 const showAllProvinces = `${base_url}/province`;
 const editUrl = `${base_url}/edit-province`;
@@ -11,6 +13,12 @@ const createUrl = `${base_url}/create-province`;
 const deleteUrl = `${base_url}/delete-province`;
 
 const ProvincesManagement = () => {
+  const { user } = useContext(AppContext);
+  const provinces = user.privilage["Settings Management"].Province;
+  const hasDeleteAccess = provinces.Delete;
+  const hasEditAccess = provinces.Edit;
+  const hasCreateAccess = provinces.Create;
+
   const initial_filters = {
     searchInput: "",
   };
@@ -79,7 +87,7 @@ const ProvincesManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit", "Remove"],
-            props: { setEditModal },
+            props: { setEditModal, hasEditAccess, hasDeleteAccess },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -112,10 +120,15 @@ const ProvincesManagement = () => {
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

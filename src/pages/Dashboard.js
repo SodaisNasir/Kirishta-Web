@@ -244,45 +244,47 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
       </svg>
 
       {toggle.notifications && (
-        <DropdownContainer>
-          {notifications.map((elem, indx) => {
-            const notificationType = elem.message
-              .toLowerCase()
-              .includes("new user")
-              ? "user"
-              : elem.message.toLowerCase().includes("new contact")
-              ? "contact"
-              : "feedback";
-            const navigateTo =
-              notificationType === "user"
-                ? "/users-management"
-                : notificationType === "contact"
-                ? "/contact-management"
-                : "/feedback-management";
-            const icon =
-              notificationType === "user"
-                ? notificationIcons.user
-                : notificationType === "contact"
-                ? notificationIcons.contact
-                : notificationIcons.feedback;
+        <DropdownContainer extraStyles="pr-0.5">
+          <div className="overflow-y-scroll max-h-[200px] pr-3.5">
+            {notifications.map((elem, indx) => {
+              const notificationType = elem.message
+                .toLowerCase()
+                .includes("new user")
+                ? "user"
+                : elem.message.toLowerCase().includes("new contact")
+                ? "contact"
+                : "feedback";
+              const navigateTo =
+                notificationType === "user"
+                  ? "/users-management"
+                  : notificationType === "contact"
+                  ? "/contact-management"
+                  : "/feedback-management";
+              const icon =
+                notificationType === "user"
+                  ? notificationIcons.user
+                  : notificationType === "contact"
+                  ? notificationIcons.contact
+                  : notificationIcons.feedback;
 
-            return (
-              <li
-                key={elem.id}
-                onClick={() => navigate(navigateTo)}
-                className={`${
-                  notifications.length - 1 !== indx
-                    ? "border-b border-[#efefef]"
-                    : ""
-                } flex py-2 ${
-                  !elem?.markAsRead ? "font-semibold" : ""
-                } cursor-pointer text-gray-600 hover:text-black`}
-              >
-                {icon}
-                <span className="ml-2 whitespace-nowrap">{elem.message}</span>
-              </li>
-            );
-          })}
+              return (
+                <li
+                  key={elem.id}
+                  onClick={() => navigate(navigateTo)}
+                  className={`${
+                    notifications.length - 1 !== indx
+                      ? "border-b border-[#efefef]"
+                      : ""
+                  } flex py-2 ${
+                    !elem?.markAsRead ? "font-semibold" : ""
+                  } cursor-pointer text-gray-600 hover:text-black`}
+                >
+                  {icon}
+                  <span className="ml-2 whitespace-nowrap">{elem.message}</span>
+                </li>
+              );
+            })}
+          </div>
         </DropdownContainer>
       )}
     </button>

@@ -1,14 +1,8 @@
 import { useState } from "react";
-import {
-  AiFillEye,
-  AiFillFileImage,
-  AiFillFolderOpen,
-  AiOutlineFolderView,
-} from "react-icons/ai";
+import { AiFillEye, AiFillFileImage, AiFillFolderOpen } from "react-icons/ai";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import { CgUnblock } from "react-icons/cg";
 import { FaReplyAll } from "react-icons/fa";
-import { HiUserGroup } from "react-icons/hi";
 import { IoIosSend } from "react-icons/io";
 import {
   MdBlock,
@@ -19,8 +13,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { DropdownContainer } from "./helpers";
 import Loader from "./Loaders/Loader";
+import { toast } from "react-hot-toast";
 
 const Actions = ({
+  page,
+  hasDeleteAccess,
+  hasEditAccess,
   actionCols,
   tableStructure,
   deleteUrl,
@@ -37,8 +35,6 @@ const Actions = ({
   setMediaModal,
   setViewModal,
   setIsViewerOpen,
-  setDependantsModal,
-  setCallCentersModal,
   statusChangeUrl,
 }) => {
   const navigate = useNavigate();
@@ -105,6 +101,11 @@ const Actions = ({
   };
 
   const remove = async () => {
+    if (!hasDeleteAccess)
+      return toast.error("You don't have access to delete on this page!", {
+        duration: 2000,
+      });
+
     try {
       const requestOptions = {
         headers: {
@@ -202,36 +203,6 @@ const Actions = ({
           </button>
         </td>
       )}
-      {actionCols.includes("Dependants") && (
-        <td className="text-center text-base px-6 py-4">
-          <button
-            onClick={() =>
-              setDependantsModal({
-                isVisible: true,
-                dependants: data._dependants,
-              })
-            }
-            className="font-medium text-gray-600 hover:text-gray-800"
-          >
-            <HiUserGroup />
-          </button>
-        </td>
-      )}
-      {actionCols.includes("Special Call Centers") && (
-        <td className="text-center text-lg px-6 py-4">
-          <button
-            onClick={() =>
-              setCallCentersModal({
-                isVisible: true,
-                data,
-              })
-            }
-            className="hover:text-gray-800 font-medium text-gray-600 dark:text-gray-500"
-          >
-            <AiOutlineFolderView />
-          </button>
-        </td>
-      )}
       {(actionCols.includes("Media") || actionCols.includes("Media Files")) && (
         <td className="text-center text-base px-6 py-4">
           <button
@@ -279,7 +250,13 @@ const Actions = ({
       {actionCols.includes("Edit") && (
         <td className="text-center text-lg px-6 py-4">
           <button
-            onClick={() => setEditModal({ isVisible: true, data })}
+            onClick={() =>
+              hasEditAccess
+                ? setEditModal({ isVisible: true, data })
+                : toast.error("You don't have access to edit on this page!", {
+                    duration: 2000,
+                  })
+            }
             className="font-medium text-gray-600 hover:text-gray-800"
           >
             <MdModeEdit />

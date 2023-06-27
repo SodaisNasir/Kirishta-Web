@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { languages } from "../../constants/data";
 import { CreateNewModal, EditModal, Page, Actions } from "../../components";
@@ -7,6 +7,8 @@ import { GoChevronDown } from "react-icons/go";
 import { DropdownContainer } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { fetchBookLanguages, fetchData } from "../../utils";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllfaqs = `${base_url}/faq`;
 const editUrl = `${base_url}/edit-faq`;
@@ -14,6 +16,11 @@ const createUrl = `${base_url}/create-faq`;
 const deleteUrl = `${base_url}/delete-faq`;
 
 const FAQManagement = () => {
+  const { user } = useContext(AppContext);
+  const countries = user.privilage["Settings Management"].FAQ;
+  const hasDeleteAccess = countries.Delete;
+  const hasEditAccess = countries.Edit;
+  const hasCreateAccess = countries.Create;
   const initial_filters = {
     searchInput: "",
     toggleLanguage: false,
@@ -68,7 +75,9 @@ const FAQManagement = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter(
-          (item) => item[curFilter.filter] === curFilter.value
+          (item) =>
+            item[curFilter.filter].toLowerCase() ===
+            curFilter.value.toLowerCase()
         ),
       }));
     } else if (curFilter.filter !== "searchInput") {
@@ -105,7 +114,7 @@ const FAQManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit", "Delete"],
-            props: { setEditModal },
+            props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -152,10 +161,15 @@ const FAQManagement = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

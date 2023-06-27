@@ -42,7 +42,7 @@ export const modifyData = (data, neededProps) => {
       e !== "created_at" &&
       e !== "updated_at" &&
       // e !== "about" &&
-      (!neededProps.includes("privilage") ? e !== "privilage" : true)
+      (!neededProps.includes("privilage") ? e !== "_privilage" : true)
   );
 
   if (keys.includes("undefined")) {
@@ -66,11 +66,10 @@ export const modifyData = (data, neededProps) => {
   return data.map((obj) => updateObj(obj));
 };
 
-export const excludeTags = (htmlString) => {
+export const excludeTags = (htmlString, resultType = "boolean") => {
   const pattern = /<\/?[a-z][^>]*>/gi;
   const result = htmlString.replace(pattern, "");
-  console.log("result", result);
-  return result === "";
+  return resultType === "boolean" ? result === "" : result;
 };
 
 export const fetchData = async (
@@ -156,7 +155,12 @@ export const fetchChapters = async (setState, id) => {
       const data =
         json.success.data.length === 0
           ? [{ title: "", description: "" }]
-          : json.success.data;
+          : json.success.data
+              .filter((e) => e)
+              .map((elem) => ({
+                ...elem,
+                title: excludeTags(elem.title, "data"),
+              }));
       setState && setState(data);
     }
   } catch (error) {

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { Page, Actions, ViewModal, ReplyModal } from "../components";
 import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../components/helpers";
 import { fetchData } from "../utils";
 import { base_url } from "../utils/url";
+import { AppContext } from "../context";
 
 const showAllFeedbacks = `${base_url}/feedback`;
 const statusChangeUrl = `${base_url}/feedback-status/`;
@@ -12,6 +13,10 @@ const deleteUrl = `${base_url}/feedback-delete`;
 const replyUrl = `${base_url}/reply-feedback/`;
 
 const FeedbackManagement = () => {
+  const { user } = useContext(AppContext);
+  const feedback = user.privilage["Feedback Management"];
+  const hasDeleteAccess = feedback.Delete;
+  const hasEditAccess = feedback.Edit;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -103,7 +108,13 @@ const FeedbackManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["status", "View", "Reply", "Delete"],
-            props: { setViewModal, setReplyModal, statusChangeUrl },
+            props: {
+              setViewModal,
+              setReplyModal,
+              statusChangeUrl,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">

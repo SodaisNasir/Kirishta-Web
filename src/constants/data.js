@@ -2112,7 +2112,6 @@ export const parishCountries = [
   { title: "Bolivia, Plurinational...", flag: BoliviaFlag },
   { title: "Brazil", flag: BrazilFlag },
   { title: "Bahamas", flag: BahamasFlag },
-  { title: "USA", flag: "🇺🇸" },
 ];
 
 // Parish Country Categories

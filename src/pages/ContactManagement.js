@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { Page, ReplyModal, ViewModal, Actions } from "../components";
 import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../components/helpers";
 import { base_url } from "../utils/url";
 import { fetchData } from "../utils";
+import { AppContext } from "../context";
 
 const showAllContacts = `${base_url}/contact`;
 const statusChangeUrl = `${base_url}/contact-status/`;
@@ -12,6 +13,10 @@ const deleteUrl = `${base_url}/contact-delete`;
 const replyUrl = `${base_url}/reply-contact/`;
 
 const ContactManagement = () => {
+  const { user } = useContext(AppContext);
+  const contact = user.privilage["Contact Management"];
+  const hasDeleteAccess = contact.Delete;
+  const hasEditAccess = contact.Edit;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -99,7 +104,13 @@ const ContactManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["status", "View", "Reply", "Delete"],
-            props: { setViewModal, setReplyModal, statusChangeUrl },
+            props: {
+              setViewModal,
+              setReplyModal,
+              statusChangeUrl,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">

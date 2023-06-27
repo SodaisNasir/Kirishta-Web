@@ -42,9 +42,11 @@ import { AdminLayout } from "../components";
 
 const Router = () => {
   const { user } = useContext(AppContext);
-  let privilages = user && JSON.parse(user.privilage);
-  privilages =
-    typeof privilages === "string" ? JSON.parse(privilages) : privilages;
+  let privilages =
+    user &&
+    (typeof user.privilage === "string"
+      ? JSON.parse(user.privilage)
+      : user.privilage);
 
   return (
     <BrowserRouter>

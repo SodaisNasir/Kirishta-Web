@@ -55,6 +55,85 @@ export const DeviceField = ({
   );
 };
 
+export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
+  return (
+    <>
+      <div className="flex items-center justify-around pt-6">
+        <div className="flex items-center">
+          <input
+            id="app_page"
+            type="radio"
+            name="app-page_book-name_radio"
+            onChange={(e) => setRadio(e.target.value)}
+            checked={radio === "app_page"}
+            value="app_page"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            htmlFor="app_page"
+            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+          >
+            App Page
+          </label>
+        </div>
+        <div className="flex items-center">
+          <input
+            id="book_name"
+            type="radio"
+            name="app-page_book-name_radio"
+            onChange={(e) => setRadio(e.target.value)}
+            checked={radio === "book_name"}
+            value="book_name"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            htmlFor="book_name"
+            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+          >
+            Book Name
+          </label>
+        </div>
+      </div>
+
+      {radio === "app_page" ? (
+        <div>
+          <label
+            htmlFor="app-page"
+            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+          >
+            App page
+          </label>
+          <input
+            type="url"
+            id="app-page"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required={true}
+          />
+        </div>
+      ) : (
+        <div>
+          <label
+            htmlFor="book-name"
+            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+          >
+            Book name
+          </label>
+          <input
+            type="text"
+            id="book-name"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required={true}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
 export const MapField = ({ state, setState }) => {
   const isStateString = typeof state === "string";
   let stateCopy = isStateString && JSON.parse(state);
@@ -77,7 +156,6 @@ export const MapField = ({ state, setState }) => {
           }
           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="4.5461"
-          required={true}
         />
         <input
           type="text"
@@ -91,7 +169,6 @@ export const MapField = ({ state, setState }) => {
           }
           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="2.6436"
-          required={true}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import {
   CreateNewModal,
@@ -11,6 +11,8 @@ import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { fetchData } from "../../utils";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllPopups = `${base_url}/popup`;
 const editUrl = `${base_url}/popup-edit`;
@@ -18,6 +20,11 @@ const createUrl = `${base_url}/popup-store`;
 const deleteUrl = `${base_url}/popup-delete`;
 
 const PopupPromotion = () => {
+  const { user } = useContext(AppContext);
+  const popup = user.privilage["Promotion Management"]["Pop-up"];
+  const hasDeleteAccess = popup.Delete;
+  const hasEditAccess = popup.Edit;
+  const hasCreateAccess = popup.Create;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -39,10 +46,11 @@ const PopupPromotion = () => {
     isVisible: false,
     data: {
       _platform: "Android",
-      title: null,
-      _tag: null,
-      image: null,
-      app_page: null,
+      title: "",
+      _tag: "",
+      image: "",
+      book_name: "",
+      app_page: "",
       status: "ACTIVE",
     },
   });
@@ -62,8 +70,8 @@ const PopupPromotion = () => {
     } else if (value) {
       setPaginatedData((prev) => ({
         ...prev,
-        items: data.filter((user) =>
-          user.title.toLowerCase().includes(value.toLowerCase())
+        items: data.filter((item) =>
+          item.title.toLowerCase().includes(value.toLowerCase())
         ),
       }));
     }
@@ -93,6 +101,7 @@ const PopupPromotion = () => {
     "title",
     "_tag",
     "image",
+    "book_name",
     "app_page",
     "status",
   ];
@@ -113,7 +122,13 @@ const PopupPromotion = () => {
             deleteUrl,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+              hasCreateAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -175,10 +190,15 @@ const PopupPromotion = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >
@@ -195,6 +215,7 @@ const PopupPromotion = () => {
                       setData,
                       setPaginatedData,
                       statusType: "active/inactive",
+                      page: "Popup Promotion",
                     }}
                   />
                 )}
@@ -209,6 +230,7 @@ const PopupPromotion = () => {
                       setData,
                       setPaginatedData,
                       statusType: "active/inactive",
+                      page: "Popup Promotion",
                     }}
                   />
                 )}

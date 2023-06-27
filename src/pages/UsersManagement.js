@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import { EditModal, Page, ViewModal, Actions } from "../components";
 import { BiSearch } from "react-icons/bi";
 import { CountryFilter } from "../components";
 import { DropdownFilter } from "../components/helpers";
 import { base_url } from "../utils/url";
+import { AppContext } from "../context";
 import { fetchData, fetchGeneralCountries } from "../utils";
 
 const showAllUsers = `${base_url}/users`;
@@ -12,6 +13,10 @@ const editUrl = `${base_url}/user-edit`;
 const deleteUrl = `${base_url}/user-delete`;
 
 const UsersManagement = () => {
+  const { user } = useContext(AppContext);
+  const users = user.privilage["Users Management"];
+  const hasDeleteAccess = users.Delete;
+  const hasEditAccess = users.Edit;
   const initial_filters = {
     searchInput: "",
     toggleCountry: false,
@@ -60,7 +65,7 @@ const UsersManagement = () => {
       setPaginatedData((prev) => ({
         ...prev,
         items: data.filter(
-          (user) => user[curFilter.filter] === curFilter.value
+          (item) => item[curFilter.filter] === curFilter.value
         ),
       }));
     } else if (curFilter.filter !== "searchInput") {
@@ -102,7 +107,12 @@ const UsersManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete", "Block/Unblock"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -142,8 +152,9 @@ const UsersManagement = () => {
                     handleClick: (data) =>
                       setCurFilter({
                         filter: data === null ? null : "_country",
-                        value: data === null ? null : data.title,
+                        value: data === null ? null : data.country_name,
                       }),
+                    countries: generalCountries,
                   }}
                 />
 

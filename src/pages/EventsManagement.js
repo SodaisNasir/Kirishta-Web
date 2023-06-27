@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import {
   Page,
@@ -11,6 +11,8 @@ import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../components/helpers";
 import { base_url } from "../utils/url";
 import { fetchData } from "../utils";
+import { AppContext } from "../context";
+import { toast } from "react-hot-toast";
 
 const showAllEvents = `${base_url}/events`;
 const createUrl = `${base_url}/event-store`;
@@ -18,6 +20,11 @@ const editUrl = `${base_url}/event-edit`;
 const deleteUrl = `${base_url}/event-delete`;
 
 const EventsManagement = () => {
+  const { user } = useContext(AppContext);
+  const events = user.privilage["Events Management"];
+  const hasDeleteAccess = events.Delete;
+  const hasEditAccess = events.Edit;
+  const hasCreateAccess = events.Create;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -129,7 +136,12 @@ const EventsManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -175,7 +187,15 @@ const EventsManagement = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({ ...prev, isVisible: true }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-100 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-700/40"
                 >

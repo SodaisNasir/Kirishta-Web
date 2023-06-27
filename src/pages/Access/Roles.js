@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { adminPrivileges, privilegesStructure } from "../../constants/data";
 import { NestedCheckbox, Page, Actions, Loader } from "../../components";
@@ -6,8 +6,10 @@ import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { DropdownFilter } from "../../components/helpers";
 import { transformBack } from "../../components/NestedCheckBox";
-import { fetchData, fetchRoles } from "../../utils";
+import { fetchData } from "../../utils";
 import { base_url } from "../../utils/url";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllRoles = `${base_url}/role-privilage`;
 const editUrl = `${base_url}/role-privilage-edit/`;
@@ -15,6 +17,11 @@ const createUrl = `${base_url}/create-role`;
 const deleteUrl = `${base_url}/role-privilage-delete`;
 
 const Roles = () => {
+  const { user } = useContext(AppContext);
+  const rolesAccess = user.privilage["Access"]["Roles"];
+  const hasDeleteAccess = rolesAccess.Delete;
+  const hasEditAccess = rolesAccess.Edit;
+  const hasCreateAccess = rolesAccess.Create;
   const initial_filters = {
     searchInput: "",
     toggleRole: false,
@@ -103,7 +110,11 @@ const Roles = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit", "Remove"],
-            props: { setEditModal },
+            props: {
+              setEditModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -147,14 +158,19 @@ const Roles = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >
-                  Add Role
+                  Create new
                 </button>
 
                 {/* Create new modal */}
@@ -237,7 +253,7 @@ const EditModal = ({
 
       console.log(
         "response ========> ",
-        JSON.parse(json.success.data._privilage)
+        JSON.parse(json.success.data.privilage)
       );
 
       if (json.success) {

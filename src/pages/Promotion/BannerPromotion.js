@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import {
   CreateNewModal,
@@ -11,6 +11,8 @@ import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { fetchData } from "../../utils";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllBanners = `${base_url}/banner`;
 const editUrl = `${base_url}/banner-edit`;
@@ -18,6 +20,11 @@ const createUrl = `${base_url}/banner-store`;
 const deleteUrl = `${base_url}/banner-delete`;
 
 const BannerPromotion = () => {
+  const { user } = useContext(AppContext);
+  const banner = user.privilage["Promotion Management"]["Banner"];
+  const hasDeleteAccess = banner.Delete;
+  const hasEditAccess = banner.Edit;
+  const hasCreateAccess = banner.Create;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -115,7 +122,12 @@ const BannerPromotion = () => {
             deleteUrl,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -177,10 +189,15 @@ const BannerPromotion = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

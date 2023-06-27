@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { Page, Actions, EditModal, CreateNewModal } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { fetchData, fetchRoles } from "../../utils";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
+import { AppContext } from "../../context";
+import { toast } from "react-hot-toast";
 
 const showAllAdmins = `${base_url}/admin`;
 const editUrl = `${base_url}/admin-edit`;
@@ -12,6 +14,11 @@ const createUrl = `${base_url}/create-admin`;
 const deleteUrl = `${base_url}/admin-delete`;
 
 const SubAdmin = () => {
+  const { user } = useContext(AppContext);
+  const subadmins = user.privilage["Access"]["Sub-Admin"];
+  const hasDeleteAccess = subadmins.Delete;
+  const hasEditAccess = subadmins.Edit;
+  const hasCreateAccess = subadmins.Create;
   const initial_filters = {
     searchInput: "",
     toggleRole: false,
@@ -117,7 +124,11 @@ const SubAdmin = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit", "Remove"],
-            props: { setEditModal },
+            props: {
+              setEditModal,
+              hasEditAccess,
+              hasDeleteAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -161,10 +172,15 @@ const SubAdmin = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

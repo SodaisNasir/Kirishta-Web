@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../components/Tables/AdvancedTable";
 import {
   CreateNewModal,
@@ -16,6 +16,8 @@ import {
   fetchParishProvinces,
   fetchParishRegions,
 } from "../utils";
+import { AppContext } from "../context";
+import { toast } from "react-hot-toast";
 
 const showAllParishes = `${base_url}/parish`;
 const createUrl = `${base_url}/parish-store`;
@@ -23,6 +25,11 @@ const editUrl = `${base_url}/parish-edit`;
 const deleteUrl = `${base_url}/parish-delete`;
 
 const ParishManagement = () => {
+  const { user } = useContext(AppContext);
+  const parishes = user.privilage["Parish Management"];
+  const hasDeleteAccess = parishes.Delete;
+  const hasEditAccess = parishes.Edit;
+  const hasCreateAccess = parishes.Create;
   const initial_filters = {
     searchInput: "",
     toggleStatus: false,
@@ -156,7 +163,12 @@ const ParishManagement = () => {
             setPaginatedData,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
-            props: { setEditModal, setViewModal },
+            props: {
+              setEditModal,
+              setViewModal,
+              hasDeleteAccess,
+              hasEditAccess,
+            },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
@@ -202,10 +214,15 @@ const ParishManagement = () => {
 
                 <button
                   onClick={() =>
-                    setCreateNewModal((prev) => ({
-                      ...prev,
-                      isVisible: true,
-                    }))
+                    hasCreateAccess
+                      ? setCreateNewModal((prev) => ({
+                          ...prev,
+                          isVisible: true,
+                        }))
+                      : toast.error(
+                          "You don't have access to create on this page!",
+                          { duration: 2000 }
+                        )
                   }
                   className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
                 >

@@ -57,7 +57,13 @@ const Login = () => {
       console.log(json);
 
       if (json.success.status == 200) {
-        const data = json.success.data;
+        let data = json.success.data;
+        data.privilage = JSON.parse(data.privilage);
+        data.privilage =
+          typeof data.privilage === "string"
+            ? JSON.parse(data.privilage)
+            : data.privilage;
+
         setMessage({ theme: themes.success, value: "Loign successful!" });
         localStorage.setItem("user", JSON.stringify(data));
         setUser(data);

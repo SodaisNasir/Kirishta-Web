@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
 import { admins } from "../../constants/data";
 import { Page } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
 import { MdModeEdit } from "react-icons/md";
+import { AppContext } from "../../context";
 
 const AdminEmail = () => {
+  const { user } = useContext(AppContext);
+  const adminEmails = user.privilage["Settings Management"]["Admin Email"];
+  const hasEditAccess = adminEmails.Edit;
+  // const hasDeleteAccess = adminEmails.Delete;
+
   const initial_filters = {
     searchInput: "",
   };
@@ -61,7 +67,7 @@ const AdminEmail = () => {
             setPaginatedData,
             Actions,
             actionCols: ["Edit"],
-            props: { setEditModal },
+            props: { setEditModal, hasEditAccess },
           }}
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">

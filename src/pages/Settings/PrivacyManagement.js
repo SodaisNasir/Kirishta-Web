@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Editor from "../../components/Editor";
 import { LanguageSelector } from "../../components/helpers";
 import { Loader, OtherPage } from "../../components";
 import { base_url } from "../../utils/url";
 import { fetchDataByLang } from "../../utils";
+import { AppContext } from "../../context";
 
 const PrivacyManagement = () => {
+  const { user } = useContext(AppContext);
+  const hasEditAccess = user.privilage["Settings Management"].Privacy.Edit;
   const type = "Privacy";
   const [toggleBtn, setToggleBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -74,14 +77,22 @@ const PrivacyManagement = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 gap-5">
-              <Editor {...{ state: state.value, handleChange }} />
+              <Editor
+                {...{
+                  state: state.value,
+                  handleChange,
+                  readOnly: !hasEditAccess,
+                }}
+              />
             </div>
             <button
               onClick={handleSubmit}
               className={`flex items-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs ${
                 toggleBtn ? "py-1 px-5 pl-2" : "py-2 px-5"
-              } mt-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed`}
-              disabled={toggleBtn}
+              } mt-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 ${
+                toggleBtn ? "disabled:py-1" : ""
+              } disabled:cursor-not-allowed`}
+              disabled={!hasEditAccess || toggleBtn}
             >
               {toggleBtn ? (
                 <>

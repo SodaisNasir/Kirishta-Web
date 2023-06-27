@@ -133,7 +133,7 @@ const AdvancedTable = ({
               ) : (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td
-                    colSpan={tableStructure.length + 2}
+                    colSpan={tableStructure.length + actionCols.length + 1}
                     className="text-center w-4 p-4"
                   >
                     No data found!
@@ -294,10 +294,10 @@ const SingleUser = ({
                 )
               ) : key === "privilage" ? (
                 "true"
-              ) : key === "app_page" ? (
+              ) : key === "app_page" && data[key] ? (
                 <a
                   href={
-                    data[key].includes("http")
+                    data[key]?.includes("http")
                       ? data[key]
                       : "https://" + data[key]
                   }
@@ -307,6 +307,8 @@ const SingleUser = ({
                 >
                   {data[key]}
                 </a>
+              ) : key === "app_page" && !data[key] ? (
+                "No Data!"
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
               ) : data[key] === null ? (
@@ -321,6 +323,7 @@ const SingleUser = ({
         <Actions
           {...{
             ...props,
+            page,
             actionCols,
             tableStructure,
             deleteUrl,
