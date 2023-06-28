@@ -103,8 +103,9 @@ const Notification = () => {
             setPaginatedData,
             selected,
             setSelected,
-            page: "Notification Promotion",
             Actions,
+            page: "Notification Promotion",
+            checkboxesEnabled: true,
             actionCols: ["Push Notification"],
             props: { setNotificationModal },
           }}

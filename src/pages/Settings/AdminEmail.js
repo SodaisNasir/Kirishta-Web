@@ -1,113 +1,179 @@
 import React, { useContext, useEffect, useState } from "react";
-import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { admins } from "../../constants/data";
-import { Page } from "../../components";
-import { BiSearch } from "react-icons/bi";
+import { Loader, Page } from "../../components";
 import { VscClose } from "react-icons/vsc";
-import { MdModeEdit } from "react-icons/md";
 import { AppContext } from "../../context";
+import { base_url } from "../../utils/url";
+import { toast } from "react-hot-toast";
+
+const showAllAdminEmails = `${base_url}/show-adminEmail`;
+const editUrl = `${base_url}/edit-adminEmail/1`;
 
 const AdminEmail = () => {
+  const initialNameState = ["", "", ""];
+  const initialEmailState = ["", "", ""];
   const { user } = useContext(AppContext);
   const adminEmails = user.privilage["Settings Management"]["Admin Email"];
   const hasEditAccess = adminEmails.Edit;
-  // const hasDeleteAccess = adminEmails.Delete;
+  const [toggleBtn, setToggleBtn] = useState(false);
+  const [names, setNames] = useState(initialNameState);
+  const [emails, setEmails] = useState(initialEmailState);
 
-  const initial_filters = {
-    searchInput: "",
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setToggleBtn(true);
+
+    try {
+      let formdata = new FormData();
+      formdata.append("id", 1);
+      formdata.append("name", JSON.stringify(names));
+      formdata.append("email", JSON.stringify(emails));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(editUrl, requestOptions);
+      const json = await res.json();
+
+      if (json.message) {
+        toast.success(json.message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setToggleBtn(false);
+    }
   };
-  const [paginatedData, setPaginatedData] = useState({
-    items: [],
-    curItems: [],
-  });
-  const [data, setData] = useState([]);
-  const [filters, setFilters] = useState(initial_filters);
-  const [editModal, setEditModal] = useState({ isVisible: false, data: null });
-  const { searchInput } = filters;
 
-  const setSingleFilter = (key, value) => {
-    setFilters({ ...initial_filters, [key]: value });
-  };
+  const fetchData = async () => {
+    try {
+      const res = await fetch(showAllAdminEmails);
+      const json = await res.json();
 
-  const filterUsersBySearch = (e) => {
-    const value = e.target.value;
-    setSingleFilter("searchInput", value);
+      if (json.success) {
+        let names = JSON.parse(json.success.data[0].name);
+        let emails = JSON.parse(json.success.data[0].email);
+        names = typeof names === "string" ? JSON.parse(names) : names;
+        emails = typeof emails === "string" ? JSON.parse(emails) : emails;
 
-    if (value === "") {
-      setPaginatedData((prev) => ({ ...prev, items: data }));
-    } else if (value) {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter(
-          (item) =>
-            item.Name.toLowerCase().includes(value.toLowerCase()) ||
-            item["Email 1"].toLowerCase().includes(value.toLowerCase()) ||
-            item["Email 2"].toLowerCase().includes(value.toLowerCase()) ||
-            item["Email 3"].toLowerCase().includes(value.toLowerCase())
-        ),
-      }));
+        setNames(names);
+        setEmails(emails);
+
+        console.log("names", names);
+        console.log("emails", emails);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   useEffect(() => {
     // fetch data
-    setTimeout(() => {
-      setPaginatedData((prev) => ({ ...prev, items: admins }));
-      setData(admins);
-    }, 2000);
+    fetchData();
   }, []);
 
   return (
     <Page title={"Admin Email"}>
-      <main>
-        <AdvancedTable
-          {...{
-            data,
-            paginatedData,
-            setPaginatedData,
-            Actions,
-            actionCols: ["Edit"],
-            props: { setEditModal, hasEditAccess },
-          }}
+      <main className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-6 gap-6 max-w-3xl mx-auto mt-3"
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
-            {/* Search bar start */}
-            <label htmlFor="table-search" className="sr-only">
-              Search
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <BiSearch />
-              </div>
-              <input
-                type="text"
-                id="table-search-users"
-                value={searchInput}
-                onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for admin emails"
+          {names.map((item, index) => (
+            <>
+              <FormField
+                {...{
+                  key: `name${index + 1}`,
+                  id: index + 1,
+                  title: "name " + (index + 1),
+                  state: item,
+                  setState: (val) => {
+                    let stateCopy = [...names];
+                    stateCopy[index] = val;
+                    setNames(stateCopy);
+                  },
+                  placeholder: "John Doe",
+                  readOnly: !hasEditAccess,
+                }}
               />
-            </div>
-            {/* Search bar end */}
-            {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
-                {paginatedData.items.length <= 1
-                  ? `${paginatedData.items.length} result`
-                  : `${paginatedData.items.length} results`}
-              </div>
-
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
-                {/* Edit user modal */}
-                {editModal.isVisible && (
-                  <EditModal {...{ editModal, setEditModal }} />
-                )}
-              </div>
-            </div>
+              <FormField
+                {...{
+                  key: `email${index + 1}`,
+                  id: index + 1,
+                  title: "email " + (index + 1),
+                  type: "email",
+                  state: emails[index],
+                  setState: (val) => {
+                    let stateCopy = [...emails];
+                    stateCopy[index] = val;
+                    setEmails(stateCopy);
+                  },
+                  placeholder: "johndoe@gmail.com",
+                  readOnly: !hasEditAccess,
+                }}
+              />
+            </>
+          ))}
+          <div className="flex items-center space-x-2 border-gray-200 rounded-b dark:border-gray-600">
+            <button
+              type="submit"
+              className={`flex items-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs ${
+                toggleBtn ? "py-1 px-5 pl-2" : "py-2.5 px-5"
+              } mt-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 ${
+                toggleBtn ? "disabled:py-1" : ""
+              } disabled:cursor-not-allowed`}
+              disabled={!hasEditAccess || toggleBtn}
+            >
+              {toggleBtn ? (
+                <>
+                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  Updating
+                </>
+              ) : (
+                "Update"
+              )}
+            </button>
           </div>
-        </AdvancedTable>
+        </form>
       </main>
     </Page>
+  );
+};
+
+const FormField = ({
+  type = "text",
+  title,
+  id,
+  placeholder,
+  state,
+  setState,
+  readOnly = false,
+}) => {
+  return (
+    <div className="col-span-6 sm:col-span-3">
+      <label
+        htmlFor={title + id}
+        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+      >
+        {title}
+      </label>
+      <input
+        type={type}
+        name={title + id}
+        id={title + id}
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder={placeholder}
+        required={true}
+        readOnly={readOnly}
+      />
+    </div>
   );
 };
 
@@ -258,30 +324,6 @@ const EditModal = ({ editModal, setEditModal }) => {
           </form>
         </div>
       </div>
-    </>
-  );
-};
-
-const Actions = ({
-  tableStructure,
-  data,
-  SN,
-  selectedUsers,
-  setSelectedUsers,
-  paginatedData,
-  setPaginatedData,
-  setEditModal,
-}) => {
-  return (
-    <>
-      <td className="text-center text-base px-6 py-4">
-        <button
-          onClick={() => setEditModal({ isVisible: true, data })}
-          className="font-medium text-gray-600 hover:text-gray-800"
-        >
-          <MdModeEdit />
-        </button>
-      </td>
     </>
   );
 };

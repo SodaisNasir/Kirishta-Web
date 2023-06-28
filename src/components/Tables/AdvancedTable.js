@@ -10,6 +10,7 @@ const AdvancedTable = ({
   setData,
   Actions,
   deleteUrl,
+  checkboxesEnabled = false,
   tableTemplate,
   actionCols,
   selected = [],
@@ -69,25 +70,27 @@ const AdvancedTable = ({
           <table className="w-full text-xs text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="p-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-all-search"
-                      type="checkbox"
-                      onChange={handleCheckChange}
-                      checked={
-                        paginatedData.curItems.length !== 0 &&
-                        paginatedData.curItems.every((e) =>
-                          selectedUsers.includes(e.id)
-                        )
-                      }
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-                    />
-                    <label htmlFor="checkbox-all-search" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </th>
+                {checkboxesEnabled && (
+                  <th scope="col" className="p-4">
+                    <div className="flex items-center">
+                      <input
+                        id="checkbox-all-search"
+                        type="checkbox"
+                        onChange={handleCheckChange}
+                        checked={
+                          paginatedData.curItems.length !== 0 &&
+                          paginatedData.curItems.every((e) =>
+                            selectedUsers.includes(e.id)
+                          )
+                        }
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                      />
+                      <label htmlFor="checkbox-all-search" className="sr-only">
+                        checkbox
+                      </label>
+                    </div>
+                  </th>
+                )}
                 {/* Other Columns */}
                 {tableStructure.map(
                   (key) =>
@@ -123,6 +126,7 @@ const AdvancedTable = ({
                     setSelectedUsers,
                     paginatedData,
                     setPaginatedData,
+                    checkboxesEnabled,
                     actionCols,
                     deleteUrl,
                     setData,
@@ -154,6 +158,7 @@ const Users = ({
   selectedUsers,
   setSelectedUsers,
   paginatedData,
+  checkboxesEnabled,
   setPaginatedData,
   actionCols,
   deleteUrl,
@@ -179,6 +184,7 @@ const Users = ({
             setSelectedUsers,
             paginatedData,
             setPaginatedData,
+            checkboxesEnabled,
             actionCols,
             deleteUrl,
             setData,
@@ -202,6 +208,7 @@ const Users = ({
                 : null,
             selectedUsers,
             setSelectedUsers,
+            checkboxesEnabled,
             paginatedData,
             setPaginatedData,
             actionCols,
@@ -242,6 +249,7 @@ const SingleUser = ({
   data,
   setData,
   id,
+  checkboxesEnabled,
   selectedUsers,
   setSelectedUsers,
   paginatedData,
@@ -259,20 +267,22 @@ const SingleUser = ({
 
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-      <td className="w-4 p-4">
-        <div className="flex items-center">
-          <input
-            id={"checkbox-table-search-" + id}
-            type="checkbox"
-            checked={selectedUsers.includes(id)}
-            onChange={handleCheckChange}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-          />
-          <label htmlFor={"checkbox-table-search-" + id} className="sr-only">
-            checkbox
-          </label>
-        </div>
-      </td>
+      {checkboxesEnabled && (
+        <td className="w-4 p-4">
+          <div className="flex items-center">
+            <input
+              id={"checkbox-table-search-" + id}
+              type="checkbox"
+              checked={selectedUsers.includes(id)}
+              onChange={handleCheckChange}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+            />
+            <label htmlFor={"checkbox-table-search-" + id} className="sr-only">
+              checkbox
+            </label>
+          </div>
+        </td>
+      )}
       {tableStructure.map(
         (key) =>
           key[0] !== "_" && (

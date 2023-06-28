@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiFillEye, AiFillFileImage, AiFillFolderOpen } from "react-icons/ai";
-import { BsBoxArrowUpRight } from "react-icons/bs";
+import { BsBoxArrowUpRight, BsFillCloudUploadFill } from "react-icons/bs";
 import { CgUnblock } from "react-icons/cg";
 import { FaReplyAll } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { DropdownContainer } from "./helpers";
 import Loader from "./Loaders/Loader";
 import { toast } from "react-hot-toast";
+import { base_url } from "../utils/url";
 
 const Actions = ({
   page,
@@ -36,6 +37,7 @@ const Actions = ({
   setViewModal,
   setIsViewerOpen,
   statusChangeUrl,
+  setSavedBooks,
 }) => {
   const navigate = useNavigate();
   const [blockUser, setBlockUser] = useState(
@@ -92,6 +94,50 @@ const Actions = ({
           )
         );
         console.log("block/unblock data =======>", data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBlockBtn(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    try {
+      let formdata = new FormData();
+      formdata.append("title", data.title);
+      formdata.append("id", data.id);
+      formdata.append("author", data.author);
+      formdata.append("cover_image", data.cover_image);
+      formdata.append("category", data.category);
+      formdata.append("release_year", data.release_year);
+      formdata.append("language", data.language);
+      formdata.append("about", data.about);
+      formdata.append("status", "ACTIVE");
+      formdata.append("download", data.download || 0);
+      formdata.append("read", data.read || 0);
+      formdata.append("featured", data.featured);
+      formdata.append("country", data.country);
+
+      console.log("data", data);
+
+      const requestOptions = {
+        headers: {
+          accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+      const res = await fetch(
+        `${base_url}/update-publish/${id}`,
+        requestOptions
+      );
+      const json = await res.json();
+      console.log("json =======>", json);
+
+      if (json.success) {
+        setSavedBooks((prev) => prev.filter((e) => e.id !== id));
       }
     } catch (err) {
       console.error(err);
@@ -267,7 +313,7 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={remove}
-            className="hover:text-gray-800 font-medium text-gray-600 dark:text-gray-500"
+            className="font-medium text-gray-600 hover:text-gray-800"
           >
             <MdDelete />
           </button>
@@ -277,11 +323,21 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={handleBlock}
-            className="font-medium text-blue-600 dark:text-blue-500"
+            className="font-medium text-gray-600 hover:text-gray-800"
             title={blockUser ? "Unblock user" : "Block user"}
             disabled={toggleBlockBtn}
           >
             {blockUser ? <CgUnblock /> : <MdBlock />}
+          </button>
+        </td>
+      )}
+      {actionCols.includes("Publish") && (
+        <td className="text-center text-base px-6 py-4">
+          <button
+            onClick={handlePublish}
+            className="font-medium text-gray-600 hover:text-gray-800"
+          >
+            <BsFillCloudUploadFill />
           </button>
         </td>
       )}

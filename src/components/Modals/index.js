@@ -19,7 +19,7 @@ import {
   TimeField,
   UploadField,
 } from "../Form Fields";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 
 export const ViewModal = ({ viewModal, setViewModal, page }) => {
@@ -453,12 +453,13 @@ export const EditModal = ({
   const initial_state = editModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
   const [state, setState] = useState(initial_state);
+  const [curParishRegions, setCurParishRegions] = useState(parishRegions);
+  const [curParishProvinces, setCurParishProvinces] = useState(parishProvinces);
   const [radio, setRadio] = useState(
     initial_state.app_page ? "app_page" : "book_name"
   );
 
   console.log("state", state);
-  console.log("state[radio]", state[radio]);
 
   const keys = Object.keys(initial_state).filter(
     (item) => item !== "id" && !item.includes("email_verified_at")
@@ -532,6 +533,34 @@ export const EditModal = ({
   };
 
   const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
+
+  useEffect(() => {
+    const func = () => {
+      setState((prev) => ({ ...prev, _region: "", _province: "" }));
+      initial_state.country = "";
+    };
+
+    if (page === "Parish Management") {
+      setCurParishRegions(
+        parishRegions.filter(
+          (e) => e.country.toLowerCase() === state.country.toLowerCase()
+        )
+      );
+
+      // for preventing region and province value change when this useEffect runs for the first time.
+      initial_state.country !== state.country && func();
+    }
+  }, [state.country]);
+
+  useEffect(() => {
+    if (page === "Parish Management") {
+      setCurParishProvinces(
+        parishProvinces.filter(
+          (e) => e.region.toLowerCase() === state._region.toLowerCase()
+        )
+      );
+    }
+  }, [state._region, state.country]);
 
   return (
     <>
@@ -631,7 +660,7 @@ export const EditModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
-                          parishProvinces,
+                          parishProvinces: curParishProvinces,
                         }}
                       />
                     );
@@ -685,7 +714,7 @@ export const EditModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
-                          parishRegions,
+                          parishRegions: curParishRegions,
                         }}
                       />
                     );
@@ -882,6 +911,8 @@ export const CreateNewModal = ({
   const [toggleBtn, setToggleBtn] = useState(false);
   const [radio, setRadio] = useState("app_page");
   const [state, setState] = useState(initial_state);
+  const [curParishRegions, setCurParishRegions] = useState(parishRegions);
+  const [curParishProvinces, setCurParishProvinces] = useState(parishProvinces);
 
   console.log("state ========>", state);
 
@@ -956,6 +987,26 @@ export const CreateNewModal = ({
 
   const close = () =>
     setCreateNewModal((prev) => ({ ...prev, isVisible: false }));
+
+  useEffect(() => {
+    if (page === "Parish Management") {
+      setCurParishRegions(
+        parishRegions.filter(
+          (e) => e.country.toLowerCase() === state.country.toLowerCase()
+        )
+      );
+    }
+  }, [state.country]);
+
+  useEffect(() => {
+    if (page === "Parish Management") {
+      setCurParishProvinces(
+        parishProvinces.filter(
+          (e) => e.region.toLowerCase() === state._region.toLowerCase()
+        )
+      );
+    }
+  }, [state._region]);
 
   return (
     <>
@@ -1051,7 +1102,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
-                          parishProvinces,
+                          parishProvinces: curParishProvinces,
                         }}
                       />
                     );
@@ -1105,7 +1156,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
-                          parishRegions,
+                          parishRegions: curParishRegions,
                         }}
                       />
                     );

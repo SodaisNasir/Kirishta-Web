@@ -12,7 +12,6 @@ const CountryFilter = ({
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   const handleSelect = (data) => {
-    console.log("data", data);
     handleClick(data);
     setSelectedCountry(data);
   };
@@ -45,29 +44,33 @@ const CountryFilter = ({
 
       {/* Dropdown */}
       {toggle && (
-        <DropdownContainer extraStyles="text-left translate-x-[50%] xs:translate-x-0">
-          <li
-            onClick={() => handleSelect(null)}
-            className={`flex items-center p-1 pt-1.5 pb-1 pr-8 border-b border-[#f2f2f2] cursor-pointer hover:text-gray-500`}
-            role="option"
-          >
-            <span className="pl-8 text-[10px]">All countries</span>
-          </li>
-          {countries.map((data, idx) => (
+        <DropdownContainer extraStyles="text-left translate-x-[50%] xs:translate-x-0 !pr-1 overflow-hidden">
+          <div className="overflow-y-scroll max-h-[300px] pr-3">
             <li
-              key={data.country_name + idx}
-              onClick={() => handleSelect(data)}
-              className={`flex items-center p-1 pr-8 cursor-pointer hover:text-gray-500 ${
-                idx !== countries.length - 1 ? "border-b border-[#f2f2f2]" : ""
-              }`}
+              onClick={() => handleSelect(null)}
+              className={`flex items-center p-1 pt-1.5 pb-1 pr-8 border-b border-[#f2f2f2] cursor-pointer hover:text-gray-500`}
               role="option"
             >
-              <span className="text-sm font-emoji">{data.flag_code}</span>
-              <span className="pl-4 text-[10px] whitespace-nowrap">
-                {data.country_name}
-              </span>
+              <span className="pl-8 text-[10px]">All countries</span>
             </li>
-          ))}
+            {countries.map((data, idx) => (
+              <li
+                key={data.country_name + idx}
+                onClick={() => handleSelect(data)}
+                className={`flex items-center p-1 pr-8 cursor-pointer hover:text-gray-500 ${
+                  idx !== countries.length - 1
+                    ? "border-b border-[#f2f2f2]"
+                    : ""
+                }`}
+                role="option"
+              >
+                <span className="text-sm font-emoji">{data.flag_code}</span>
+                <span className="pl-4 text-[10px] whitespace-nowrap">
+                  {data.country_name}
+                </span>
+              </li>
+            ))}
+          </div>
         </DropdownContainer>
       )}
     </button>

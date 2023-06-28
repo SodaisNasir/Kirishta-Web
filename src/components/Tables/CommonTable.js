@@ -20,7 +20,8 @@ const CommonTable = ({ template, state, actionCols, props }) => {
                   <th
                     key={elem}
                     scope="col"
-                    className="justify-between px-6 py-3 text-center uppercase">
+                    className="justify-between px-6 py-3 text-center uppercase"
+                  >
                     {elem}
                   </th>
                 ))}
@@ -31,24 +32,27 @@ const CommonTable = ({ template, state, actionCols, props }) => {
               state.map((el) => (
                 <tr
                   className="border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
-                  key={el.id}>
+                  key={el.id}
+                >
                   {keys.map((elem) => (
                     <td
                       className="px-6 py-4 text-xs text-center whitespace-nowrap"
-                      key={elem + el.id}>
+                      key={elem + el.id}
+                    >
                       {el[elem]}
                     </td>
                   ))}
 
-                  <Actions {...{ data: el, actionCols, ...props }} />
+                  <Actions {...{ data: el, id: el.id, actionCols, ...props }} />
                 </tr>
               ))
             ) : (
               <tr className="text-center border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <td
                   className={`"px-6 py-4 whitespace-nowrap text-xs`}
-                  colSpan={keys.length + 1}>
-                  No results found!
+                  colSpan={keys.length + actionCols.length + 1}
+                >
+                  No inactive/saved books found!
                 </td>
               </tr>
             )}

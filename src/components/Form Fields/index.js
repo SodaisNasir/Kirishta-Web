@@ -14,6 +14,9 @@ export const RoleField = ({ state, setState, roles }) => {
         id="roles"
         required={true}
       >
+        <option className="text-sm" value="">
+          select role
+        </option>
         {roles.map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
@@ -45,6 +48,9 @@ export const DeviceField = ({
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="devices"
       >
+        <option className="text-sm" value="">
+          select device
+        </option>
         {["Android", "IOS"].map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
@@ -138,7 +144,6 @@ export const MapField = ({ state, setState }) => {
   const isStateString = typeof state === "string";
   let stateCopy = isStateString && JSON.parse(state);
   stateCopy = typeof stateCopy === "string" && JSON.parse(state);
-  console.log(state);
 
   return (
     <div>
@@ -230,6 +235,9 @@ export const GeneralCountryField = ({
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="countries"
       >
+        <option className="text-sm" value="">
+          select a country
+        </option>
         {generalCountries.map((item, indx) => (
           <option
             className="text-sm"
@@ -260,6 +268,9 @@ export const ParishCountriesField = ({ state, setState, parishCountries }) => {
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="parish-countries"
       >
+        <option className="text-sm" value="">
+          select country
+        </option>
         {parishCountries.map((item) => (
           <option className="text-sm" key={item.id} value={item.country}>
             {item.country}
@@ -280,12 +291,15 @@ export const ParishProvincesField = ({ state, setState, parishProvinces }) => {
         Province
       </label>
       <select
-        required={true}
         value={state}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="parish-countries"
+        required={true}
       >
+        <option className="text-sm" value="">
+          select province
+        </option>
         {parishProvinces.map((item) => (
           <option className="text-sm" key={item.id} value={item.province}>
             {item.province}
@@ -312,6 +326,9 @@ export const ParishRegionsField = ({ state, setState, parishRegions }) => {
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="parish-regions"
       >
+        <option className="text-sm" value="">
+          select region
+        </option>
         {parishRegions.map((item) => (
           <option className="text-sm" key={item.id} value={item.region}>
             {item.region}
@@ -338,6 +355,9 @@ export const FeaturedField = ({ state, setState }) => {
         required={true}
         id="featured"
       >
+        <option className="text-sm" value="">
+          select an option
+        </option>
         {["YES", "NO"].map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
@@ -348,11 +368,7 @@ export const FeaturedField = ({ state, setState }) => {
   );
 };
 
-export const PlatformField = ({
-  defaultValue = "Android",
-  state,
-  setState,
-}) => {
+export const PlatformField = ({ state, setState }) => {
   return (
     <div>
       <label
@@ -362,13 +378,15 @@ export const PlatformField = ({
         Platform
       </label>
       <select
-        defaultValue={defaultValue}
         value={state}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         required={true}
         id="platform"
       >
+        <option className="text-sm" value="">
+          select an option
+        </option>
         {["Android", "iOS"].map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
@@ -395,6 +413,9 @@ export const LanguageField = ({ state, setState, languages }) => {
         onChange={(e) => setState(e.target.value)}
         required={true}
       >
+        <option className="text-sm" value="">
+          select language
+        </option>
         {languages.map(({ language }) => (
           <option className="text-sm" key={language} value={language}>
             {language}
@@ -425,6 +446,9 @@ export const ParishCategoriesField = ({
         onChange={(e) => setState(e.target.value)}
         required={true}
       >
+        <option className="text-sm" value="">
+          select category
+        </option>
         {parishCategories.map((item, indx) => (
           <option
             className="text-sm"
@@ -460,6 +484,9 @@ export const StatusField = ({ state, setState, statusType }) => {
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="status"
       >
+        <option className="text-sm" value="">
+          select status
+        </option>
         {status.map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}

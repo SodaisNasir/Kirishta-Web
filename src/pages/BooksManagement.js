@@ -12,7 +12,6 @@ import {
   fetchChapters,
   fetchData,
   fetchGeneralCountries,
-  fetchParishCountries,
 } from "../utils";
 import { AppContext } from "../context";
 import { toast } from "react-hot-toast";
@@ -44,8 +43,7 @@ const BooksManagement = () => {
   const { searchInput, toggleCountry, toggleStatus } = filters;
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
-  const [parishCountries, setParishCountries] = useState(null);
-  const [countries, setCountries] = useState(null);
+  const [generalCountries, setGeneralCountries] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const setSingleFilter = (key, value) => {
@@ -123,9 +121,8 @@ const BooksManagement = () => {
 
   useEffect(() => {
     fetchBookCategories();
-    fetchGeneralCountries(setCountries);
+    fetchGeneralCountries(setGeneralCountries);
     fetchBookLanguages(setBookLanguages);
-    fetchParishCountries(setParishCountries);
     fetchData(setPaginatedData, setData, neededProps, showAllBooks);
   }, []);
 
@@ -186,7 +183,7 @@ const BooksManagement = () => {
                         filter: data === null ? null : "country",
                         value: data === null ? null : data.country_name,
                       }),
-                    countries,
+                    countries: generalCountries,
                   }}
                 />
 
@@ -213,7 +210,7 @@ const BooksManagement = () => {
                       setPaginatedData,
                       bookCategories,
                       bookLanguages,
-                      parishCountries,
+                      generalCountries,
                     }}
                   />
                 )}
@@ -316,7 +313,7 @@ const EditModal = ({
   setData,
   bookCategories,
   bookLanguages,
-  parishCountries,
+  generalCountries,
 }) => {
   const initial_state = editModal.data;
   const initialState = [{ title: "", description: "" }];
@@ -343,11 +340,7 @@ const EditModal = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      epubState.every(
-        (e) => !e.title || excludeTags(e.description, "data") === ""
-      )
-    )
+    if (epubState.some((e) => !e.title || excludeTags(e.description)))
       return toast.error("Please fill chapter title and body first!", {
         duration: 3000,
       });
@@ -588,9 +581,13 @@ const EditModal = ({
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
-                    {parishCountries.map(({ country }) => (
-                      <option className="text-sm" key={country} value={country}>
-                        {country}
+                    {generalCountries.map(({ country_name }) => (
+                      <option
+                        className="text-sm"
+                        key={country_name}
+                        value={country_name}
+                      >
+                        {country_name}
                       </option>
                     ))}
                   </select>
@@ -638,7 +635,7 @@ const EditModal = ({
                   </label>
                   <select
                     name="status"
-                    value={state.status}
+                    value={state.status.toUpperCase()}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="status"
