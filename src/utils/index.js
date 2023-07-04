@@ -1,3 +1,4 @@
+import { includes } from "lodash";
 import { base_url } from "./url";
 
 export const typeCheck = (elem, page) => {
@@ -39,7 +40,7 @@ export const typeCheck = (elem, page) => {
 export const modifyData = (data, neededProps) => {
   let keys = Object.keys(data[0]).filter(
     (e) =>
-      e !== "created_at" &&
+      (!neededProps.includes("_created_at") ? e !== "created_at" : true) &&
       e !== "updated_at" &&
       // e !== "about" &&
       (!neededProps.includes("privilage") ? e !== "_privilage" : true)
@@ -72,6 +73,9 @@ export const excludeTags = (htmlString, resultType = "boolean") => {
   return resultType === "boolean" ? result === "" : result;
 };
 
+export const replaceParaWithDivs = (htmlString) =>
+  htmlString.replace(/<p(.*?)>/gi, "<div>").replace(/<\/p>/gi, "</div>");
+
 export const fetchData = async (
   setPaginatedData,
   setData,
@@ -84,7 +88,7 @@ export const fetchData = async (
     const json = await res.json();
     const data = modifyData(json.success.data, neededProps);
 
-    console.log("data", data);
+    console.log("response", json.success.data);
 
     setPaginatedData((prev) => ({
       ...prev,

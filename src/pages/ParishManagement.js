@@ -63,8 +63,9 @@ const ParishManagement = () => {
       country: "",
       _province: "",
       _region: "",
-      status: "ACTIVE",
+      status: "",
       _about: "",
+      _featured: ''
     },
   });
   const { searchInput, toggleStatus } = filters;
@@ -127,6 +128,7 @@ const ParishManagement = () => {
     "_region",
     "status",
     "_about",
+    "_featured",
   ];
 
   useEffect(() => {

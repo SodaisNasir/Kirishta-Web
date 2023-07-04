@@ -6,6 +6,7 @@ import EditorToolbar, {
   undoChange,
 } from "./EditorToolbar";
 import "react-quill/dist/quill.snow.css";
+import { replaceParaWithDivs } from "../../utils";
 
 export const Editor = ({ state, handleChange, id, styles = "", readOnly }) => {
   return (
@@ -14,7 +15,7 @@ export const Editor = ({ state, handleChange, id, styles = "", readOnly }) => {
       <ReactQuill
         theme="snow"
         defaultValue={state}
-        onChange={(val) => handleChange(val, id)}
+        onChange={(val) => handleChange(replaceParaWithDivs(val), id)}
         placeholder={"Write here..."}
         modules={Editor.modules(id)}
         formats={formats}

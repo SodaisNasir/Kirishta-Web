@@ -32,10 +32,10 @@ const GeneralCountriesManagement = () => {
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
-      country_name: null,
-      country_code: null,
-      flag_code: null,
-      featured: "YES",
+      country_name: "",
+      country_code: "",
+      flag_code: "",
+      featured: "",
     },
   });
   const { searchInput } = filters;

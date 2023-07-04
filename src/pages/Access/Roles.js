@@ -88,8 +88,6 @@ const Roles = () => {
 
   const neededProps = ["id", "role", "_privilage"];
 
-  console.log("data", data);
-
   useEffect(() => {
     setRoles(data.map((e) => e.role));
   }, [data]);
@@ -216,10 +214,11 @@ const EditModal = ({
   setPaginatedData,
   editUrl,
 }) => {
-  const privilage =
+  let privilage =
     typeof editModal.data._privilage === "string"
       ? JSON.parse(editModal.data._privilage)
       : editModal.data._privilage;
+  privilage = typeof privilage === "string" ? JSON.parse(privilage) : privilage;
   const [role, setRole] = useState(editModal.data.role);
   const [toggleBtn, setToggleBtn] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState(privilage);
@@ -408,7 +407,7 @@ const CreateNewModal = ({
       if (json.success) {
         const data = {
           role,
-          privilage: JSON.stringify(privilage),
+          _privilage: json.success.data.privilage,
           id: json.success.data.id,
         };
         setRoles((prev) => [...prev, role]);

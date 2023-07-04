@@ -45,13 +45,13 @@ const PopupPromotion = () => {
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
-      _platform: "Android",
+      _platform: "",
       title: "",
       _tag: "",
       image: "",
       book_name: "",
       app_page: "",
-      status: "ACTIVE",
+      status: "",
     },
   });
   const { searchInput, toggleStatus, togglePlatform } = filters;

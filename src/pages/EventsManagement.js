@@ -52,8 +52,8 @@ const EventsManagement = () => {
       _location: "",
       _address: "",
       _map: { latitude: "", longitude: "" },
-      status: "ACTIVE",
-      featured: "Yes",
+      status: "",
+      featured: "",
       _about: "",
     },
   });
@@ -135,6 +135,7 @@ const EventsManagement = () => {
             paginatedData,
             setPaginatedData,
             Actions,
+            page: "Events Management",
             actionCols: ["View", "Edit", "Delete"],
             props: {
               setEditModal,

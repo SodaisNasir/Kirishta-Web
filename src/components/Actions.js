@@ -323,7 +323,7 @@ const Actions = ({
         <td className="text-center text-base px-6 py-4">
           <button
             onClick={handleBlock}
-            className="font-medium text-gray-600 hover:text-gray-800"
+            className="font-medium text-red-500 hover:text-red-700"
             title={blockUser ? "Unblock user" : "Block user"}
             disabled={toggleBlockBtn}
           >

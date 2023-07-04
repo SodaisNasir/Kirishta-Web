@@ -95,17 +95,17 @@ const Router = () => {
                 )
               }
             />
-            <Route
-              path="/promotion-management/notification"
-              element={
-                user && privilages["Promotion Management"].Notification ? (
-                  <Notification />
-                ) : (
-                  <AccessDenied />
-                )
-              }
-            />
           </Route>
+          <Route
+            path="/notification"
+            element={
+              user && privilages.Notification ? (
+                <Notification />
+              ) : (
+                <AccessDenied />
+              )
+            }
+          />
           <Route path="/access">
             {/* <Route path="/access/privileges" element={<Privileges />} /> */}
             <Route

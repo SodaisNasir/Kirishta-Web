@@ -65,8 +65,8 @@ const Login = () => {
             : data.privilage;
 
         setMessage({ theme: themes.success, value: "Loign successful!" });
-        localStorage.setItem("user", JSON.stringify(data));
         setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
 
         setTimeout(() => {
           navigate("/dashboard");

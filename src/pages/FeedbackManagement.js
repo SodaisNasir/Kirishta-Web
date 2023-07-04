@@ -87,6 +87,7 @@ const FeedbackManagement = () => {
     "text",
     "image",
     "user_id",
+    "_created_at",
     "_status",
   ];
 

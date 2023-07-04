@@ -1,5 +1,5 @@
 import React from "react";
-import { FaReadme, FaUsers } from "react-icons/fa";
+import { FaBell, FaReadme, FaUsers } from "react-icons/fa";
 import { MdFeedback } from "react-icons/md";
 import { HiGlobe } from "react-icons/hi";
 import NigerianFlag from "../assets/images/nigeria-flag-icon.png";
@@ -81,6 +81,11 @@ export const navLinks = [
     ],
   },
   {
+    title: "Notification",
+    path: "/notification",
+    icon: <FaBell />,
+  },
+  {
     title: "Users Management",
     path: "/users-management",
     icon: (
@@ -139,7 +144,6 @@ export const navLinks = [
     items: [
       { title: "Banner", path: "/promotion-management/banner" },
       { title: "Pop-up", path: "/promotion-management/popup" },
-      { title: "Notification", path: "/promotion-management/notification" },
     ],
   },
   {
@@ -1390,6 +1394,7 @@ export const privilegesStructure = {
       Delete: false,
     },
   },
+  Notification: false,
   "Users Management": {
     View: false,
     Edit: false,
@@ -1408,7 +1413,6 @@ export const privilegesStructure = {
       Edit: false,
       Delete: false,
     },
-    Notification: false,
   },
   "Books Management": {
     View: false,

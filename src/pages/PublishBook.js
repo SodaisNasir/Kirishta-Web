@@ -4,14 +4,19 @@ import { useState } from "react";
 import { CreateEPUB, Loader } from "../components";
 import { base_url } from "../utils/url";
 import CommonTable from "../components/Tables/CommonTable";
-import { fetchBooks, excludeTags, fetchGeneralCountries } from "../utils";
+import {
+  fetchBooks,
+  excludeTags,
+  fetchGeneralCountries,
+  fetchChapters,
+} from "../utils";
 import { VscClose } from "react-icons/vsc";
 import { toast } from "react-hot-toast";
 import { AppContext } from "../context";
 
 const publishBookUrl = `${base_url}/create-book-publish`;
 const saveBookUrl = `${base_url}/create-book-save`;
-const editUrl = `${base_url}/add-chapter`;
+const editUrl = `${base_url}/update-publish`;
 
 const PublishBook = () => {
   const { user } = useContext(AppContext);
@@ -47,7 +52,10 @@ const PublishBook = () => {
   };
 
   const handleSave = async () => {
-    if (
+    if (Object.values(state).some((e) => !e)) {
+      toast.error("Please fill book details first!");
+      return;
+    } else if (
       epub.type === "chapters" &&
       excludeTags(epub.value.at(-1).description)
     ) {
@@ -61,7 +69,9 @@ const PublishBook = () => {
       let formdata = new FormData();
       Object.keys(state).forEach((key) => formdata.append(key, state[key]));
       formdata.append("featured", "NO");
-      formdata.append("country", "null");
+      formdata.append("country", "");
+      formdata.append("read", "");
+      formdata.append("download", "");
 
       if (epub.type === "chapters") {
         Object.keys(epub.value).forEach((key) => {
@@ -106,7 +116,10 @@ const PublishBook = () => {
   };
 
   const handlePublish = async () => {
-    if (
+    if (Object.values(state).some((e) => !e)) {
+      toast.error("Please fill book details first!");
+      return;
+    } else if (
       epub.type === "chapters" &&
       excludeTags(epub.value.at(-1).description)
     ) {
@@ -120,7 +133,9 @@ const PublishBook = () => {
       let formdata = new FormData();
       Object.keys(state).forEach((key) => formdata.append(key, state[key]));
       formdata.append("featured", "NO");
-      formdata.append("country", "null");
+      formdata.append("country", "");
+      formdata.append("read", "");
+      formdata.append("download", "");
 
       if (epub.type === "chapters") {
         Object.keys(epub.value).forEach((key) => {
@@ -509,7 +524,7 @@ const EditModal = ({
   const initialState = [{ title: "", description: "" }];
   const [state, setState] = useState(initial_state);
   const [toggleBtn, setToggleBtn] = useState(false);
-  const [createCheckbox, setCreateCheckbox] = useState(false);
+  const [editCheckbox, setEditCheckbox] = useState(false);
   const [epubState, setEpubState] = useState(initialState);
 
   console.log("state", state);
@@ -537,13 +552,25 @@ const EditModal = ({
 
     try {
       let formdata = new FormData();
-      formdata.append("title", state.title);
+      Object.keys(state).forEach((key) => {
+        console.log("key", key.replace(/^_/, ""), state[key]);
+        if (key.includes("read") || key.includes("download")) {
+          formdata.append(key.replace(/^_/, ""), state[key] || "");
+        } else {
+          formdata.append(key.replace(/^_/, ""), state[key]);
+        }
+      });
+
       Object.keys(epubState).forEach((key) => {
+        typeof epubState[key].id === "number" &&
+          formdata.append(`chapters[${key}][id]`, epubState[key].id);
         formdata.append(`chapters[${key}][title]`, epubState[key].title);
         formdata.append(
           `chapters[${key}][description]`,
           epubState[key].description
         );
+
+        console.log("key 1", epubState[key].title);
       });
 
       let requestOptions = {
@@ -555,7 +582,7 @@ const EditModal = ({
         redirect: "follow",
       };
 
-      const res = await fetch(editUrl, requestOptions);
+      const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
       console.log("json ====>", json);
     } catch (err) {
@@ -570,6 +597,10 @@ const EditModal = ({
   };
 
   const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
+
+  useEffect(() => {
+    fetchChapters(setEpubState, state.id);
+  }, []);
 
   return (
     <>
@@ -856,12 +887,12 @@ const EditModal = ({
                     disabled={true}
                   ></textarea>
                 </div>
-                <div className="flex items-center justify-center col-span-6 pt-4">
+                <div className="flex items-center justify-center col-span-6 pt-2">
                   <input
                     id="edit-epub-html"
                     type="checkbox"
-                    onChange={(e) => setCreateCheckbox(e.target.checked)}
-                    checked={createCheckbox}
+                    onChange={(e) => setEditCheckbox(e.target.checked)}
+                    checked={editCheckbox}
                     value="edit-epub-html"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
@@ -869,10 +900,10 @@ const EditModal = ({
                     htmlFor="edit-epub-html"
                     className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
                   >
-                    Create chapters
+                    Edit ePUB HTML
                   </label>
                 </div>
-                {createCheckbox && (
+                {editCheckbox && (
                   <div className="col-span-6">
                     <p className="my-3 text-sm font-semibold text-center">
                       Edit ePUB
@@ -881,6 +912,7 @@ const EditModal = ({
                       {...{
                         state: epubState,
                         setState: setEpubState,
+                        deleteChapter: true,
                       }}
                     />
                   </div>

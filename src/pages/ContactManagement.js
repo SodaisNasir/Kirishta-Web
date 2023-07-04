@@ -84,6 +84,7 @@ const ContactManagement = () => {
     "_phone_number",
     "subject",
     "_message",
+    "_created_at",
     "_status",
   ];
 

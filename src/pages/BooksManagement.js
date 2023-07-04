@@ -320,7 +320,7 @@ const EditModal = ({
   const [state, setState] = useState(initial_state);
   const [toggleBtn, setToggleBtn] = useState(false);
   const [editCheckbox, setEditCheckbox] = useState(false);
-  const [epubState, setEpubState] = useState(initialState);
+  const [epubState, setEpubState] = useState([]);
 
   console.log("epubState", epubState);
 
@@ -330,7 +330,7 @@ const EditModal = ({
     const key = e.target.name;
     const value = e.target.value;
 
-    if (key === "book_cover" || key === "epub") {
+    if (key === "cover_image" || key === "epub") {
       setState({ ...state, [key]: e.target.files[0] });
     } else {
       setState({ ...state, [key]: value });
@@ -346,15 +346,21 @@ const EditModal = ({
       });
 
     setToggleBtn(true);
+
     try {
       let formdata = new FormData();
       keys.forEach((key) => {
         console.log("key", key.replace(/^_/, ""), state[key]);
-        formdata.append(key.replace(/^_/, ""), state[key]);
+        if (key.includes("read") || key.includes("download")) {
+          formdata.append(key.replace(/^_/, ""), state[key] || "");
+        } else {
+          formdata.append(key.replace(/^_/, ""), state[key]);
+        }
       });
 
       Object.keys(epubState).forEach((key) => {
-        formdata.append(`chapters[${key}][id]`, epubState[key].id);
+        typeof epubState[key].id === "number" &&
+          formdata.append(`chapters[${key}][id]`, epubState[key].id);
         formdata.append(`chapters[${key}][title]`, epubState[key].title);
         formdata.append(
           `chapters[${key}][description]`,
@@ -505,16 +511,16 @@ const EditModal = ({
                     <label
                       className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
                       htmlFor="ePUB"
-                    >
+                      >
                       Upload ePUB
-                    </label>
+                      </label>
                     <input
-                      className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                      id="ePUB"
+                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    id="ePUB"
                       name="epub"
                       onChange={handleChange}
                       type="file"
-                    />
+                      />
                   </div>
                 )} */}
                 <div className="col-span-6 sm:col-span-3">
@@ -531,6 +537,9 @@ const EditModal = ({
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="categories"
                   >
+                    <option className="text-sm" value="">
+                      select category
+                    </option>
                     {bookCategories.map((item, indx) => (
                       <option
                         className="text-sm"
@@ -556,6 +565,9 @@ const EditModal = ({
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="languages"
                   >
+                    <option className="text-sm" value="">
+                      select language
+                    </option>
                     {bookLanguages.map((item, indx) => (
                       <option
                         className="text-sm"
@@ -581,6 +593,9 @@ const EditModal = ({
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
+                    <option className="text-sm" value="">
+                      select country
+                    </option>
                     {generalCountries.map(({ country_name }) => (
                       <option
                         className="text-sm"
@@ -591,40 +606,6 @@ const EditModal = ({
                       </option>
                     ))}
                   </select>
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="downloads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Downloads
-                  </label>
-                  <input
-                    type="number"
-                    name="download"
-                    id="downloads"
-                    value={state.download}
-                    onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="1613"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="reads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
-                  >
-                    Reads
-                  </label>
-                  <input
-                    type="number"
-                    name="read"
-                    id="reads"
-                    value={state.read}
-                    onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="1613"
-                  />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -640,6 +621,9 @@ const EditModal = ({
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="status"
                   >
+                    <option className="text-sm" value="">
+                      select status
+                    </option>
                     {["ACTIVE", "INACTIVE"].map((elem) => (
                       <option className="text-sm" key={elem} value={elem}>
                         {elem}
@@ -728,7 +712,7 @@ const EditModal = ({
                       {...{
                         state: epubState,
                         setState: setEpubState,
-                        addSection: false,
+                        deleteChapter: true,
                       }}
                     />
                   </div>

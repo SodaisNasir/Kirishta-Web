@@ -181,6 +181,16 @@ export const MapField = ({ state, setState }) => {
 };
 
 export const TimeField = ({ state, setState, title }) => {
+  const isTimeFormat12h =
+    state.toLowerCase().includes("pm") || state.toLowerCase().includes("am");
+  const modifiedTimeFormat = isTimeFormat12h
+    ? new Date("1970-01-01T" + state).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      })
+    : state;
+
   return (
     <div>
       <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
@@ -188,7 +198,7 @@ export const TimeField = ({ state, setState, title }) => {
       </label>
       <input
         type="time"
-        value={state}
+        value={modifiedTimeFormat}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         required={true}
@@ -296,15 +306,24 @@ export const ParishProvincesField = ({ state, setState, parishProvinces }) => {
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="parish-countries"
         required={true}
+        disabled={parishProvinces.length === 0}
       >
-        <option className="text-sm" value="">
-          select province
-        </option>
-        {parishProvinces.map((item) => (
-          <option className="text-sm" key={item.id} value={item.province}>
-            {item.province}
+        {parishProvinces.length === 0 ? (
+          <option className="text-sm" value="">
+            No provinces found
           </option>
-        ))}
+        ) : (
+          <>
+            <option className="text-sm" value="">
+              select province
+            </option>
+            {parishProvinces.map((item) => (
+              <option className="text-sm" key={item.id} value={item.province}>
+                {item.province}
+              </option>
+            ))}
+          </>
+        )}
       </select>
     </div>
   );
@@ -325,15 +344,24 @@ export const ParishRegionsField = ({ state, setState, parishRegions }) => {
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         id="parish-regions"
+        disabled={parishRegions.length === 0}
       >
-        <option className="text-sm" value="">
-          select region
-        </option>
-        {parishRegions.map((item) => (
-          <option className="text-sm" key={item.id} value={item.region}>
-            {item.region}
+        {parishRegions.length === 0 ? (
+          <option className="text-sm" value="">
+            No regions found
           </option>
-        ))}
+        ) : (
+          <>
+            <option className="text-sm" value="">
+              select region
+            </option>
+            {parishRegions.map((item) => (
+              <option className="text-sm" key={item.id} value={item.region}>
+                {item.region}
+              </option>
+            ))}
+          </>
+        )}
       </select>
     </div>
   );
@@ -502,11 +530,10 @@ export const UploadField = ({
   accept = ".jpeg, .png, .jpg, .gif, .svg",
   canUploadMultipleImages,
   fileRequired = false,
-  state,
   setState,
 }) => {
   return (
-    <div className="col-span-2 sm:col-span-1">
+    <div>
       <label
         className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
         htmlFor="upload-files"

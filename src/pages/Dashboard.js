@@ -10,6 +10,7 @@ import { base_url } from "../utils/url";
 import { Loader } from "../components";
 
 const Dashboard = () => {
+  const initialCounter = 20;
   const initialState = { notifications: false, account: false };
   const [toggle, setToggle] = useState(initialState);
   const [contacts, setContacts] = useState(null);
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
   const [notifications, setNotifications] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [counter, setCounter] = useState(initialCounter);
 
   const setSingleToggle = (key, value) =>
     setToggle({ ...initialState, [key]: value });
@@ -109,6 +111,27 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    let interval = setInterval(
+      async () => setCounter((prev) => prev - 1),
+      1000
+    );
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (counter < 1) {
+        setCounter(initialCounter);
+        const notifications = await fetchNotifications();
+        setNotifications(notifications);
+      }
+    })();
+  }, [counter]);
 
   return (
     <div
@@ -318,27 +341,30 @@ const ContactList = ({ contacts }) => {
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
-        {contacts.map(({ name, message, profile_image }, indx) => (
+        {contacts.map(({ name, message, profile_image, created_at }, indx) => (
           <div
             key={name + indx}
             className={`${
               contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
             } flex flex-col items-start py-3`}
           >
-            <div className="flex items-center">
-              {profile_image ? (
-                <img
-                  className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                  src={profile_image}
-                  alt="profile"
-                />
-              ) : (
-                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                  <FaUser />
-                </div>
-              )}
-              <p className="flex flex-col items-center ml-2 text-xs font-medium">
-                {name}
+            <div className="w-full flex justify-between items-center">
+              <div className="flex items-center">
+                {profile_image ? (
+                  <img
+                    className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                    src={profile_image}
+                    alt="profile"
+                  />
+                ) : (
+                  <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                    <FaUser />
+                  </div>
+                )}
+                <p className="ml-2 text-xs font-medium">{name}</p>
+              </div>
+              <p className="text-xs font-medium">
+                {new Date(created_at).toLocaleString()}
               </p>
             </div>
             <p className="mt-2 ml-10 text-xs">
@@ -387,27 +413,32 @@ const FeedbackList = ({ feedbacks }) => {
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
-        {feedbacks.map(({ name, text, profile_image }, indx) => (
+        {feedbacks.map(({ name, text, profile_image, created_at }, indx) => (
           <div
             key={name + indx}
             className={`${
               feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
             } flex flex-col items-start py-3`}
           >
-            <div className="flex items-center">
-              {profile_image ? (
-                <img
-                  className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                  src={profile_image}
-                  alt="profile"
-                />
-              ) : (
-                <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                  <FaUser />
-                </div>
-              )}
-              <p className="flex flex-col items-center ml-2 text-xs font-medium">
-                {name}
+            <div className="w-full flex justify-between items-center">
+              <div className="flex items-center">
+                {profile_image ? (
+                  <img
+                    className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                    src={profile_image}
+                    alt="profile"
+                  />
+                ) : (
+                  <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                    <FaUser />
+                  </div>
+                )}
+                <p className="flex flex-col items-center ml-2 text-xs font-medium">
+                  {name}
+                </p>
+              </div>
+              <p className="text-xs font-medium">
+                {new Date(created_at).toLocaleString()}
               </p>
             </div>
             <p className="mt-2 ml-10 text-xs">

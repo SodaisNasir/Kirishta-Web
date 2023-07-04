@@ -23,9 +23,7 @@ import { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 
 export const ViewModal = ({ viewModal, setViewModal, page }) => {
-  const keys = Object.keys(viewModal.data).filter(
-    (e) => e !== "_media" && e !== "_dependants"
-  );
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -77,11 +75,10 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                     className={`${
                       elem.includes("Subject") ||
                       elem.includes("Comment") ||
-                      (elem.includes("about") && page !== "Events Mangement") ||
+                      elem.includes("about") ||
                       elem.includes("address") ||
                       elem.includes("Response") ||
-                      elem.includes("Feedback") ||
-                      elem.includes("Report Details")
+                      elem.includes("Feedback")
                         ? "col-span-6"
                         : "col-span-6 sm:col-span-3"
                     } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
@@ -89,6 +86,8 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
                       {elem === "id" && page !== "Users Management"
                         ? "S/N"
+                        : elem === "_created_at"
+                        ? "Date/Time"
                         : elem.replaceAll("_", " ")}
                     </p>
                     <p
@@ -99,6 +98,8 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                       {typeof data[elem] === "string" &&
                       elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : elem === "_created_at" ? (
+                        data[elem].replace("T", " ").replace(/.0*Z/, "")
                       ) : elem === "_map" ? (
                         mapProperty(data[elem])
                       ) : data[elem] === null ? (
@@ -483,12 +484,19 @@ export const EditModal = ({
             "map2 ======> ",
             `${state[key].latitude},${state[key].longitude}`
           );
+        } else if (key === "start_time" || key === "_end_time") {
+          formdata.append(
+            key,
+            new Date("1970-01-01T" + state[key]).toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
+          );
         } else if (key === "app_page" || key === "book_name") {
-          radio === key
-            ? formdata.append(key, state[key])
-            : formdata.append(key, null);
+          radio === key && formdata.append(key, state[key]);
         } else {
-          formdata.append(key.replace("_", ""), state[key]);
+          formdata.append(key.replace(/^_/, ""), state[key]);
         }
       });
 
@@ -506,12 +514,13 @@ export const EditModal = ({
 
       if (json.success) {
         const updatedData = json.success.data;
-        let data = { id: null, ...state };
-        Object.keys(data).forEach(
-          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
-        );
+        let data = { ...state };
+        updatedData &&
+          Object.keys(data).forEach(
+            (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+          );
 
-        console.log("EditModal =============>", data);
+        console.log("response =============>", updatedData);
 
         setData((prev) =>
           prev.map((item) => (item.id === state.id ? data : item))
@@ -936,10 +945,17 @@ export const CreateNewModal = ({
             "map2 ======> ",
             `${state[key].latitude},${state[key].longitude}`
           );
+        } else if (key === "start_time" || key === "_end_time") {
+          formdata.append(
+            key,
+            new Date("1970-01-01T" + state[key]).toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
+          );
         } else if (key === "app_page" || key === "book_name") {
-          radio === key
-            ? formdata.append(key, state[key])
-            : formdata.append(key, null);
+          radio === key && formdata.append(key, state[key]);
         } else {
           formdata.append(key.replace(/^_/, ""), state[key]);
         }
@@ -960,11 +976,16 @@ export const CreateNewModal = ({
       console.log(json);
 
       if (json.success) {
-        const updatedData = json.success.data;
+        const updatedData =
+          page === "Popup Promotion" ? json.success.popup : json.success.data;
         let data = { id: null, ...state };
-        Object.keys(data).forEach(
-          (key) => (data[key] = updatedData[key.replace(/^_/, "")])
-        );
+        updatedData &&
+          Object.keys(data).forEach(
+            (key) =>
+              (data[key] =
+                updatedData[key.replace(/^_/, "")] ||
+                (page === "Popup Promotion" && null))
+          );
 
         console.log("createNewModal =============>", data);
 
@@ -989,12 +1010,20 @@ export const CreateNewModal = ({
     setCreateNewModal((prev) => ({ ...prev, isVisible: false }));
 
   useEffect(() => {
+    const func = () => {
+      setState((prev) => ({ ...prev, _region: "", _province: "" }));
+      initial_state.country = "";
+    };
+
     if (page === "Parish Management") {
       setCurParishRegions(
         parishRegions.filter(
           (e) => e.country.toLowerCase() === state.country.toLowerCase()
         )
       );
+
+      // for preventing region and province value change when this useEffect runs for the first time.
+      initial_state.country !== state.country && func();
     }
   }, [state.country]);
 
@@ -1006,7 +1035,7 @@ export const CreateNewModal = ({
         )
       );
     }
-  }, [state._region]);
+  }, [state._region, state.country]);
 
   return (
     <>
@@ -1278,7 +1307,12 @@ export const CreateNewModal = ({
                             ? "5.3664-2.5464"
                             : ""
                         }
-                        required={true}
+                        required={
+                          page === "Parish Management" &&
+                          (elem.includes("email") || elem.includes("_website"))
+                            ? false
+                            : true
+                        }
                       />
                     </div>
                   );

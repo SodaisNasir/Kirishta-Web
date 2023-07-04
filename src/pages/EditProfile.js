@@ -33,8 +33,13 @@ const EditProfile = () => {
       const json = await res.json();
 
       if (json.success.status == 200) {
-        const data = json.success.data;
+        let data = json.success.data;
+        let privilage = data.privilage;
+        data.privilage =
+          typeof privilage === "string" ? JSON.parse(privilage) : privilage;
+
         setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
         console.log("Response =============>", data);
       }
     } catch (err) {
