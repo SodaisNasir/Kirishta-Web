@@ -214,6 +214,7 @@ const EditModal = ({
   setPaginatedData,
   editUrl,
 }) => {
+  const { user, setUser } = useContext(AppContext);
   let privilage =
     typeof editModal.data._privilage === "string"
       ? JSON.parse(editModal.data._privilage)
@@ -258,9 +259,14 @@ const EditModal = ({
       if (json.success) {
         const data = {
           role,
-          privilage,
+          _privilage: privilage,
           id: json.success.data.id,
         };
+
+        if (role === user.role) {
+          setUser((prev) => ({ ...prev, privilage }));
+          localStorage.setItem("user", JSON.stringify({ ...user, privilage }));
+        }
 
         setData((prev) => prev.map((e) => (e.id === data.id ? data : e)));
         setPaginatedData((prev) => ({

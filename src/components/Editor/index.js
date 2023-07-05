@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import EditorToolbar, {
   formats,
@@ -6,16 +6,17 @@ import EditorToolbar, {
   undoChange,
 } from "./EditorToolbar";
 import "react-quill/dist/quill.snow.css";
-import { replaceParaWithDivs } from "../../utils";
+// import { replaceParaWithDivs } from "../../utils";
 
 export const Editor = ({ state, handleChange, id, styles = "", readOnly }) => {
+  // console.log("state", state);
   return (
     <div className={`pt-8 ${styles}`}>
       <EditorToolbar id={id} />
       <ReactQuill
         theme="snow"
         defaultValue={state}
-        onChange={(val) => handleChange(replaceParaWithDivs(val), id)}
+        onChange={(val) => handleChange(val, id)}
         placeholder={"Write here..."}
         modules={Editor.modules(id)}
         formats={formats}
@@ -41,4 +42,4 @@ Editor.modules = (id) => ({
   },
 });
 
-export default memo(Editor);
+export default Editor;

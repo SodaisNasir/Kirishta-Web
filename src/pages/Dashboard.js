@@ -269,7 +269,7 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
       {toggle.notifications && (
         <DropdownContainer extraStyles="pr-0.5">
           <div className="overflow-y-scroll max-h-[200px] pr-3.5">
-            {notifications.map((elem, indx) => {
+            {notifications.slice(0, 20).map((elem, indx) => {
               const notificationType = elem.message
                 .toLowerCase()
                 .includes("new user")
@@ -295,15 +295,19 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
                   key={elem.id}
                   onClick={() => navigate(navigateTo)}
                   className={`${
-                    notifications.length - 1 !== indx
+                    notifications.length !== indx
                       ? "border-b border-[#efefef]"
                       : ""
                   } flex py-2 ${
-                    !elem?.markAsRead ? "font-semibold" : ""
+                    elem?.markAsRead ? "font-semibold" : ""
                   } cursor-pointer text-gray-600 hover:text-black`}
                 >
                   {icon}
-                  <span className="ml-2 whitespace-nowrap">{elem.message}</span>
+                  <span className="ml-2 whitespace-nowrap">{`${
+                    elem.message
+                  } - ${elem.name} - ${elem.user_id} - ${new Date(
+                    elem.created_at
+                  ).toLocaleDateString()}`}</span>
                 </li>
               );
             })}
@@ -337,7 +341,7 @@ const ContactList = ({ contacts }) => {
             fill="currentColor"
           />
         </svg>
-        Contacts ({contacts.length})
+        Contact ({contacts.length})
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
@@ -409,7 +413,7 @@ const FeedbackList = ({ feedbacks }) => {
     <div className="flex flex-col col-span-2 p-2 mt-5 bg-white sm:col-span-1 rounded-xl">
       <div className="flex text-sm font-medium p-2 border-b border-[#EEEEEE]">
         <MdFeedback className="mr-2 text-lg text-blue-500" />
-        Feedbacks ({feedbacks.length})
+        Feedback ({feedbacks.length})
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">

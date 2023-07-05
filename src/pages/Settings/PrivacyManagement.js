@@ -3,7 +3,7 @@ import Editor from "../../components/Editor";
 import { LanguageSelector } from "../../components/helpers";
 import { Loader, OtherPage } from "../../components";
 import { base_url } from "../../utils/url";
-import { fetchDataByLang } from "../../utils";
+import { fetchDataByLang, replaceParaWithDivs } from "../../utils";
 import { AppContext } from "../../context";
 
 const PrivacyManagement = () => {
@@ -23,7 +23,7 @@ const PrivacyManagement = () => {
       let formdata = new FormData();
       formdata.append("type", type);
       formdata.append("language", language.value);
-      formdata.append("description", state.value);
+      formdata.append("description", replaceParaWithDivs(state.value));
 
       let requestOptions = {
         headers: {

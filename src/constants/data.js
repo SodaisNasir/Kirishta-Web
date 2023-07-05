@@ -377,7 +377,7 @@ export const notificationIcons = {
 // Dashboard Analytics
 export const dashboardCards = [
   {
-    title: "total_country",
+    title: "Total_Countries",
     icon: (
       <svg
         className="w-5 h-5"
@@ -408,7 +408,7 @@ export const dashboardCards = [
     colSpan: "col-span-2",
   },
   {
-    title: "total_user",
+    title: "Total_Users",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"
@@ -439,12 +439,12 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_parish_country",
+    title: "Parish_Countries",
     icon: <HiGlobe className="text-xl text-blue-500" />,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_android_user",
+    title: "Total_Android_Users",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"
@@ -463,7 +463,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_parish_category",
+    title: "Parish_Categories",
     icon: (
       <svg
         className="w-5 h-5 text-blue-500"
@@ -476,7 +476,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_ios_user",
+    title: "Total_IOS_Users",
     icon: (
       <svg
         className="w-4 h-4"
@@ -504,7 +504,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_region",
+    title: "Total_Regions",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -523,7 +523,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_books",
+    title: "Total_Books",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500 mt-0.5"
@@ -542,12 +542,12 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_province",
+    title: "Total_Provinces",
     icon: <FaReadme className="text-lg text-blue-500" />,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_contact",
+    title: "Contacts",
     icon: (
       <svg
         className="h-4 w-4 text-blue-500"
@@ -570,7 +570,7 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_parish",
+    title: "Total_Parishes",
     icon: (
       <svg
         className="w-5 h-5 text-blue-500"
@@ -585,12 +585,12 @@ export const dashboardCards = [
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_feedback",
+    title: "Feedbacks",
     icon: <MdFeedback className="text-lg text-blue-500" />,
     colSpan: "col-span-2 sm:col-span-1",
   },
   {
-    title: "total_event",
+    title: "Total_Events",
     icon: (
       <svg
         className="w-4 h-4 text-blue-500"

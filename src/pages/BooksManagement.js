@@ -658,12 +658,12 @@ const EditModal = ({
                   </label>
                   <select
                     name="featured"
-                    value={state.featured}
+                    value={state._featured}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="featured"
                   >
-                    {["Yes", "No"].map((item) => (
+                    {["YES", "NO"].map((item) => (
                       <option className="text-sm" key={item} value={item}>
                         {item}
                       </option>

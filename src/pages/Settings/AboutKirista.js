@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Editor from "../../components/Editor";
 import { Loader, OtherPage } from "../../components";
-import { fetchDataByLang } from "../../utils";
+import { fetchDataByLang, replaceParaWithDivs } from "../../utils";
 import { LanguageSelector } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { AppContext } from "../../context";
@@ -24,7 +24,7 @@ const AboutKirista = () => {
       let formdata = new FormData();
       formdata.append("type", type);
       formdata.append("language", language.value);
-      formdata.append("description", state.value);
+      formdata.append("description", replaceParaWithDivs(state.value));
 
       let requestOptions = {
         headers: {
@@ -75,15 +75,13 @@ const AboutKirista = () => {
           <Loader />
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-5">
-              <Editor
-                {...{
-                  state: state.value,
-                  handleChange,
-                  readOnly: !hasEditAccess,
-                }}
-              />
-            </div>
+            <Editor
+              {...{
+                state: state.value,
+                handleChange,
+                readOnly: !hasEditAccess,
+              }}
+            />
             <button
               onClick={handleSubmit}
               className={`flex items-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs ${

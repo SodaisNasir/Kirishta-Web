@@ -74,7 +74,12 @@ export const excludeTags = (htmlString, resultType = "boolean") => {
 };
 
 export const replaceParaWithDivs = (htmlString) =>
-  htmlString.replace(/<p(.*?)>/gi, "<div>").replace(/<\/p>/gi, "</div>");
+  htmlString
+    .replace(/<p(.*?)>/gi, (m) =>
+      m.includes("class") ? m.replace("p", "div") : "<div>"
+    )
+    .replace(/<\/p>/gi, "</div>");
+// .replace(/class="ql-align-center"/g, 'style="text-align: center;"');
 
 export const fetchData = async (
   setPaginatedData,
@@ -117,7 +122,8 @@ export const fetchDataByLang = async (
   setIsLoading,
   setState,
   type,
-  language
+  language,
+  setTitle
 ) => {
   try {
     setIsLoading(true);
@@ -142,6 +148,7 @@ export const fetchDataByLang = async (
       const data = json.success.data;
       console.log(data);
       setState({ value: data.description });
+      setTitle && setTitle(data.text);
     }
   } catch (error) {
     console.error(error);
@@ -156,6 +163,7 @@ export const fetchChapters = async (setState, id) => {
     const json = await res.json();
 
     if (json.success) {
+      console.log("json.success.data", json.success.data);
       const data =
         json.success.data.length === 0
           ? [{ title: "", description: "" }]

@@ -137,6 +137,15 @@ const Notification = () => {
                   : `${paginatedData.items.length} results`}
               </div>
 
+              {selected.length > 1 && (
+                <button
+                  onClick={handleNotification}
+                  className="justify-self-end text-xs text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                >
+                  Send Bulk Notification
+                </button>
+              )}
+
               <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
                 <DropdownFilter
                   arr={["Users", "Guest"]}
@@ -184,16 +193,7 @@ const Notification = () => {
           </div>
         </AdvancedTable>
 
-        <div className="flex justify-end mt-3">
-          {selected.length > 1 && (
-            <button
-              onClick={handleNotification}
-              className="justify-self-end text-xs text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
-            >
-              Send bulk notification
-            </button>
-          )}
-        </div>
+        <div className="flex justify-end mt-3"></div>
       </main>
     </Page>
   );
