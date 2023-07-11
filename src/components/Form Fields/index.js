@@ -1,3 +1,5 @@
+import { convertAMPMto24HourTime } from "../../utils";
+
 export const RoleField = ({ state, setState, roles }) => {
   return (
     <div>
@@ -61,7 +63,7 @@ export const DeviceField = ({
   );
 };
 
-export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
+export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
   return (
     <>
       <div className="flex items-center justify-around pt-6">
@@ -79,7 +81,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
             htmlFor="app_page"
             className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
           >
-            App Page
+            Web Link
           </label>
         </div>
         <div className="flex items-center">
@@ -107,7 +109,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
             htmlFor="app-page"
             className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
           >
-            App page
+            Web Link
           </label>
           <input
             type="url"
@@ -115,6 +117,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
             value={state}
             onChange={(e) => setState(e.target.value)}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="https://www.google.com"
             required={true}
           />
         </div>
@@ -126,14 +129,30 @@ export const PopupAppPage = ({ state, setState, radio, setRadio }) => {
           >
             Book name
           </label>
-          <input
+          <select
+            required={true}
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            id="parish-countries"
+          >
+            <option className="text-sm" value="">
+              select book name
+            </option>
+            {books.map((item) => (
+              <option className="text-sm" key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+          {/* <input
             type="text"
             id="book-name"
             value={state}
             onChange={(e) => setState(e.target.value)}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required={true}
-          />
+          /> */}
         </div>
       )}
     </>
@@ -152,8 +171,15 @@ export const MapField = ({ state, setState }) => {
       </label>
       <div className="flex space-x-2">
         <input
-          type="text"
-          value={isStateString ? JSON.parse(state)?.latitude : state?.latitude}
+          type="number"
+          value={
+            (isStateString ? JSON.parse(state)?.latitude : state?.latitude) ==
+            "undefined"
+              ? ""
+              : isStateString
+              ? JSON.parse(state)?.latitude
+              : state?.latitude
+          }
           onChange={(e) =>
             isStateString
               ? setState({ ...stateCopy, latitude: e.target.value })
@@ -163,9 +189,14 @@ export const MapField = ({ state, setState }) => {
           placeholder="4.5461"
         />
         <input
-          type="text"
+          type="number"
           value={
-            isStateString ? JSON.parse(state)?.longitude : state?.longitude
+            (isStateString ? JSON.parse(state)?.longitude : state?.longitude) ==
+            "undefined"
+              ? ""
+              : isStateString
+              ? JSON.parse(state)?.longitude
+              : state?.longitude
           }
           onChange={(e) =>
             isStateString
@@ -180,16 +211,17 @@ export const MapField = ({ state, setState }) => {
   );
 };
 
-export const TimeField = ({ state, setState, title }) => {
+export const TimeField = ({ state, setState, title, required = true }) => {
   const isTimeFormat12h =
     state.toLowerCase().includes("pm") || state.toLowerCase().includes("am");
   const modifiedTimeFormat = isTimeFormat12h
-    ? new Date("1970-01-01T" + state).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false,
-      })
+    ? convertAMPMto24HourTime(state)
     : state;
+
+  console.log({
+    state,
+    modifiedTimeFormat,
+  });
 
   return (
     <div>
@@ -197,17 +229,18 @@ export const TimeField = ({ state, setState, title }) => {
         {title.replace(/_/g, " ")}
       </label>
       <input
+        id={title}
         type="time"
-        value={modifiedTimeFormat}
+        defaultValue={modifiedTimeFormat.toLowerCase()}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        required={true}
+        required={required}
       />
     </div>
   );
 };
 
-export const DateField = ({ state, setState, title }) => {
+export const DateField = ({ state, setState, title, required = true }) => {
   return (
     <div>
       <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
@@ -215,10 +248,10 @@ export const DateField = ({ state, setState, title }) => {
       </label>
       <input
         type="date"
-        value={state}
+        defaultValue={state.replace(" 00:00:00", "")}
         onChange={(e) => setState(e.target.value)}
         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        required={true}
+        required={required}
       />
     </div>
   );

@@ -28,6 +28,7 @@ const GeneralCountriesManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
@@ -71,7 +72,13 @@ const GeneralCountriesManagement = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllCountries);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllCountries,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -84,6 +91,7 @@ const GeneralCountriesManagement = () => {
             paginatedData,
             setPaginatedData,
             deleteUrl,
+            isDataFetched,
             Actions,
             actionCols: ["Edit", "Remove"],
             props: { setEditModal, hasDeleteAccess, hasEditAccess },

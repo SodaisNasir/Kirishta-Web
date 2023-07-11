@@ -41,6 +41,7 @@ const BooksManagement = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const { searchInput, toggleCountry, toggleStatus } = filters;
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
   const [generalCountries, setGeneralCountries] = useState(null);
@@ -123,7 +124,13 @@ const BooksManagement = () => {
     fetchBookCategories();
     fetchGeneralCountries(setGeneralCountries);
     fetchBookLanguages(setBookLanguages);
-    fetchData(setPaginatedData, setData, neededProps, showAllBooks);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllBooks,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -134,6 +141,7 @@ const BooksManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -657,12 +665,15 @@ const EditModal = ({
                     Featured
                   </label>
                   <select
-                    name="featured"
+                    name="_featured"
                     value={state._featured}
                     onChange={handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="featured"
                   >
+                    <option className="text-sm" value="">
+                      select featured
+                    </option>
                     {["YES", "NO"].map((item) => (
                       <option className="text-sm" key={item} value={item}>
                         {item}

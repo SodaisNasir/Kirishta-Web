@@ -31,6 +31,7 @@ const ContactManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [replyModal, setReplyModal] = useState(false);
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const { searchInput, toggleStatus } = filters;
@@ -89,7 +90,13 @@ const ContactManagement = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllContacts);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllContacts,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -101,6 +108,7 @@ const ContactManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

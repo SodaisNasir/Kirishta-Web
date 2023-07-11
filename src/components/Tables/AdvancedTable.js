@@ -7,6 +7,8 @@ const AdvancedTable = ({
   data,
   paginatedData,
   setPaginatedData,
+  isDataFetched,
+  books,
   setData,
   Actions,
   deleteUrl,
@@ -41,6 +43,7 @@ const AdvancedTable = ({
       );
       setIsLoading(false);
     }
+    // } else if (isDataFetched && !data.length) setIsLoading(false);
   }, [data]);
 
   useEffect(() => {
@@ -103,6 +106,8 @@ const AdvancedTable = ({
                       >
                         {key === "id" && page !== "Notification Promotion"
                           ? "S/N"
+                          : key === "app_page"
+                          ? "web link"
                           : key.replace("_", " ")}
                       </th>
                     )
@@ -129,6 +134,7 @@ const AdvancedTable = ({
                     checkboxesEnabled,
                     actionCols,
                     deleteUrl,
+                    books,
                     setData,
                     Actions,
                     props,
@@ -161,6 +167,7 @@ const Users = ({
   checkboxesEnabled,
   setPaginatedData,
   actionCols,
+  books,
   deleteUrl,
   setData,
   Actions,
@@ -186,6 +193,7 @@ const Users = ({
             setPaginatedData,
             checkboxesEnabled,
             actionCols,
+            books,
             deleteUrl,
             setData,
             Actions,
@@ -211,6 +219,7 @@ const Users = ({
             checkboxesEnabled,
             paginatedData,
             setPaginatedData,
+            books,
             actionCols,
             setData,
             deleteUrl,
@@ -254,6 +263,7 @@ const SingleUser = ({
   setSelectedUsers,
   paginatedData,
   setPaginatedData,
+  books,
   deleteUrl,
   actionCols,
   Actions,
@@ -297,7 +307,7 @@ const SingleUser = ({
                   <img
                     className="w-10 mx-auto"
                     src={data[key]}
-                    alt={data.Title}
+                    alt={data.Title || data.title}
                   />
                 ) : (
                   "No Image!"
@@ -306,17 +316,17 @@ const SingleUser = ({
                 "true"
               ) : key === "app_page" && data[key] ? (
                 <a
-                  href={
-                    data[key]?.includes("http")
-                      ? data[key]
-                      : "https://" + data[key]
-                  }
+                  href={data[key]}
                   className="text-blue-400 hover:underline"
                   target="_blank"
                   rel="noreferrer"
                 >
                   {data[key]}
                 </a>
+              ) : key === "start_date" || key === "_end_date" ? (
+                data[key].replace(/ ?00:00:00/, "")
+              ) : key === "book_name" && !data["app_page"] ? (
+                books.filter((e) => e.id == data[key])[0].title
               ) : key === "app_page" && !data[key] ? (
                 "No Data!"
               ) : Array.isArray(data[key]) ? (

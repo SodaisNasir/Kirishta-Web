@@ -31,6 +31,7 @@ const FeedbackManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [replyModal, setReplyModal] = useState({
     id: null,
     isVisible: false,
@@ -92,7 +93,13 @@ const FeedbackManagement = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllFeedbacks);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllFeedbacks,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -104,6 +111,7 @@ const FeedbackManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             statusChangeUrl,
             paginatedData,
             setPaginatedData,

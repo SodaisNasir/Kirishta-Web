@@ -10,7 +10,7 @@ import {
 import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
-import { fetchData } from "../../utils";
+import { fetchBooks, fetchData } from "../../utils";
 import { AppContext } from "../../context";
 import { toast } from "react-hot-toast";
 
@@ -40,6 +40,8 @@ const PopupPromotion = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
+  const [books, setBooks] = useState([]);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
@@ -107,7 +109,14 @@ const PopupPromotion = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllPopups);
+    fetchBooks(setBooks);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllPopups,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -118,6 +127,8 @@ const PopupPromotion = () => {
             data,
             setData,
             paginatedData,
+            books,
+            isDataFetched,
             setPaginatedData,
             deleteUrl,
             Actions,
@@ -216,6 +227,7 @@ const PopupPromotion = () => {
                       setPaginatedData,
                       statusType: "active/inactive",
                       page: "Popup Promotion",
+                      books,
                     }}
                   />
                 )}
@@ -231,6 +243,7 @@ const PopupPromotion = () => {
                       setPaginatedData,
                       statusType: "active/inactive",
                       page: "Popup Promotion",
+                      books,
                     }}
                   />
                 )}

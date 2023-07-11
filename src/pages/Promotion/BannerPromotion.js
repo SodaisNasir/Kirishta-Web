@@ -40,16 +40,17 @@ const BannerPromotion = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
     data: {
       _platform: "Android",
-      title: null,
-      _tag: null,
+      title: "",
+      _tag: "",
       image: null,
-      app_page: null,
+      app_page: "",
       status: "ACTIVE",
     },
   });
@@ -107,7 +108,13 @@ const BannerPromotion = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllBanners);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllBanners,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -120,6 +127,7 @@ const BannerPromotion = () => {
             paginatedData,
             setPaginatedData,
             deleteUrl,
+            isDataFetched,
             Actions,
             actionCols: ["View", "Edit", "Delete"],
             props: {

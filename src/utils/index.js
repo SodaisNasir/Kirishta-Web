@@ -1,4 +1,3 @@
-import { includes } from "lodash";
 import { base_url } from "./url";
 
 export const typeCheck = (elem, page) => {
@@ -35,6 +34,15 @@ export const typeCheck = (elem, page) => {
   }
 
   return result;
+};
+
+export const convertAMPMto24HourTime = (timeString) => {
+  const [hours, minutes, ampm] = timeString.split(/:|\s/g);
+  let hour = parseInt(hours);
+  if (timeString.toLowerCase().includes("pm")) {
+    hour += 12;
+  }
+  return `${hour}:${minutes}`;
 };
 
 export const modifyData = (data, neededProps) => {
@@ -81,19 +89,22 @@ export const replaceParaWithDivs = (htmlString) =>
     .replace(/<\/p>/gi, "</div>");
 // .replace(/class="ql-align-center"/g, 'style="text-align: center;"');
 
-export const fetchData = async (
+export const fetchData = async ({
   setPaginatedData,
   setData,
   neededProps,
   url,
-  page
-) => {
+  page,
+  setIsDataFetched,
+}) => {
   try {
     const res = await fetch(url);
     const json = await res.json();
-    const data = modifyData(json.success.data, neededProps);
+    const data = json.success.data.length
+      ? modifyData(json.success.data, neededProps)
+      : json.success.data;
 
-    console.log("response", json.success.data);
+    console.log("response =>", json.success.data);
 
     setPaginatedData((prev) => ({
       ...prev,
@@ -115,6 +126,8 @@ export const fetchData = async (
     );
   } catch (err) {
     console.error(err);
+  } finally {
+    setIsDataFetched(true);
   }
 };
 
@@ -180,24 +193,24 @@ export const fetchChapters = async (setState, id) => {
   }
 };
 
-export const fetchBooks = async (setBooks) => {
+export const fetchBooks = async (setBooks, callback) => {
   try {
     const res = await fetch(`${base_url}/books`);
     const json = await res.json();
 
     if (json.success) {
       const data = json.success.data;
+      console.log("books ===>", data);
       setBooks &&
         setBooks(
-          data
-            .filter((e) => e.status.toLowerCase() === "inactive")
-            .map((obj) => {
-              let newObj = { ...obj };
-              delete newObj.updated_at;
-              delete newObj.created_at;
-              return newObj;
-            })
+          data.map((obj) => {
+            let newObj = { ...obj };
+            delete newObj.updated_at;
+            delete newObj.created_at;
+            return newObj;
+          })
         );
+      callback && callback(data);
     }
   } catch (error) {
     console.error(error);

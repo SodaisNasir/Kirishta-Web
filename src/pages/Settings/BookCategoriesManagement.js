@@ -28,6 +28,7 @@ const BookCategoriesManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
@@ -60,7 +61,13 @@ const BookCategoriesManagement = () => {
   const neededProps = ["id", "category"];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllCategories);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllCategories,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -71,6 +78,7 @@ const BookCategoriesManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

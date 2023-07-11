@@ -44,6 +44,7 @@ const ParishManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [parishRegions, setParishRegions] = useState([]);
   const [parishProvinces, setParishProvinces] = useState([]);
   const [parishCountries, setParishCountries] = useState([]);
@@ -65,7 +66,7 @@ const ParishManagement = () => {
       _region: "",
       status: "",
       _about: "",
-      _featured: ''
+      _featured: "",
     },
   });
   const { searchInput, toggleStatus } = filters;
@@ -150,7 +151,13 @@ const ParishManagement = () => {
         data: { ...prev.data, country: data[0].country },
       }))
     );
-    fetchData(setPaginatedData, setData, neededProps, showAllParishes);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllParishes,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -161,6 +168,7 @@ const ParishManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

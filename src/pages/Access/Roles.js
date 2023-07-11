@@ -36,6 +36,7 @@ const Roles = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [editModal, setEditModal] = useState({ isVisible: false, data });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
@@ -93,7 +94,14 @@ const Roles = () => {
   }, [data]);
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllRoles, "Roles");
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllRoles,
+      page: "Roles",
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -104,6 +112,7 @@ const Roles = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

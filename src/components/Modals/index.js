@@ -88,6 +88,8 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                         ? "S/N"
                         : elem === "_created_at"
                         ? "Date/Time"
+                        : elem === "app_page"
+                        ? "Web Link"
                         : elem.replaceAll("_", " ")}
                     </p>
                     <p
@@ -98,6 +100,8 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                       {typeof data[elem] === "string" &&
                       elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
+                      ) : elem === "start_date" || elem === "_end_date" ? (
+                        data[elem].replace(/ ?00:00:00/, "")
                       ) : elem === "_created_at" ? (
                         data[elem].replace("T", " ").replace(/.0*Z/, "")
                       ) : elem === "_map" ? (
@@ -450,6 +454,7 @@ export const EditModal = ({
   generalCountries,
   roles,
   languages,
+  books,
 }) => {
   const initial_state = editModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -476,22 +481,33 @@ export const EditModal = ({
       let formdata = new FormData();
       keys.forEach((key) => {
         if (key === "_map") {
-          formdata.append(
-            "map",
-            `${state[key].latitude},${state[key].longitude}`
-          );
+          const latitude = state[key].latitude;
+          const longitude = state[key].longitude;
+
+          formdata.append("map", `${latitude || ""},${longitude || ""}`);
           console.log(
             "map2 ======> ",
             `${state[key].latitude},${state[key].longitude}`
           );
+        } else if (key === "start_date" || key === "_end_date") {
+          formdata.append(
+            key.replace(/^_/, ""),
+            state[key].replace(/ ?00:00:00/, "")
+          );
         } else if (key === "start_time" || key === "_end_time") {
           formdata.append(
-            key,
-            new Date("1970-01-01T" + state[key]).toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })
+            key.replace(/^_/, ""),
+            state[key]?.toLowerCase().includes("am") ||
+              state[key]?.toLowerCase().includes("pm")
+              ? state[key]
+              : new Date("1970-01-01T" + state[key]).toLocaleTimeString(
+                  "en-US",
+                  {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  }
+                )
           );
         } else if (key === "app_page" || key === "book_name") {
           radio === key && formdata.append(key, state[key]);
@@ -637,7 +653,10 @@ export const EditModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("app_page"))
+                  else if (
+                    key.includes("app_page") &&
+                    page === "Popup Promotion"
+                  )
                     return (
                       <PopupAppPage
                         {...{
@@ -646,6 +665,7 @@ export const EditModal = ({
                           setState: (val) => setValue(radio, val),
                           radio,
                           setRadio,
+                          books,
                         }}
                       />
                     );
@@ -727,7 +747,7 @@ export const EditModal = ({
                         }}
                       />
                     );
-                  else if (key === "start_date" || key === "end_date")
+                  else if (key === "start_date" || key === "_end_date")
                     return (
                       <DateField
                         {...{
@@ -735,10 +755,11 @@ export const EditModal = ({
                           state: state[key],
                           setState: (val) => setValue(key, val),
                           title: key,
+                          required: false,
                         }}
                       />
                     );
-                  else if (key === "start_time" || key === "end_time")
+                  else if (key === "start_time" || key === "_end_time")
                     return (
                       <TimeField
                         {...{
@@ -746,6 +767,7 @@ export const EditModal = ({
                           state: state[key],
                           setState: (val) => setValue(key, val),
                           title: key,
+                          required: false,
                         }}
                       />
                     );
@@ -841,6 +863,8 @@ export const EditModal = ({
                       >
                         {elem === "_map"
                           ? "Map (lat-long)"
+                          : elem === "app_page"
+                          ? "Web Link"
                           : elem.replaceAll("_", " ")}
                       </label>
                       <input
@@ -915,6 +939,7 @@ export const CreateNewModal = ({
   generalCountries,
   roles,
   languages,
+  books,
 }) => {
   const initial_state = createNewModal.data;
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -945,17 +970,32 @@ export const CreateNewModal = ({
             "map2 ======> ",
             `${state[key].latitude},${state[key].longitude}`
           );
+        } else if (key === "start_date" || key === "_end_date") {
+          formdata.append(
+            key.replace(/^_/, ""),
+            state[key].replace(/ ?00:00:00/, "")
+          );
         } else if (key === "start_time" || key === "_end_time") {
           formdata.append(
-            key,
-            new Date("1970-01-01T" + state[key]).toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })
+            key.replace(/^_/, ""),
+            state[key]?.toLowerCase().includes("am") ||
+              state[key]?.toLowerCase().includes("pm")
+              ? state[key]
+              : new Date("1970-01-01T" + state[key]).toLocaleTimeString(
+                  "en-US",
+                  {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  }
+                )
           );
         } else if (key === "app_page" || key === "book_name") {
-          radio === key && formdata.append(key, state[key]);
+          radio === key &&
+            formdata.append(
+              key,
+              key === "book_name" ? state[key].id : state[key]
+            );
         } else {
           formdata.append(key.replace(/^_/, ""), state[key]);
         }
@@ -1099,7 +1139,10 @@ export const CreateNewModal = ({
                         }}
                       />
                     );
-                  else if (key.includes("app_page"))
+                  else if (
+                    key.includes("app_page") &&
+                    page === "Popup Promotion"
+                  )
                     return (
                       <PopupAppPage
                         {...{
@@ -1108,6 +1151,7 @@ export const CreateNewModal = ({
                           setState: (val) => setValue(radio, val),
                           radio,
                           setRadio,
+                          books,
                         }}
                       />
                     );
@@ -1282,6 +1326,8 @@ export const CreateNewModal = ({
                       >
                         {elem === "_map"
                           ? "Map (lat-long)"
+                          : elem === "app_page"
+                          ? "Web Link"
                           : elem.replaceAll("_", " ")}
                       </label>
                       <input

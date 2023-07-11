@@ -32,6 +32,7 @@ const SubAdmin = () => {
     value: null,
   });
   const [data, setData] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [filters, setFilters] = useState(initial_filters);
   const [editModal, setEditModal] = useState({
     isVisible: false,
@@ -109,7 +110,13 @@ const SubAdmin = () => {
       }));
     };
     fetchRoles(null, func);
-    fetchData(setPaginatedData, setData, neededProps, showAllAdmins);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllAdmins,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -120,6 +127,7 @@ const SubAdmin = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

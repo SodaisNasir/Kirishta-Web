@@ -170,8 +170,10 @@ const DashboardCards = ({ arr, analytics }) => {
     >
       <div className="flex items-center">
         {icon}
-        <span className="text-xs font-medium text-[#8B8B93] ml-2 capitalize">
-          {title.replaceAll("_", " ")}
+        <span className="text-xs font-medium text-[#8B8B93] ml-2">
+          {title.toLowerCase() === "total_ios_users"
+            ? "Total iOS Users"
+            : title.replaceAll("_", " ")}
         </span>
       </div>
       <span className="text-base font-semibold">{analytics[title]}</span>

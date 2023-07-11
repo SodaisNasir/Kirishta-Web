@@ -210,7 +210,18 @@ const PublishBook = () => {
     fetchBookCategories();
     fetchBookLanguages();
     fetchGeneralCountries(setGeneralCountries);
-    fetchBooks(setSavedBooks);
+    fetchBooks(null, (data) =>
+      setSavedBooks(
+        data
+          .filter((e) => e.status.toLowerCase() === "inactive")
+          .map((obj) => {
+            let newObj = { ...obj };
+            delete newObj.updated_at;
+            delete newObj.created_at;
+            return newObj;
+          })
+      )
+    );
   }, []);
 
   return (

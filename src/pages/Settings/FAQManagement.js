@@ -35,6 +35,7 @@ const FAQManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [languages, setLanguages] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
@@ -99,7 +100,13 @@ const FAQManagement = () => {
         data: { ...prev.data, language: data[0].language },
       }))
     );
-    fetchData(setPaginatedData, setData, neededProps, showAllfaqs);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllfaqs,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -110,6 +117,7 @@ const FAQManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

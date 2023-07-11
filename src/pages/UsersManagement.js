@@ -32,6 +32,7 @@ const UsersManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [generalCountries, setGeneralCountries] = useState([]);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
@@ -92,7 +93,13 @@ const UsersManagement = () => {
 
   useEffect(() => {
     fetchGeneralCountries(setGeneralCountries);
-    fetchData(setPaginatedData, setData, neededProps, showAllUsers);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllUsers,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -103,6 +110,7 @@ const UsersManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

@@ -31,6 +31,7 @@ const Notification = () => {
     message: null,
   });
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [selected, setSelected] = useState([]);
   const { searchInput, toggleUser, togglePlatform } = filters;
 
@@ -89,7 +90,13 @@ const Notification = () => {
   const neededProps = ["id", "name", "device_token", "device_name", "user_id"];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllNotifications);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllNotifications,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -99,6 +106,7 @@ const Notification = () => {
           {...{
             data,
             setData,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             selected,

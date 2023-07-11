@@ -27,6 +27,7 @@ const ParishCountriesManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [parishCategories, setParishCategories] = useState([]);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
@@ -85,7 +86,13 @@ const ParishCountriesManagement = () => {
 
   useEffect(() => {
     fetchCategories();
-    fetchData(setPaginatedData, setData, neededProps, showAllCountries);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllCountries,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -96,6 +103,7 @@ const ParishCountriesManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

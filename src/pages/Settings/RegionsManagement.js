@@ -27,6 +27,7 @@ const RegionsManagement = () => {
   });
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [parishCountries, setParishCountries] = useState([]);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
@@ -72,7 +73,13 @@ const RegionsManagement = () => {
         },
       })
     );
-    fetchData(setPaginatedData, setData, neededProps, showAllRegions);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllRegions,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -83,6 +90,7 @@ const RegionsManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,

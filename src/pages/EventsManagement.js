@@ -38,6 +38,7 @@ const EventsManagement = () => {
     value: null,
   });
   const [data, setData] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [viewModal, setViewModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
@@ -121,7 +122,13 @@ const EventsManagement = () => {
   ];
 
   useEffect(() => {
-    fetchData(setPaginatedData, setData, neededProps, showAllEvents);
+    fetchData({
+      setPaginatedData,
+      setData,
+      neededProps,
+      url: showAllEvents,
+      setIsDataFetched,
+    });
   }, []);
 
   return (
@@ -132,6 +139,7 @@ const EventsManagement = () => {
             data,
             setData,
             deleteUrl,
+            isDataFetched,
             paginatedData,
             setPaginatedData,
             Actions,
