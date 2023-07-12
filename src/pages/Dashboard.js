@@ -290,9 +290,12 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
 
       {notifications.length && (
         <>
-          <div className="absolute -top-[3px] -right-[3px] w-3 h-3 text-[10px] text-white rounded-full bg-red-500" />
-          <div className="absolute -top-[3px] right-0 text-[9px] text-white">
-            {notifications.length}
+          <div
+            className={`absolute -top-[4px] -right-[4px] w-3.5 h-3.5 tracking-tighter text-[9.5px] ${
+              notifications.length > 9 ? "pl-0.5" : ""
+            } flex items-center justify-center text-white rounded-full bg-red-500`}
+          >
+            {notifications.length > 9 ? "9+" : notifications.length}
           </div>
         </>
       )}
