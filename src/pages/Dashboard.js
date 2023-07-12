@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DropdownContainer } from "../components/helpers";
-import { MdFeedback, MdLock, MdLogout } from "react-icons/md";
+import { MdFeedback, MdLock, MdLogout, MdOutlineDoneAll } from "react-icons/md";
 import { FaChevronDown, FaUser } from "react-icons/fa";
 import { RiEdit2Fill } from "react-icons/ri";
 import { AppContext } from "../context";
@@ -249,6 +249,26 @@ const Account = ({ toggle, setSingleToggle }) => {
 const Notifications = ({ toggle, setSingleToggle, notifications }) => {
   const navigate = useNavigate();
 
+  const handleReadAll = async () => {
+    const url = `${base_url}/read-admin-notification`;
+
+    try {
+      const requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        redirect: "follow",
+      };
+
+      const res = await fetch(url, requestOptions);
+      const json = await res.json();
+      console.log("json", json);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <button
       className="relative flex items-center space-x-3"
@@ -268,52 +288,96 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
         />
       </svg>
 
+      {notifications.length && (
+        <>
+          <div className="absolute -top-[3px] -right-[3px] w-3 h-3 text-[10px] text-white rounded-full bg-red-500" />
+          <div className="absolute -top-[3px] right-0 text-[9px] text-white">
+            {notifications.length}
+          </div>
+        </>
+      )}
+
       {toggle.notifications && (
         <DropdownContainer extraStyles="pr-0.5">
-          <div className="overflow-y-scroll max-h-[200px] pr-3.5">
-            {notifications.slice(0, 20).map((elem, indx) => {
-              const notificationType = elem.message
-                .toLowerCase()
-                .includes("new user")
-                ? "user"
-                : elem.message.toLowerCase().includes("new contact")
-                ? "contact"
-                : "feedback";
-              const navigateTo =
-                notificationType === "user"
-                  ? "/users-management"
-                  : notificationType === "contact"
-                  ? "/contact-management"
-                  : "/feedback-management";
-              const icon =
-                notificationType === "user"
-                  ? notificationIcons.user
-                  : notificationType === "contact"
-                  ? notificationIcons.contact
-                  : notificationIcons.feedback;
+          <div
+            className={`${
+              !notifications.length ? "flex justify-center items-center" : ""
+            } overflow-y-scroll h-full min-w-[200px] min-h-[170px] max-h-[200px] pr-3.5`}
+          >
+            {notifications.length
+              ? notifications.map((elem, indx) => {
+                  const notificationType = elem.message
+                    .toLowerCase()
+                    .includes("new user")
+                    ? "user"
+                    : elem.message.toLowerCase().includes("new contact")
+                    ? "contact"
+                    : "feedback";
+                  const navigateTo =
+                    notificationType === "user"
+                      ? "/users-management"
+                      : notificationType === "contact"
+                      ? "/contact-management"
+                      : "/feedback-management";
+                  const icon =
+                    notificationType === "user"
+                      ? notificationIcons.user
+                      : notificationType === "contact"
+                      ? notificationIcons.contact
+                      : notificationIcons.feedback;
 
-              return (
-                <li
-                  key={elem.id}
-                  onClick={() => navigate(navigateTo)}
-                  className={`${
-                    notifications.length !== indx
-                      ? "border-b border-[#efefef]"
-                      : ""
-                  } flex py-2 ${
-                    elem?.markAsRead ? "font-semibold" : ""
-                  } cursor-pointer text-gray-600 hover:text-black`}
-                >
-                  {icon}
-                  <span className="ml-2 whitespace-nowrap">{`${
-                    elem.message
-                  } - ${elem.name} - ${elem.user_id} - ${new Date(
-                    elem.created_at
-                  ).toLocaleDateString()}`}</span>
-                </li>
-              );
-            })}
+                  const handleClick = async (id) => {
+                    const url = `${base_url}/edit-admin-notification/${id}`;
+
+                    try {
+                      const requestOptions = {
+                        headers: {
+                          Accept: "application/json",
+                        },
+                        method: "POST",
+                        redirect: "follow",
+                      };
+                      const res = await fetch(url, requestOptions);
+                      const json = await res.json();
+                      console.log("json", json);
+
+                      if (json.success) navigate(navigateTo);
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  };
+
+                  return (
+                    <li
+                      key={elem.id}
+                      onClick={() => handleClick(elem.id)}
+                      className={`${
+                        notifications.length !== indx
+                          ? "border-b border-[#efefef]"
+                          : ""
+                      } flex py-2 ${
+                        elem?.markAsRead ? "font-semibold" : ""
+                      } cursor-pointer text-gray-600 hover:text-black`}
+                    >
+                      {icon}
+                      <span className="ml-2 whitespace-nowrap">{`${
+                        elem.message
+                      } - ${elem.name} - ${elem.user_id} - ${new Date(
+                        elem.created_at
+                      ).toLocaleDateString()}`}</span>
+                    </li>
+                  );
+                })
+              : "No notifications!"}
           </div>
+          <button
+            onClick={handleReadAll}
+            type="button"
+            className="flex justify-center items-center hover:text-blue-600 focus:outline-none font-medium text-base m-1 mr-5 text-center"
+          >
+            <MdOutlineDoneAll />
+            <span className="text-xs ml-1">Read All</span>
+          </button>
         </DropdownContainer>
       )}
     </button>

@@ -70,8 +70,8 @@ const AdvancedTable = ({
         {isLoading ? (
           <Loader />
         ) : (
-          <table className="w-full text-xs text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-xs text-left text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 {checkboxesEnabled && (
                   <th scope="col" className="p-4">
@@ -86,7 +86,7 @@ const AdvancedTable = ({
                             selectedUsers.includes(e.id)
                           )
                         }
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
                       />
                       <label htmlFor="checkbox-all-search" className="sr-only">
                         checkbox
@@ -104,8 +104,12 @@ const AdvancedTable = ({
                         scope="col"
                         className="text-center px-6 py-3"
                       >
-                        {key === "id" && page !== "Notification Promotion"
+                        {key === "id" &&
+                        page !== "Notification Promotion" &&
+                        page !== "Users Management"
                           ? "S/N"
+                          : key === "u_id"
+                          ? "user id"
                           : key === "app_page"
                           ? "web link"
                           : key.replace("_", " ")}
@@ -141,7 +145,7 @@ const AdvancedTable = ({
                   }}
                 />
               ) : (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr className="bg-white border-b">
                   <td
                     colSpan={tableStructure.length + actionCols.length + 1}
                     className="text-center w-4 p-4"
@@ -276,7 +280,7 @@ const SingleUser = ({
   };
 
   return (
-    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+    <tr className="bg-white border-b">
       {checkboxesEnabled && (
         <td className="w-4 p-4">
           <div className="flex items-center">
@@ -285,7 +289,7 @@ const SingleUser = ({
               type="checkbox"
               checked={selectedUsers.includes(id)}
               onChange={handleCheckChange}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
             />
             <label htmlFor={"checkbox-table-search-" + id} className="sr-only">
               checkbox

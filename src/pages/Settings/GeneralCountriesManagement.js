@@ -97,7 +97,7 @@ const GeneralCountriesManagement = () => {
             props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -111,7 +111,7 @@ const GeneralCountriesManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for general countries"
               />
             </div>
@@ -137,7 +137,7 @@ const GeneralCountriesManagement = () => {
                           { duration: 2000 }
                         )
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center"
                 >
                   Create new
                 </button>
@@ -208,17 +208,17 @@ const GeneralCountriesManagement = () => {
 //           <form
 //             action="#"
 //             onSubmit={handleSubmit}
-//             className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+//             className="relative bg-white rounded-lg shadow"
 //           >
 //             {/* Modal header */}
-//             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+//             <div className="flex items-start justify-between p-4 border-b rounded-t">
+//               <h3 className="text-xl font-semibold text-gray-900">
 //                 Edit
 //               </h3>
 //               <button
 //                 onClick={close}
 //                 type="button"
-//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center
 //               >
 //                 <VscClose />
 //               </button>
@@ -229,7 +229,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Name
 //                   </label>
@@ -238,7 +238,7 @@ const GeneralCountriesManagement = () => {
 //                     name="country"
 //                     id="country"
 //                     defaultValue={editModal.data["country name"]}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Nigeria"
 //                     required={true}
 //                   />
@@ -246,7 +246,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country-code"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Code
 //                   </label>
@@ -255,7 +255,7 @@ const GeneralCountriesManagement = () => {
 //                     name="country-code"
 //                     id="country-code"
 //                     defaultValue={editModal.data["country code"]}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="234"
 //                     required={true}
 //                   />
@@ -263,7 +263,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country-flag"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Flag
 //                   </label>
@@ -272,7 +272,7 @@ const GeneralCountriesManagement = () => {
 //                     name="country-flag"
 //                     id="country-flag"
 //                     defaultValue={editModal.data["country flag"]}
-//                     className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1"
 //                     placeholder="e.g. 🇧🇷"
 //                     required={true}
 //                   />
@@ -280,13 +280,13 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="feature"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Featured
 //                   </label>
 //                   <select
 //                     defaultValue={editModal.data._Featured}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="featured"
 //                   >
 //                     {["Yes", "No"].map((item) => (
@@ -299,10 +299,10 @@ const GeneralCountriesManagement = () => {
 //               </div>
 //             </div>
 //             {/* Modal footer */}
-//             <div className="flex items-center p-4 px-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+//             <div className="flex items-center p-4 px-6 space-x-2 border-t border-gray-200 rounded-b">
 //               <button
 //                 type="submit"
-//                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+//                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
 //               >
 //                 Update
 //               </button>
@@ -344,17 +344,17 @@ const GeneralCountriesManagement = () => {
 //           <form
 //             action="#"
 //             onSubmit={handleSubmit}
-//             className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+//             className="relative bg-white rounded-lg shadow"
 //           >
 //             {/* Modal header */}
-//             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+//             <div className="flex items-start justify-between p-4 border-b rounded-t">
+//               <h3 className="text-xl font-semibold text-gray-900">
 //                 Add new country
 //               </h3>
 //               <button
 //                 onClick={close}
 //                 type="button"
-//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center
 //               >
 //                 <VscClose />
 //               </button>
@@ -365,7 +365,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Name
 //                   </label>
@@ -373,7 +373,7 @@ const GeneralCountriesManagement = () => {
 //                     type="text"
 //                     name="country"
 //                     id="country"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Nigeria"
 //                     required={true}
 //                   />
@@ -381,7 +381,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country-code"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Code
 //                   </label>
@@ -389,7 +389,7 @@ const GeneralCountriesManagement = () => {
 //                     type="number"
 //                     name="country-code"
 //                     id="country-code"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="234"
 //                     required={true}
 //                   />
@@ -397,7 +397,7 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="country-flag"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country Flag
 //                   </label>
@@ -405,7 +405,7 @@ const GeneralCountriesManagement = () => {
 //                     type="text"
 //                     name="country-flag"
 //                     id="country-flag"
-//                     className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="font-emoji shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1"
 //                     placeholder="e.g. 🇧🇷"
 //                     required={true}
 //                   />
@@ -413,12 +413,12 @@ const GeneralCountriesManagement = () => {
 //                 <div>
 //                   <label
 //                     htmlFor="feature"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Featured
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="featured"
 //                   >
 //                     {["Yes", "No"].map((item) => (
@@ -431,10 +431,10 @@ const GeneralCountriesManagement = () => {
 //               </div>
 //             </div>
 //             {/* Modal footer */}
-//             <div className="flex items-center px-6 py-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+//             <div className="flex items-center px-6 py-4 border-t border-gray-200 rounded-b">
 //               <button
 //                 type="submit"
-//                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+//                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center"
 //               >
 //                 Submit
 //               </button>

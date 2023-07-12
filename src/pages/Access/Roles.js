@@ -124,7 +124,7 @@ const Roles = () => {
             },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -138,7 +138,7 @@ const Roles = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for roles"
               />
             </div>
@@ -175,7 +175,7 @@ const Roles = () => {
                           { duration: 2000 }
                         )
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center"
                 >
                   Create new
                 </button>
@@ -315,17 +315,15 @@ const EditModal = ({
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit role
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">Edit role</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -336,7 +334,7 @@ const EditModal = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="role"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Role
                   </label>
@@ -345,7 +343,7 @@ const EditModal = ({
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                   />
                 </div>
                 <NestedCheckbox
@@ -356,10 +354,10 @@ const EditModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
@@ -465,17 +463,17 @@ const CreateNewModal = ({
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">
                 Add new role
               </h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -486,7 +484,7 @@ const CreateNewModal = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="role"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Role
                   </label>
@@ -495,7 +493,7 @@ const CreateNewModal = ({
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     required={true}
                   />
                 </div>
@@ -506,10 +504,10 @@ const CreateNewModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (

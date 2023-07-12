@@ -7,8 +7,8 @@ const CommonTable = ({ template, state, actionCols, props }) => {
   return (
     <>
       <div className="relative overflow-hidden overflow-x-auto rounded-t-xl">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
               {keys.map((e) => (
                 <th scope="col" className="px-6 py-3 text-center" key={e}>
@@ -31,7 +31,7 @@ const CommonTable = ({ template, state, actionCols, props }) => {
             {state.length ? (
               state.map((el) => (
                 <tr
-                  className="border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
+                  className="border-b bg-gray-50 hover:bg-gray-100"
                   key={el.id}
                 >
                   {keys.map((elem) => (
@@ -47,7 +47,7 @@ const CommonTable = ({ template, state, actionCols, props }) => {
                 </tr>
               ))
             ) : (
-              <tr className="text-center border-b bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
+              <tr className="text-center border-b bg-gray-50 hover:bg-gray-100">
                 <td
                   className={`"px-6 py-4 whitespace-nowrap text-xs`}
                   colSpan={keys.length + actionCols.length + 1}

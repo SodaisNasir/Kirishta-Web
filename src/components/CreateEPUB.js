@@ -90,7 +90,7 @@ const CreateEPUB = ({
               <div>
                 <label
                   htmlFor={"chapter-title-" + (index + 1)}
-                  className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-xs font-medium text-gray-900"
                 >
                   Chapter Title
                 </label>
@@ -100,14 +100,14 @@ const CreateEPUB = ({
                   id={"chapter-title-" + (index + 1)}
                   value={item.title}
                   onChange={(e) => handleTitleChange(e.target.value, index)}
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                   placeholder="Harry Potter"
                   autoFocus={true}
                   required={true}
                 />
               </div>
               <div>
-                <label className="block my-2 mt-4 text-xs font-medium text-gray-900 dark:text-white">
+                <label className="block my-2 mt-4 text-xs font-medium text-gray-900">
                   Chapter Body
                 </label>
                 <Editor
@@ -132,7 +132,7 @@ const CreateEPUB = ({
         <div className={`flex justify-end mt-5`}>
           <button
             onClick={handleAdd}
-            className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
+            className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:saturate-0"
           >
             Add Section
           </button>
@@ -140,7 +140,7 @@ const CreateEPUB = ({
           {/* {saveBtn && (
           <button
             onClick={handleSave}
-            className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:saturate-0"
+            className="text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-10 py-2.5 text-center disabled:saturate-0"
           >
             Save
           </button>

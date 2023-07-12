@@ -154,7 +154,7 @@ const BooksManagement = () => {
             },
           }}
         >
-          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between dark:bg-gray-800">
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -168,7 +168,7 @@ const BooksManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for books"
               />
             </div>
@@ -258,16 +258,14 @@ const ViewModal = ({ viewModal, setViewModal }) => {
       >
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="relative bg-white rounded-lg shadow">
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">View</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -280,10 +278,10 @@ const ViewModal = ({ viewModal, setViewModal }) => {
                     key={elem}
                     className="flex flex-col justify-center col-span-6 p-2 border rounded-md sm:col-span-3 bg-gray-50"
                   >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 capitalize">
                       {elem === "id" ? "S/N" : elem.replace(/_/g, " ")}
                     </p>
-                    <p className="block text-xs font-medium text-gray-700 dark:text-white">
+                    <p className="block text-xs font-medium text-gray-700">
                       {elem.includes("image") ? (
                         <img className="h-10" src={data[elem]} alt="cover" />
                       ) : !data[elem] ? (
@@ -297,7 +295,7 @@ const ViewModal = ({ viewModal, setViewModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 onClick={close}
                 type="button"
@@ -447,17 +445,15 @@ const EditModal = ({
           <div
             // action="#"
             // onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">Edit</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -467,13 +463,13 @@ const EditModal = ({
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                     htmlFor="cover_image"
                   >
                     Cover Image
                   </label>
                   <input
-                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                     onChange={handleChange}
                     id="cover_image"
                     name="cover_image"
@@ -483,7 +479,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Title
                   </label>
@@ -493,14 +489,14 @@ const EditModal = ({
                     id="title"
                     value={state.title}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     placeholder="Lorem ipsum"
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="author"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Author
                   </label>
@@ -510,20 +506,20 @@ const EditModal = ({
                     id="author"
                     value={state._author}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     placeholder="Lorem ipsum"
                   />
                 </div>
                 {/* {editUser.ePUB_Type === "file" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-xs font-medium text-gray-900"
                       htmlFor="ePUB"
                       >
                       Upload ePUB
                       </label>
                     <input
-                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                     id="ePUB"
                       name="epub"
                       onChange={handleChange}
@@ -534,7 +530,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Category
                   </label>
@@ -542,7 +538,7 @@ const EditModal = ({
                     name="category"
                     value={state.category}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="categories"
                   >
                     <option className="text-sm" value="">
@@ -562,7 +558,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="languages"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Language
                   </label>
@@ -570,7 +566,7 @@ const EditModal = ({
                     name="_language"
                     value={state._language}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="languages"
                   >
                     <option className="text-sm" value="">
@@ -590,7 +586,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Country
                   </label>
@@ -599,7 +595,7 @@ const EditModal = ({
                     name="country"
                     value={state.country}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                   >
                     <option className="text-sm" value="">
                       select country
@@ -618,7 +614,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Status
                   </label>
@@ -626,7 +622,7 @@ const EditModal = ({
                     name="status"
                     value={state.status.toUpperCase()}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="status"
                   >
                     <option className="text-sm" value="">
@@ -642,7 +638,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="release_year"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Release year
                   </label>
@@ -652,7 +648,7 @@ const EditModal = ({
                     value={state._release_year}
                     onChange={handleChange}
                     id="release_year"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     placeholder="2020"
                     max={new Date().getFullYear()}
                   />
@@ -660,7 +656,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Featured
                   </label>
@@ -668,7 +664,7 @@ const EditModal = ({
                     name="_featured"
                     value={state._featured}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="featured"
                   >
                     <option className="text-sm" value="">
@@ -688,11 +684,11 @@ const EditModal = ({
                     onChange={(e) => setEditCheckbox(e.target.checked)}
                     checked={editCheckbox}
                     value="edit-epub-html"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
                     htmlFor="edit-epub-html"
-                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
                   >
                     Edit ePUB HTML
                   </label>
@@ -700,7 +696,7 @@ const EditModal = ({
                 <div className="col-span-6">
                   <label
                     htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     About
                   </label>
@@ -710,7 +706,7 @@ const EditModal = ({
                     rows="10"
                     value={state._about}
                     onChange={handleChange}
-                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Write about this book..."
                   ></textarea>
                 </div>
@@ -731,11 +727,11 @@ const EditModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (

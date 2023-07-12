@@ -257,13 +257,13 @@ const PublishBook = () => {
 
             {/* Book Details */}
             <div className="relative w-full max-w-3xl max-h-full mx-auto">
-              <div className="relative mt-2 dark:bg-gray-700">
+              <div className="relative mt-2">
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="title"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         Title
                       </label>
@@ -273,7 +273,7 @@ const PublishBook = () => {
                         id="title"
                         value={state.title}
                         onChange={handleChange}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                         placeholder="Book title"
                         required={true}
                       />
@@ -281,7 +281,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="author"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         Author
                       </label>
@@ -291,20 +291,20 @@ const PublishBook = () => {
                         id="author"
                         value={state.author}
                         onChange={handleChange}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                         placeholder="Author name"
                         required={true}
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                         htmlFor="book-cover"
                       >
                         Book Cover
                       </label>
                       <input
-                        className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                         onChange={(e) =>
                           setState((prev) => ({
                             ...prev,
@@ -320,7 +320,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="categories"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         Category
                       </label>
@@ -329,7 +329,7 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="categories"
                         name="category"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       >
                         {bookCategories.map((item, indx) => (
                           <option
@@ -345,7 +345,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="languages"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         Language
                       </label>
@@ -354,7 +354,7 @@ const PublishBook = () => {
                         onChange={handleChange}
                         id="languages"
                         name="language"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       >
                         {bookLanguages.map((item, indx) => (
                           <option
@@ -370,7 +370,7 @@ const PublishBook = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="release_year"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         Release year
                       </label>
@@ -380,7 +380,7 @@ const PublishBook = () => {
                         id="release_year"
                         value={state.release_year}
                         onChange={handleChange}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                         placeholder="2020"
                         max={new Date().getFullYear()}
                         required={true}
@@ -389,7 +389,7 @@ const PublishBook = () => {
                     <div className="col-span-6">
                       <label
                         htmlFor="about"
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-xs font-medium text-gray-900"
                       >
                         About
                       </label>
@@ -399,7 +399,7 @@ const PublishBook = () => {
                         rows="10"
                         value={state.about}
                         onChange={handleChange}
-                        className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Write about this book..."
                       ></textarea>
                     </div>
@@ -418,7 +418,7 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-1"
-                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
                         >
                           Upload ePUB
                         </label>
@@ -440,7 +440,7 @@ const PublishBook = () => {
                         />
                         <label
                           htmlFor="epub-type-2"
-                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                          className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
                         >
                           Create ePUB
                         </label>
@@ -449,13 +449,13 @@ const PublishBook = () => {
                     {epub.type === "epub" ? (
                       <div className="w-full col-span-6 mx-auto sm:w-1/2">
                         <label
-                          className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-xs font-medium text-gray-900"
                           htmlFor="upload-file"
                         >
                           Upload ePUB
                         </label>
                         <input
-                          className="block w-full text-xs text-gray-900 border border-gray-300 p-2 py-2.5 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                          className="block w-full text-xs text-gray-900 border border-gray-300 p-2 py-2.5 rounded-lg cursor-pointer bg-gray-50"
                           id="upload-file"
                           type="file"
                           accept=".epub"
@@ -480,11 +480,11 @@ const PublishBook = () => {
                     )}
                   </div>
                 </div>
-                <div className="grid w-full grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300 dark:border-gray-600">
+                <div className="grid w-full grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300">
                   <button
                     onClick={handleSave}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:cursor-not-allowed"
                     disabled={toggleSaveBtn || epub.type === "epub"}
                   >
                     {toggleSaveBtn ? (
@@ -499,7 +499,7 @@ const PublishBook = () => {
                   <button
                     onClick={handlePublish}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:cursor-not-allowed"
                     disabled={togglePublishBtn}
                   >
                     {togglePublishBtn ? (
@@ -632,17 +632,15 @@ const EditModal = ({
           <div
             // action="#"
             // onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">Edit</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -653,7 +651,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="title"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Title
                   </label>
@@ -663,7 +661,7 @@ const EditModal = ({
                     id="title"
                     value={state.title}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:opacity-70"
                     placeholder="Lorem ipsum"
                     disabled={true}
                   />
@@ -671,7 +669,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="author"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Author
                   </label>
@@ -681,7 +679,7 @@ const EditModal = ({
                     id="author"
                     value={state.author}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:opacity-70"
                     placeholder="Lorem ipsum"
                     disabled={true}
                   />
@@ -689,13 +687,13 @@ const EditModal = ({
                 {/* {editUser.ePUB_Type === "file" && (
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-xs font-medium text-gray-900"
                       htmlFor="ePUB"
                       >
                       Upload ePUB
                       </label>
                     <input
-                      className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      className="block w-full p-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                       id="ePUB"
                       name="epub"
                       onChange={handleChange}
@@ -706,7 +704,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="categories"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Category
                   </label>
@@ -714,7 +712,7 @@ const EditModal = ({
                     name="category"
                     value={state.category}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="categories"
                     disabled={true}
                   >
@@ -732,7 +730,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="languages"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Language
                   </label>
@@ -740,7 +738,7 @@ const EditModal = ({
                     name="_language"
                     value={state.language}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="languages"
                     disabled={true}
                   >
@@ -758,7 +756,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="country"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Country
                   </label>
@@ -767,7 +765,7 @@ const EditModal = ({
                     name="country"
                     value={state.country}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     disabled={true}
                   >
                     {generalCountries.map(({ country_name }) => (
@@ -784,7 +782,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="downloads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Downloads
                   </label>
@@ -794,7 +792,7 @@ const EditModal = ({
                     id="downloads"
                     value={state.download}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:opacity-70"
                     placeholder="1613"
                     disabled={true}
                   />
@@ -802,7 +800,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="reads"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Reads
                   </label>
@@ -812,7 +810,7 @@ const EditModal = ({
                     id="reads"
                     value={state.read}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:opacity-70"
                     placeholder="1613"
                     disabled={true}
                   />
@@ -820,7 +818,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="status"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Status
                   </label>
@@ -828,7 +826,7 @@ const EditModal = ({
                     name="status"
                     value={state.status.toUpperCase()}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="status"
                     disabled={true}
                   >
@@ -842,7 +840,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="release_year"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Release year
                   </label>
@@ -852,7 +850,7 @@ const EditModal = ({
                     value={state.release_year}
                     onChange={handleChange}
                     id="release_year"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:opacity-70"
                     placeholder="2020"
                     max={new Date().getFullYear()}
                     disabled={true}
@@ -861,7 +859,7 @@ const EditModal = ({
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="feature"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     Featured
                   </label>
@@ -869,7 +867,7 @@ const EditModal = ({
                     name="featured"
                     value={state.featured}
                     onChange={handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                     id="featured"
                     disabled={true}
                   >
@@ -883,7 +881,7 @@ const EditModal = ({
                 <div className="col-span-6">
                   <label
                     htmlFor="about"
-                    className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-xs font-medium text-gray-900"
                   >
                     About
                   </label>
@@ -893,7 +891,7 @@ const EditModal = ({
                     rows="10"
                     value={state.about}
                     onChange={handleChange}
-                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-70"
+                    className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-70"
                     placeholder="Write about this book..."
                     disabled={true}
                   ></textarea>
@@ -905,11 +903,11 @@ const EditModal = ({
                     onChange={(e) => setEditCheckbox(e.target.checked)}
                     checked={editCheckbox}
                     value="edit-epub-html"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                   />
                   <label
                     htmlFor="edit-epub-html"
-                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+                    className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
                   >
                     Edit ePUB HTML
                   </label>
@@ -931,11 +929,11 @@ const EditModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (

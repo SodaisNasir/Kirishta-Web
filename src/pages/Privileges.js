@@ -107,7 +107,7 @@ const Privileges = () => {
             actionCols: ["Privileges", "Delete"],
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -121,7 +121,7 @@ const Privileges = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for users"
               />
             </div>
@@ -142,7 +142,7 @@ const Privileges = () => {
                       isVisible: true,
                     }))
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400"
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center"
                 >
                   Add User
                 </button>
@@ -212,16 +212,16 @@ const AddUserModal = ({ addUser, setAddUser }) => {
       >
         <div className="relative w-full max-w-2xl max-h-full">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="relative bg-white rounded-lg shadow">
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">
                 {page === 1 ? "Add new user" : "Assign Privileges"}
               </h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -231,9 +231,9 @@ const AddUserModal = ({ addUser, setAddUser }) => {
               <ol className="flex items-center justify-center w-full mb-4 sm:mb-5 px-32">
                 <li
                   title="User Details"
-                  className={`flex w-full items-center text-blue-600 dark:text-blue-500 after:content-[''] after:w-full after:h-1 after:border-b after:border-blue-100 after:border-4 after:inline-block dark:after:border-blue-800`}
+                  className={`flex w-full items-center text-blue-600`}
                 >
-                  <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full dark:bg-blue-800 shrink-0">
+                  <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full shrink-0">
                     {page === 1 ? <AiOutlineForm /> : <BsFillCheckCircleFill />}
                   </div>
                 </li>
@@ -243,7 +243,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                       page === 2
                         ? "text-blue-600 bg-blue-100"
                         : "text-gray-800 bg-gray-100"
-                    } rounded-full dark:bg-gray-700 shrink-0`}
+                    } rounded-full shrink-0`}
                   >
                     <MdAssignmentInd />
                   </div>
@@ -263,7 +263,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                         <div key={elem}>
                           <label
                             htmlFor={elem}
-                            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+                            className="block mb-2 text-xs font-medium text-gray-900"
                           >
                             {elem}
                           </label>
@@ -276,7 +276,7 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                                 ? "[0-9]{3}-[0-9]{2}-[0-9]{3}"
                                 : null
                             }
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                             required={true}
                           />
                         </div>
@@ -297,11 +297,11 @@ const AddUserModal = ({ addUser, setAddUser }) => {
                           }
                           checked={selectedChecks[elem]}
                           type="checkbox"
-                          className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                          className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer"
                         />
                         <label
                           htmlFor={elem.toLowerCase()}
-                          className="ml-2 font-medium text-gray-800 dark:text-gray-300 hover:text-gray-900 cursor-pointer"
+                          className="ml-2 font-medium text-gray-800 cursor-pointer"
                         >
                           {elem}
                         </label>
@@ -310,11 +310,11 @@ const AddUserModal = ({ addUser, setAddUser }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 py-3  border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-6 py-3  border-t border-gray-200 rounded-b">
               <button
                 onClick={() => (page === 1 ? setPage(2) : handleSubmit())}
                 type={"button"}
-                className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2 text-center"
               >
                 {page === 1 ? "Next" : "Finish"}
               </button>
@@ -362,17 +362,17 @@ const PrivilegesModal = ({ privilegesModal, setPrivilegesModal }) => {
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">
                 Assign Privileges
               </h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -395,11 +395,11 @@ const PrivilegesModal = ({ privilegesModal, setPrivilegesModal }) => {
                       }
                       checked={selectedChecks[elem]}
                       type="checkbox"
-                      className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                      className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer"
                     />
                     <label
                       htmlFor={elem.toLowerCase()}
-                      className="ml-2 font-medium text-gray-800 dark:text-gray-300 hover:text-gray-900 cursor-pointer"
+                      className="ml-2 font-medium text-gray-800 cursor-pointer"
                     >
                       {elem}
                     </label>
@@ -408,10 +408,10 @@ const PrivilegesModal = ({ privilegesModal, setPrivilegesModal }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-6 py-3 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-6 py-3 space-x-2 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2 text-center"
               >
                 Apply
               </button>
@@ -456,7 +456,7 @@ const Actions = ({
           onClick={() =>
             setPrivilegesModal((prev) => ({ ...prev, isVisible: true }))
           }
-          className="font-medium text-gray-600 hover:text-gray-800 hover:text-gray-800"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdAssignmentInd title="Assign privileges" />
         </button>
@@ -464,7 +464,7 @@ const Actions = ({
       <td className="text-center text-base px-6 py-4">
         <button
           onClick={remove}
-          className="font-medium text-gray-600 hover:text-gray-800 hover:text-gray-800"
+          className="font-medium text-gray-600 hover:text-gray-800"
         >
           <MdDelete />
         </button>

@@ -28,8 +28,8 @@ const CountryFilter = ({
       onClick={setToggle}
       className={`relative flex items-center text-xs ${
         curFilter.filter === "country" || curFilter.filter === "_country"
-          ? "bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300"
-          : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600"
+          ? "bg-blue-100 hover:bg-blue-200"
+          : "bg-gray-50 hover:bg-gray-100"
       }  p-2 py-1.5 rounded-[6px] cursor-pointer`}
     >
       {selectedCountry && (

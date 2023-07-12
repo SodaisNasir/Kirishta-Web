@@ -117,12 +117,12 @@ const Login = () => {
                   id="email"
                   onChange={handleChange}
                   value={email}
-                  className="bg-[#EEF2F5] text-gray-900 text-xs font-medium rounded-2xl px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 outline-none"
+                  className="bg-[#EEF2F5] text-gray-900 text-xs font-medium rounded-2xl px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full outline-none"
                   placeholder="Email"
                   required={true}
                 />
               </div>
-              <div className="flex items-center bg-[#EEF2F5] text-gray-900 text-xs font-medium rounded-2xl mb-1 focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 overflow-hidden">
+              <div className="flex items-center bg-[#EEF2F5] text-gray-900 text-xs font-medium rounded-2xl mb-1 focus:ring-blue-500 focus:border-blue-500 w-full overflow-hidden">
                 <input
                   type={password.isVisible ? "text" : "password"}
                   name="password"

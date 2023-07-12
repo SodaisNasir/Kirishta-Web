@@ -58,7 +58,8 @@ function Pagination({ paginatedData, setPaginatedData }) {
           <select
             defaultValue={50}
             onChange={handleSelect}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 py-1"
+          >
             {paginationEntries.map((item) => (
               <option className="text-xs" key={item} value={item}>
                 {item}

@@ -142,11 +142,11 @@ const ChangePassword = () => {
             <div>
               <label
                 htmlFor="newPassword"
-                className="w-full block mb-1 text-xs font-medium text-gray-900 dark:text-white"
+                className="w-full block mb-1 text-xs font-medium text-gray-900"
               >
                 New Password
               </label>
-              <div className="flex items-center shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <div className="flex items-center shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full">
                 <input
                   type={newPassword.isVisible ? "text" : "password"}
                   name="newPassword"
@@ -175,11 +175,11 @@ const ChangePassword = () => {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="w-full block mb-1 text-xs font-medium text-gray-900 dark:text-white"
+                className="w-full block mb-1 text-xs font-medium text-gray-900"
               >
                 Confirm Password
               </label>
-              <div className="flex items-center shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <div className="flex items-center shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full">
                 <input
                   type={confirmPassword.isVisible ? "text" : "password"}
                   name="confirmPassword"
@@ -208,7 +208,7 @@ const ChangePassword = () => {
 
             <button
               type="submit"
-              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700 disabled:bg-blue-400 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (

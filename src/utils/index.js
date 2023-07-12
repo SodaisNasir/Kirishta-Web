@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import { base_url } from "./url";
 
 export const typeCheck = (elem, page) => {
@@ -36,14 +37,17 @@ export const typeCheck = (elem, page) => {
   return result;
 };
 
-export const convertAMPMto24HourTime = (timeString) => {
-  const [hours, minutes, ampm] = timeString.split(/:|\s/g);
-  let hour = parseInt(hours);
-  if (timeString.toLowerCase().includes("pm")) {
-    hour += 12;
-  }
-  return `${hour}:${minutes}`;
-};
+// export const convertAMPMto24HourTime = (timeString) => {
+//   const [hours, minutes, ampm] = timeString.split(/:|\s/g);
+//   let hour = parseInt(hours);
+//   if (timeString.toLowerCase().includes("pm")) {
+//     hour += 12;
+//   }
+//   return `${hour}:${minutes}`;
+// };
+
+export const convertAMPMto24HourTime = (timeString) =>
+  moment(timeString, "h:mm A").format("HH:mm");
 
 export const modifyData = (data, neededProps) => {
   let keys = Object.keys(data[0]).filter(

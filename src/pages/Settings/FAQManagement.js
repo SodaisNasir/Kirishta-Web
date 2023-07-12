@@ -125,7 +125,7 @@ const FAQManagement = () => {
             props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -139,7 +139,7 @@ const FAQManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for FAQs"
               />
             </div>
@@ -179,7 +179,7 @@ const FAQManagement = () => {
                           { duration: 2000 }
                         )
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center"
                 >
                   Create new
                 </button>
@@ -240,7 +240,7 @@ const LanguageFilter = ({ toggle, setToggle, curFilter, handleClick }) => {
   return (
     <button
       onClick={setToggle}
-      className={`relative flex items-center text-xs bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600 p-2 py-1.5 rounded-[6px] cursor-pointer`}
+      className={`relative flex items-center text-xs bg-gray-50 hover:bg-gray-100 cursor-pointer`}
     >
       <span className="pl-1.5 pr-1 text-xs text-left whitespace-nowrap">
         {!selectedLanguage ? "All languages" : selectedLanguage}

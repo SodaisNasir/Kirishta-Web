@@ -41,7 +41,7 @@ const Actions = ({
 }) => {
   const navigate = useNavigate();
   const [blockUser, setBlockUser] = useState(
-    data?.status?.toLowerCase() == "inactive"
+    page === "Users Management" && data.status.toLowerCase() == "inactive"
   );
   const [toggleBlockBtn, setToggleBlockBtn] = useState(false);
 
@@ -60,11 +60,9 @@ const Actions = ({
         `https://sassolution.org/kirista/api/block/${id}`,
         requestOptions
       );
-      const json = await res.json();
-      console.log("data =======>", data);
+      console.log("res status =======>", res.status);
 
-      if (json.success) {
-        const data = json;
+      if (res.status === 200) {
         setBlockUser(!blockUser);
         setPaginatedData({
           ...paginatedData,
@@ -74,8 +72,8 @@ const Actions = ({
                   ...user,
                   status:
                     user.status.toLowerCase() === "active"
-                      ? "InActive"
-                      : "Active",
+                      ? "INACTIVE"
+                      : "ACTIVE",
                 }
               : user
           ),
@@ -87,13 +85,12 @@ const Actions = ({
                   ...user,
                   status:
                     user.status.toLowerCase() === "active"
-                      ? "InActive"
-                      : "Active",
+                      ? "INACTIVE"
+                      : "ACTIVE",
                 }
               : user
           )
         );
-        console.log("block/unblock data =======>", data);
       }
     } catch (err) {
       console.error(err);
@@ -224,15 +221,15 @@ const Actions = ({
       )}
       {actionCols.includes("Actions") && (
         <td className="flex text-center text-base px-6 py-4">
-          <button className="text-xs mr-1 hover:text-blue-500 hover:underline font-medium text-gray-600 dark:text-gray-500">
+          <button className="text-xs mr-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
             Yes
           </button>
           <span className="text-base text-gray-800"> | </span>
-          <button className="text-xs mx-1 hover:text-blue-500 hover:underline font-medium text-gray-600 dark:text-gray-500">
+          <button className="text-xs mx-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
             No
           </button>
           <span className="text-base text-gray-800"> | </span>
-          <button className="text-xs ml-1 hover:text-blue-500 hover:underline font-medium text-gray-600 dark:text-gray-500">
+          <button className="text-xs ml-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
             Maybe
           </button>
         </td>

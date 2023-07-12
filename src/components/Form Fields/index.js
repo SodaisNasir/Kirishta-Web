@@ -5,14 +5,14 @@ export const RoleField = ({ state, setState, roles }) => {
     <div>
       <label
         htmlFor="roles"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Role
       </label>
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="roles"
         required={true}
       >
@@ -39,7 +39,7 @@ export const DeviceField = ({
     <div>
       <label
         htmlFor="devices"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         {title}
       </label>
@@ -47,7 +47,7 @@ export const DeviceField = ({
         value={state}
         required={true}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="devices"
       >
         <option className="text-sm" value="">
@@ -75,11 +75,11 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
             onChange={(e) => setRadio(e.target.value)}
             checked={radio === "app_page"}
             value="app_page"
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
           />
           <label
             htmlFor="app_page"
-            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
           >
             Web Link
           </label>
@@ -92,11 +92,11 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
             onChange={(e) => setRadio(e.target.value)}
             checked={radio === "book_name"}
             value="book_name"
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
           />
           <label
             htmlFor="book_name"
-            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer dark:text-gray-300"
+            className="ml-2 text-xs font-medium text-gray-900 cursor-pointer"
           >
             Book Name
           </label>
@@ -107,7 +107,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
         <div>
           <label
             htmlFor="app-page"
-            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+            className="block mb-2 text-xs font-medium text-gray-900 capitalize"
           >
             Web Link
           </label>
@@ -116,7 +116,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
             id="app-page"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             placeholder="https://www.google.com"
             required={true}
           />
@@ -125,7 +125,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
         <div>
           <label
             htmlFor="book-name"
-            className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+            className="block mb-2 text-xs font-medium text-gray-900 capitalize"
           >
             Book name
           </label>
@@ -133,7 +133,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
             required={true}
             value={state}
             onChange={(e) => setState(e.target.value)}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             id="parish-countries"
           >
             <option className="text-sm" value="">
@@ -150,7 +150,7 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
             id="book-name"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             required={true}
           /> */}
         </div>
@@ -166,7 +166,7 @@ export const MapField = ({ state, setState }) => {
 
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+      <label className="block mb-2 text-xs font-medium text-gray-900 capitalize">
         Map (lat - long)
       </label>
       <div className="flex space-x-2">
@@ -185,7 +185,7 @@ export const MapField = ({ state, setState }) => {
               ? setState({ ...stateCopy, latitude: e.target.value })
               : setState({ ...state, latitude: e.target.value })
           }
-          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
           placeholder="4.5461"
         />
         <input
@@ -203,7 +203,7 @@ export const MapField = ({ state, setState }) => {
               ? setState({ ...stateCopy, longitude: e.target.value })
               : setState({ ...state, longitude: e.target.value })
           }
-          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
           placeholder="2.6436"
         />
       </div>
@@ -225,15 +225,15 @@ export const TimeField = ({ state, setState, title, required = true }) => {
 
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+      <label className="block mb-2 text-xs font-medium text-gray-900 capitalize">
         {title.replace(/_/g, " ")}
       </label>
       <input
         id={title}
         type="time"
-        defaultValue={modifiedTimeFormat.toLowerCase()}
+        defaultValue={modifiedTimeFormat}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         required={required}
       />
     </div>
@@ -243,14 +243,14 @@ export const TimeField = ({ state, setState, title, required = true }) => {
 export const DateField = ({ state, setState, title, required = true }) => {
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize">
+      <label className="block mb-2 text-xs font-medium text-gray-900 capitalize">
         {title.replace(/_/g, " ")}
       </label>
       <input
         type="date"
         defaultValue={state.replace(" 00:00:00", "")}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         required={required}
       />
     </div>
@@ -267,7 +267,7 @@ export const GeneralCountryField = ({
     <div>
       <label
         htmlFor="countries"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         {title.replace("_", " ")}
       </label>
@@ -275,7 +275,7 @@ export const GeneralCountryField = ({
         required={true}
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="countries"
       >
         <option className="text-sm" value="">
@@ -300,7 +300,7 @@ export const ParishCountriesField = ({ state, setState, parishCountries }) => {
     <div>
       <label
         htmlFor="parish-countries"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Country
       </label>
@@ -308,7 +308,7 @@ export const ParishCountriesField = ({ state, setState, parishCountries }) => {
         required={true}
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="parish-countries"
       >
         <option className="text-sm" value="">
@@ -329,14 +329,14 @@ export const ParishProvincesField = ({ state, setState, parishProvinces }) => {
     <div>
       <label
         htmlFor="parish-countries"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Province
       </label>
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="parish-countries"
         required={true}
         disabled={parishProvinces.length === 0}
@@ -367,7 +367,7 @@ export const ParishRegionsField = ({ state, setState, parishRegions }) => {
     <div>
       <label
         htmlFor="parish-regions"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Region
       </label>
@@ -375,7 +375,7 @@ export const ParishRegionsField = ({ state, setState, parishRegions }) => {
         required={true}
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="parish-regions"
         disabled={parishRegions.length === 0}
       >
@@ -405,14 +405,14 @@ export const FeaturedField = ({ state, setState }) => {
     <div>
       <label
         htmlFor="featured"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Featured
       </label>
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         required={true}
         id="featured"
       >
@@ -434,14 +434,14 @@ export const PlatformField = ({ state, setState }) => {
     <div>
       <label
         htmlFor="platform"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Platform
       </label>
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         required={true}
         id="platform"
       >
@@ -463,13 +463,13 @@ export const LanguageField = ({ state, setState, languages }) => {
     <div className="col-span-2 sm:col-span-1">
       <label
         htmlFor="languages"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-xs font-medium text-gray-900"
       >
         Language
       </label>
       <select
         id="languages"
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         value={state}
         onChange={(e) => setState(e.target.value)}
         required={true}
@@ -496,13 +496,13 @@ export const ParishCategoriesField = ({
     <div className="col-span-2 sm:col-span-1">
       <label
         htmlFor="parish-categories"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-xs font-medium text-gray-900"
       >
         Category
       </label>
       <select
         id="parish-categories"
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         value={state}
         onChange={(e) => setState(e.target.value)}
         required={true}
@@ -534,7 +534,7 @@ export const StatusField = ({ state, setState, statusType }) => {
     <div>
       <label
         htmlFor="status"
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         Status
       </label>
@@ -542,7 +542,7 @@ export const StatusField = ({ state, setState, statusType }) => {
         required={true}
         value={state.toUpperCase()}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         id="status"
       >
         <option className="text-sm" value="">
@@ -568,7 +568,7 @@ export const UploadField = ({
   return (
     <div>
       <label
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
         htmlFor="upload-files"
       >
         {canUploadMultipleImages
@@ -576,7 +576,7 @@ export const UploadField = ({
           : title}
       </label>
       <input
-        className="block w-full text-[10px] text-gray-900 border border-gray-300 p-2 py-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+        className="block w-full text-[10px] text-gray-900 border border-gray-300 p-2 py-2 rounded-lg cursor-pointer bg-gray-50"
         id="upload-files"
         type="file"
         onChange={(e) => setState(e.target.files[0])}
@@ -599,7 +599,7 @@ export const TextArea = ({
     <div className={gridCols === 1 ? "col-span-1" : "col-span-2"}>
       <label
         htmlFor={elem.toLowerCase()}
-        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
       >
         {elem.replace("_", "")}
       </label>
@@ -609,7 +609,7 @@ export const TextArea = ({
         id={elem.toLowerCase()}
         value={state}
         onChange={(e) => setState(e.target.value)}
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
         placeholder={
           "Write " + elem.replace("_", "").toLowerCase() + " here..."
         }

@@ -181,7 +181,7 @@ const ParishManagement = () => {
             },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white dark:bg-gray-800">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -195,7 +195,7 @@ const ParishManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for parishes"
               />
             </div>
@@ -234,7 +234,7 @@ const ParishManagement = () => {
                           { duration: 2000 }
                         )
                   }
-                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800/50"
+                  className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-semibold rounded-lg text-xs px-4 py-1.5 ml-2 text-center"
                 >
                   Create new
                 </button>
@@ -317,17 +317,17 @@ const ParishManagement = () => {
 //           <form
 //             action="#"
 //             onSubmit={handleSubmit}
-//             className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+//             className="relative bg-white rounded-lg shadow"
 //           >
 //             {/* Modal header */}
-//             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+//             <div className="flex items-start justify-between p-4 border-b rounded-t">
+//               <h3 className="text-xl font-semibold text-gray-900">
 //                 Edit
 //               </h3>
 //               <button
 //                 onClick={close}
 //                 type="button"
-//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center
 //                 data-modal-hide="editUserModal"
 //               >
 //                 <VscClose />
@@ -338,13 +338,13 @@ const ParishManagement = () => {
 //               <div className="grid grid-cols-6 gap-6">
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                     htmlFor="image"
 //                   >
 //                     Image
 //                   </label>
 //                   <input
-//                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+//                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50"
 //                     id="image"
 //                     type="file"
 //                   />
@@ -352,7 +352,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="title"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Title
 //                   </label>
@@ -360,7 +360,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="title"
 //                     id="title"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Lorem ipsum"
 //                     required={true}
 //                   />
@@ -368,7 +368,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="email"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Email
 //                   </label>
@@ -376,7 +376,7 @@ const ParishManagement = () => {
 //                     type="email"
 //                     name="email"
 //                     id="email"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="example@gmail.com"
 //                     required={true}
 //                   />
@@ -384,7 +384,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="phone"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Phone
 //                   </label>
@@ -392,7 +392,7 @@ const ParishManagement = () => {
 //                     type="tel"
 //                     name="phone"
 //                     id="phone"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="+21 165 6847 545"
 //                     required={true}
 //                   />
@@ -400,7 +400,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="website"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Website
 //                   </label>
@@ -408,7 +408,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="website"
 //                     id="website"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="www.example.com"
 //                     required={true}
 //                   />
@@ -416,7 +416,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="location"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Location
 //                   </label>
@@ -424,7 +424,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="location"
 //                     id="location"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Abuja"
 //                     required={true}
 //                   />
@@ -432,7 +432,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="address"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Address
 //                   </label>
@@ -440,7 +440,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="address"
 //                     id="address"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="steet no.3, Abuja, southie"
 //                     required={true}
 //                   />
@@ -448,7 +448,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="map"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Map
 //                   </label>
@@ -456,7 +456,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="map"
 //                     id="map"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="41°24'12.2'N - 2°10'26.5'E"
 //                     required={true}
 //                   />
@@ -464,13 +464,13 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="countries"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country
 //                   </label>
 //                   <select
 //                     defaultValue={editModal.data.Country}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="countries"
 //                   >
 //                     {parishCountries.map((country) => (
@@ -487,13 +487,13 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="provinces"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Province
 //                   </label>
 //                   <select
 //                     defaultValue={editModal.data._Province}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="provinces"
 //                   >
 //                     {provinces.map((province) => (
@@ -510,13 +510,13 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="regions"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Region
 //                   </label>
 //                   <select
 //                     defaultValue={editModal.data._Region}
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="regions"
 //                   >
 //                     {regions.map((region) => (
@@ -533,12 +533,12 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="status"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Status
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     defaultValue={editModal.data.Status}
 //                     id="status"
 //                   >
@@ -552,21 +552,21 @@ const ParishManagement = () => {
 //                 <div className="col-span-6">
 //                   <label
 //                     htmlFor="about"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     About
 //                   </label>
 //                   <textarea
 //                     id="about"
 //                     rows="8"
-//                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
 //                     placeholder="Write about this book..."
 //                   ></textarea>
 //                 </div>
 //               </div>
 //             </div>
 //             {/* Modal footer */}
-//             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+//             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
 //               <button
 //                 type="submit"
 //                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
@@ -612,17 +612,17 @@ const ParishManagement = () => {
 //           <form
 //             action="#"
 //             onSubmit={handleSubmit}
-//             className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+//             className="relative bg-white rounded-lg shadow"
 //           >
 //             {/* Modal header */}
-//             <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+//             <div className="flex items-start justify-between p-4 border-b rounded-t">
+//               <h3 className="text-xl font-semibold text-gray-900">
 //                 Create new
 //               </h3>
 //               <button
 //                 onClick={close}
 //                 type="button"
-//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+//                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center
 //               >
 //                 <VscClose />
 //               </button>
@@ -632,13 +632,13 @@ const ParishManagement = () => {
 //               <div className="grid grid-cols-6 gap-6">
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                     htmlFor="image"
 //                   >
 //                     Image
 //                   </label>
 //                   <input
-//                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+//                     className="block w-full text-xs text-gray-900 border border-gray-300 p-2 rounded-lg cursor-pointer bg-gray-50"
 //                     id="image"
 //                     type="file"
 //                   />
@@ -646,7 +646,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="title"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Title
 //                   </label>
@@ -654,7 +654,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="title"
 //                     id="title"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Lorem ipsum"
 //                     required={true}
 //                   />
@@ -662,7 +662,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="email"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Email
 //                   </label>
@@ -670,7 +670,7 @@ const ParishManagement = () => {
 //                     type="email"
 //                     name="email"
 //                     id="email"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="example@gmail.com"
 //                     required={true}
 //                   />
@@ -678,7 +678,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="phone"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Phone
 //                   </label>
@@ -686,7 +686,7 @@ const ParishManagement = () => {
 //                     type="tel"
 //                     name="phone"
 //                     id="phone"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="+21 165 6847 545"
 //                     required={true}
 //                   />
@@ -694,7 +694,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="website"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Website
 //                   </label>
@@ -702,7 +702,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="website"
 //                     id="website"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="www.example.com"
 //                     required={true}
 //                   />
@@ -710,7 +710,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="location"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Location
 //                   </label>
@@ -718,7 +718,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="location"
 //                     id="location"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="Abuja"
 //                     required={true}
 //                   />
@@ -726,7 +726,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="address"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Address
 //                   </label>
@@ -734,7 +734,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="address"
 //                     id="address"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="steet no.3, Abuja, southie"
 //                     required={true}
 //                   />
@@ -742,7 +742,7 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="map"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Map
 //                   </label>
@@ -750,7 +750,7 @@ const ParishManagement = () => {
 //                     type="text"
 //                     name="map"
 //                     id="map"
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     placeholder="41°24'12.2'N - 2°10'26.5'E"
 //                     required={true}
 //                   />
@@ -758,12 +758,12 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="countries"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Country
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="countries"
 //                   >
 //                     {parishCountries.map((country) => (
@@ -780,12 +780,12 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="provinces"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Province
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="provinces"
 //                   >
 //                     {provinces.map((province) => (
@@ -802,12 +802,12 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="regions"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Region
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="regions"
 //                   >
 //                     {regions.map((region) => (
@@ -824,12 +824,12 @@ const ParishManagement = () => {
 //                 <div className="col-span-6 sm:col-span-3">
 //                   <label
 //                     htmlFor="status"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     Status
 //                   </label>
 //                   <select
-//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
 //                     id="status"
 //                   >
 //                     {["ACTIVE", "INACTIVE"].map((elem) => (
@@ -842,21 +842,21 @@ const ParishManagement = () => {
 //                 <div className="col-span-6">
 //                   <label
 //                     htmlFor="about"
-//                     className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"
+//                     className="block mb-2 text-xs font-medium text-gray-900"
 //                   >
 //                     About
 //                   </label>
 //                   <textarea
 //                     id="about"
 //                     rows="8"
-//                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+//                     className="block p-2.5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
 //                     placeholder="Write about this book..."
 //                   ></textarea>
 //                 </div>
 //               </div>
 //             </div>
 //             {/* Modal footer */}
-//             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+//             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
 //               <button
 //                 type="submit"
 //                 className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"

@@ -5,7 +5,8 @@ import { languages } from "../constants/data";
 export const DropdownContainer = ({ extraStyles = "", children }) => {
   return (
     <ul
-      className={`absolute top-[140%] right-0 flex flex-col max-w-max text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}>
+      className={`absolute top-[140%] right-0 flex flex-col max-w-max text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}
+    >
       {children}
     </ul>
   );
@@ -24,9 +25,10 @@ export const DropdownFilter = ({
       onClick={setToggle}
       className={`relative flex items-center text-black ${
         curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
-          ? "bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300"
-          : "bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600"
-      } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center capitalize`}>
+          ? "bg-blue-100 hover:bg-blue-200"
+          : "bg-gray-50 hover:bg-gray-100"
+      } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center capitalize`}
+    >
       {curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
         ? curFilter.value
         : title}
@@ -37,7 +39,8 @@ export const DropdownFilter = ({
             onClick={() => handleClick(null)}
             role="option"
             aria-selected={curFilter.value === null}
-            className={`border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+            className={`border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+          >
             All
           </li>
           {arr.map((elem, indx) => (
@@ -48,7 +51,8 @@ export const DropdownFilter = ({
               aria-selected={elem === curFilter.value}
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
-              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
               {elem}
             </li>
           ))}
@@ -62,7 +66,8 @@ export const LanguageSelector = ({ language, setLanguage }) => {
   return (
     <button
       onClick={() => setLanguage((prev) => ({ ...prev, state: !prev.state }))}
-      className={`relative flex items-center text-black bg-gray-50 hover:bg-gray-100 dark:bg-gray-500 dark:hover:bg-gray-600 focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center`}>
+      className={`relative flex items-center text-black bg-gray-50 hover:bg-gray-100 text-center`}
+    >
       {language.value}
       <FaChevronUp className={`${language.state ? "" : "rotate-180"} ml-1`} />
       {language.state && (
@@ -75,7 +80,8 @@ export const LanguageSelector = ({ language, setLanguage }) => {
               aria-selected={elem === language.value}
               className={`${
                 indx !== languages.length - 1 ? "border-b" : ""
-              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
               {elem}
             </li>
           ))}

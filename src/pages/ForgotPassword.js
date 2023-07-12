@@ -91,7 +91,7 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmit} method="POST">
             <label
               htmlFor="email"
-              className="w-full block mb-1 text-xs font-medium text-gray-900 dark:text-white"
+              className="w-full block mb-1 text-xs font-medium text-gray-900"
             >
               Email Address
             </label>
@@ -101,14 +101,14 @@ const ForgotPassword = () => {
               id="email"
               onChange={handleChange}
               value={email}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 mb-2.5 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
               placeholder="example@gmail.com"
               required={true}
             />
 
             <button
               type="submit"
-              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed disabled:bg-blue-400"
+              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:bg-blue-400"
               disabled={toggleBtn}
             >
               {toggleBtn && (

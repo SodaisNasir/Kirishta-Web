@@ -52,16 +52,14 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
       >
         <div className="relative w-full max-w-2xl max-h-full pointer-events-auto">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="relative bg-white rounded-lg shadow">
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                View
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">View</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -83,8 +81,10 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                         : "col-span-6 sm:col-span-3"
                     } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
                   >
-                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 dark:text-white capitalize">
-                      {elem === "id" && page !== "Users Management"
+                    <p className="block mb-1.5 text-sm font-semibold text-gray-900 capitalize">
+                      {elem === "id" && page === "Users Management"
+                        ? "ID"
+                        : elem === "id"
                         ? "S/N"
                         : elem === "_created_at"
                         ? "Date/Time"
@@ -95,7 +95,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                     <p
                       className={`block font-medium ${
                         elem === "flag_code" ? "font-emoji" : "text-xs"
-                      } text-gray-700 dark:text-white`}
+                      } text-gray-700`}
                     >
                       {typeof data[elem] === "string" &&
                       elem.includes("image") ? (
@@ -117,7 +117,7 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 onClick={close}
                 type="button"
@@ -186,14 +186,12 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
           className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto"
         >
           {/* Modal header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Reply
-            </h3>
+          <div className="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 className="text-xl font-semibold text-gray-900">Reply</h3>
             <button
               onClick={close}
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
             >
               <VscClose />
             </button>
@@ -203,7 +201,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
             <div>
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Message
               </label>
@@ -213,7 +211,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
                 rows={10}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                 placeholder="Write message here..."
                 required={true}
               ></textarea>
@@ -221,10 +219,10 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
           </div>
 
           {/* Modal footer */}
-          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
             <button
               type="submit"
-              className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (
@@ -324,14 +322,14 @@ export const NotificationModal = ({
           className="relative w-full max-w-md max-h-full bg-gray-100 rounded-lg pointer-events-auto"
         >
           {/* Modal header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <div className="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 className="text-xl font-semibold text-gray-900">
               Push Notification
             </h3>
             <button
               onClick={close}
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
             >
               <VscClose />
             </button>
@@ -341,7 +339,7 @@ export const NotificationModal = ({
             <div>
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Message
               </label>
@@ -351,7 +349,7 @@ export const NotificationModal = ({
                 rows={10}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                 placeholder="Write message here..."
                 required={true}
               ></textarea>
@@ -359,10 +357,10 @@ export const NotificationModal = ({
           </div>
 
           {/* Modal footer */}
-          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
             <button
               type="submit"
-              className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (
@@ -396,14 +394,14 @@ export const NotificationModal = ({
 //       >
 //         <div className="relative w-full max-w-2xl max-h-full bg-gray-100 rounded-lg pointer-events-auto">
 //           {/* Modal header */}
-//           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-//             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+//           <div className="flex items-start justify-between p-4 border-b rounded-t">
+//             <h3 className="text-xl font-semibold text-gray-900">
 //               Media
 //             </h3>
 //             <button
 //               onClick={close}
 //               type="button"
-//               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+//               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center
 //             >
 //               <VscClose />
 //             </button>
@@ -423,7 +421,7 @@ export const NotificationModal = ({
 //           </div>
 
 //           {/* Modal footer */}
-//           <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+//           <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
 //             <button
 //               onClick={close}
 //               className="w-full text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
@@ -609,17 +607,15 @@ export const EditModal = ({
           {/* Modal content */}
           <form
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Edit
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">Edit</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -859,7 +855,7 @@ export const EditModal = ({
                     <div key={elem}>
                       <label
                         htmlFor={elem.toLowerCase()}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+                        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
                       >
                         {elem === "_map"
                           ? "Map (lat-long)"
@@ -882,7 +878,7 @@ export const EditModal = ({
                           elem.toLowerCase().includes("flag_code")
                             ? "font-emoji text-xl p-2.5 py-1"
                             : "p-2.5 text-xs"
-                        } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                        } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full`}
                         placeholder={
                           elem.includes("flag_code")
                             ? "e.g. 🇧🇸"
@@ -897,10 +893,10 @@ export const EditModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
@@ -1100,17 +1096,15 @@ export const CreateNewModal = ({
           <form
             action="#"
             onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700"
+            className="relative bg-white rounded-lg shadow"
           >
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {title}
-              </h3>
+            <div className="flex items-start justify-between p-4 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
               <button
                 onClick={close}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
               >
                 <VscClose />
               </button>
@@ -1322,7 +1316,7 @@ export const CreateNewModal = ({
                     <div key={elem}>
                       <label
                         htmlFor={elem}
-                        className="block mb-2 text-xs font-medium text-gray-900 dark:text-white capitalize"
+                        className="block mb-2 text-xs font-medium text-gray-900 capitalize"
                       >
                         {elem === "_map"
                           ? "Map (lat-long)"
@@ -1345,7 +1339,7 @@ export const CreateNewModal = ({
                           elem.includes("flag_code")
                             ? "font-emoji text-xl p-2.5 py-1"
                             : "p-2.5 text-xs"
-                        } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                        } shadow-sm bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full`}
                         placeholder={
                           elem.includes("flag_code")
                             ? "e.g. 🇧🇸"
@@ -1366,10 +1360,10 @@ export const CreateNewModal = ({
               </div>
             </div>
             {/* Modal footer */}
-            <div className="flex items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
