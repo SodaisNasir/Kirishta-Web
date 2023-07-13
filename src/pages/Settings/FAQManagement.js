@@ -6,7 +6,7 @@ import { BiSearch } from "react-icons/bi";
 import { GoChevronDown } from "react-icons/go";
 import { DropdownContainer } from "../../components/helpers";
 import { base_url } from "../../utils/url";
-import { fetchBookLanguages, fetchData } from "../../utils";
+import { fetchData } from "../../utils";
 import { AppContext } from "../../context";
 import { toast } from "react-hot-toast";
 
@@ -36,7 +36,7 @@ const FAQManagement = () => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [languages, setLanguages] = useState(null);
+  // const [languages, setLanguages] = useState(null);
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [createNewModal, setCreateNewModal] = useState({
     isVisible: false,
@@ -94,12 +94,12 @@ const FAQManagement = () => {
   const neededProps = ["id", "question", "answer", "language"];
 
   useEffect(() => {
-    fetchBookLanguages(setLanguages, (data) =>
-      setCreateNewModal((prev) => ({
-        ...prev,
-        data: { ...prev.data, language: data[0].language },
-      }))
-    );
+    // fetchBookLanguages(setLanguages, (data) =>
+    //   setCreateNewModal((prev) => ({
+    //     ...prev,
+    //     data: { ...prev.data, language: data[0].language },
+    //   }))
+    // );
     fetchData({
       setPaginatedData,
       setData,
@@ -194,7 +194,7 @@ const FAQManagement = () => {
                       setData,
                       setPaginatedData,
                       gridCols: 1,
-                      languages,
+                      page: "FAQ Management",
                     }}
                   />
                 )}
@@ -240,7 +240,7 @@ const LanguageFilter = ({ toggle, setToggle, curFilter, handleClick }) => {
   return (
     <button
       onClick={setToggle}
-      className={`relative flex items-center text-xs bg-gray-50 hover:bg-gray-100 cursor-pointer`}
+      className={`relative flex items-center text-xs px-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer`}
     >
       <span className="pl-1.5 pr-1 text-xs text-left whitespace-nowrap">
         {!selectedLanguage ? "All languages" : selectedLanguage}

@@ -1,3 +1,4 @@
+import { languages } from "../../constants/data";
 import { convertAMPMto24HourTime } from "../../utils";
 
 export const RoleField = ({ state, setState, roles }) => {
@@ -451,6 +452,35 @@ export const PlatformField = ({ state, setState }) => {
         {["Android", "iOS"].map((item, indx) => (
           <option className="text-sm" key={item + indx} value={item}>
             {item}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const FAQLanguageField = ({ state, setState }) => {
+  return (
+    <div className="col-span-2 sm:col-span-1">
+      <label
+        htmlFor="languages"
+        className="block mb-2 text-xs font-medium text-gray-900"
+      >
+        Language
+      </label>
+      <select
+        id="languages"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        required={true}
+      >
+        <option className="text-sm" value="">
+          select language
+        </option>
+        {languages.map((language) => (
+          <option className="text-sm" key={language} value={language}>
+            {language}
           </option>
         ))}
       </select>

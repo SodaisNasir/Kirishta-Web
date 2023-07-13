@@ -3,6 +3,7 @@ import { typeCheck } from "../../utils";
 import {
   DateField,
   DeviceField,
+  FAQLanguageField,
   FeaturedField,
   GeneralCountryField,
   LanguageField,
@@ -1240,6 +1241,19 @@ export const CreateNewModal = ({
                   else if (key.includes("platform"))
                     return (
                       <PlatformField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("language") &&
+                    page === "FAQ Management"
+                  )
+                    return (
+                      <FAQLanguageField
                         {...{
                           key: elem,
                           state: state[key],
