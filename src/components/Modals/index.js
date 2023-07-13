@@ -790,6 +790,20 @@ export const EditModal = ({
                     );
                   else if (
                     key.includes("language") &&
+                    page === "FAQ Management"
+                  )
+                    return (
+                      <FAQLanguageField
+                        {...{
+                          key: elem,
+                          state: state[key],
+                          setState: (val) => setValue(key, val),
+                          disabled: true,
+                        }}
+                      />
+                    );
+                  else if (
+                    key.includes("language") &&
                     page !== "Book Languages"
                   )
                     return (

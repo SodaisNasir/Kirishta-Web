@@ -209,7 +209,7 @@ const FAQManagement = () => {
                       setData,
                       setPaginatedData,
                       gridCols: 1,
-                      languages,
+                      page: "FAQ Management",
                     }}
                   />
                 )}

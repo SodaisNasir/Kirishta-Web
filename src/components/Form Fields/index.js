@@ -459,7 +459,7 @@ export const PlatformField = ({ state, setState }) => {
   );
 };
 
-export const FAQLanguageField = ({ state, setState }) => {
+export const FAQLanguageField = ({ state, setState, disabled }) => {
   return (
     <div className="col-span-2 sm:col-span-1">
       <label
@@ -470,10 +470,11 @@ export const FAQLanguageField = ({ state, setState }) => {
       </label>
       <select
         id="languages"
-        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 disabled:cursor-not-allowed"
         value={state}
         onChange={(e) => setState(e.target.value)}
         required={true}
+        disabled={disabled}
       >
         <option className="text-sm" value="">
           select language
