@@ -96,7 +96,7 @@ const Dashboard = () => {
     // console.log("Analytics =============>", analytics);
     // console.log("Feedbacks ========>", feedbacks);
     // console.log("Contacts ========>", contacts);
-    console.log("Notificaitons ========>", notifications.reverse());
+    console.log("Notificaitons ========>", notifications);
 
     setAnalytics(analytics);
     setContacts(contacts);
@@ -325,7 +325,7 @@ const Notifications = ({
             } overflow-y-scroll h-full min-w-[200px] min-h-[170px] max-h-[200px] pr-3.5`}
           >
             {notifications.length
-              ? notifications.reverse().map((elem, indx) => {
+              ? notifications.map((elem, indx) => {
                   const notificationType = elem.message
                     .toLowerCase()
                     .includes("new user")
