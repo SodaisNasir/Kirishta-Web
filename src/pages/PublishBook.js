@@ -31,7 +31,7 @@ const PublishBook = () => {
     language: "",
     about: "",
   };
-  const [togglePublishBtn, setTogglePublishBtn] = useState(!false);
+  const [togglePublishBtn, setTogglePublishBtn] = useState(false);
   const [toggleSaveBtn, setToggleSaveBtn] = useState(false);
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
@@ -484,7 +484,9 @@ const PublishBook = () => {
                   <button
                     onClick={handleSave}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 m-3 text-center disabled:cursor-not-allowed disabled:opacity-60"
+                    className={`flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 m-3 text-center disabled:opacity-50 disabled:saturate-30 ${
+                      toggleSaveBtn ? "disabled:py-1" : ""
+                    } disabled:cursor-not-allowed`}
                     disabled={toggleSaveBtn || epub.type === "epub"}
                   >
                     {toggleSaveBtn ? (
@@ -499,9 +501,7 @@ const PublishBook = () => {
                   <button
                     onClick={handlePublish}
                     type="button"
-                    className={`flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 ${
-                      togglePublishBtn ? "py-1" : "py-2.5"
-                    } m-3 text-center disabled:cursor-not-allowed disabled:opacity-60`}
+                    className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 m-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                     disabled={togglePublishBtn}
                   >
                     {togglePublishBtn ? (

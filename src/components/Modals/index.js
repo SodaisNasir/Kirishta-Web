@@ -897,7 +897,7 @@ export const EditModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
@@ -1377,7 +1377,7 @@ export const CreateNewModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
