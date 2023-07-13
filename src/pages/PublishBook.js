@@ -31,7 +31,7 @@ const PublishBook = () => {
     language: "",
     about: "",
   };
-  const [togglePublishBtn, setTogglePublishBtn] = useState(false);
+  const [togglePublishBtn, setTogglePublishBtn] = useState(!false);
   const [toggleSaveBtn, setToggleSaveBtn] = useState(false);
   const [bookCategories, setBookCategories] = useState(null);
   const [bookLanguages, setBookLanguages] = useState(null);
@@ -480,11 +480,11 @@ const PublishBook = () => {
                     )}
                   </div>
                 </div>
-                <div className="grid w-full grid-cols-2 gap-6 p-6 pt-4 border-t border-gray-300">
+                <div className="flex items-center w-full pt-1 border-t border-gray-300">
                   <button
                     onClick={handleSave}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 m-3 text-center disabled:cursor-not-allowed disabled:opacity-60"
                     disabled={toggleSaveBtn || epub.type === "epub"}
                   >
                     {toggleSaveBtn ? (
@@ -499,7 +499,9 @@ const PublishBook = () => {
                   <button
                     onClick={handlePublish}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center disabled:cursor-not-allowed"
+                    className={`flex items-center justify-center w-full text-white bg-[#387de5] hover:bg-[#2e6dcc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 ${
+                      togglePublishBtn ? "py-1" : "py-2.5"
+                    } m-3 text-center disabled:cursor-not-allowed disabled:opacity-60`}
                     disabled={togglePublishBtn}
                   >
                     {togglePublishBtn ? (

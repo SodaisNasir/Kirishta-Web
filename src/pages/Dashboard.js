@@ -96,7 +96,7 @@ const Dashboard = () => {
     // console.log("Analytics =============>", analytics);
     // console.log("Feedbacks ========>", feedbacks);
     // console.log("Contacts ========>", contacts);
-    console.log("Notificaitons ========>", notifications);
+    console.log("Notificaitons ========>", notifications.reverse());
 
     setAnalytics(analytics);
     setContacts(contacts);
@@ -146,7 +146,14 @@ const Dashboard = () => {
           <header className="flex items-center justify-between p-3 pt-0 md:px-6 md:pt-8">
             <h1 className="text-lg font-bold text-[#314156]">Dashboard</h1>
             <div className="flex items-center space-x-5">
-              <Notifications {...{ toggle, setSingleToggle, notifications }} />
+              <Notifications
+                {...{
+                  toggle,
+                  setSingleToggle,
+                  notifications,
+                  setNotifications,
+                }}
+              />
               <Account {...{ toggle, setSingleToggle }} />
             </div>
           </header>
@@ -246,7 +253,12 @@ const Account = ({ toggle, setSingleToggle }) => {
   );
 };
 
-const Notifications = ({ toggle, setSingleToggle, notifications }) => {
+const Notifications = ({
+  toggle,
+  setSingleToggle,
+  notifications,
+  setNotifications,
+}) => {
   const navigate = useNavigate();
 
   const handleReadAll = async () => {
@@ -264,6 +276,11 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
       const res = await fetch(url, requestOptions);
       const json = await res.json();
       console.log("json", json);
+
+      if (res.status === 200) {
+        setNotifications([]);
+        setSingleToggle("notifications", !toggle.notifications);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -308,7 +325,7 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
             } overflow-y-scroll h-full min-w-[200px] min-h-[170px] max-h-[200px] pr-3.5`}
           >
             {notifications.length
-              ? notifications.map((elem, indx) => {
+              ? notifications.reverse().map((elem, indx) => {
                   const notificationType = elem.message
                     .toLowerCase()
                     .includes("new user")
@@ -373,14 +390,16 @@ const Notifications = ({ toggle, setSingleToggle, notifications }) => {
                 })
               : "No notifications!"}
           </div>
-          <button
-            onClick={handleReadAll}
-            type="button"
-            className="flex justify-center items-center hover:text-blue-600 focus:outline-none font-medium text-base m-1 mr-5 text-center"
-          >
-            <MdOutlineDoneAll />
-            <span className="text-xs ml-1">Read All</span>
-          </button>
+          {notifications.length && (
+            <button
+              onClick={handleReadAll}
+              type="button"
+              className="flex justify-center items-center hover:text-blue-600 focus:outline-none font-medium text-base m-1 mr-5 text-center"
+            >
+              <MdOutlineDoneAll />
+              <span className="text-xs ml-1">Read All</span>
+            </button>
+          )}
         </DropdownContainer>
       )}
     </button>
@@ -414,62 +433,65 @@ const ContactList = ({ contacts }) => {
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
-        {contacts.map(({ name, message, profile_image, created_at }, indx) => (
-          <div
-            key={name + indx}
-            className={`${
-              contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-            } flex flex-col items-start py-3`}
-          >
-            <div className="w-full flex justify-between items-center">
-              <div className="flex items-center">
-                {profile_image ? (
-                  <img
-                    className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                    src={profile_image}
-                    alt="profile"
-                  />
-                ) : (
-                  <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                    <FaUser />
-                  </div>
-                )}
-                <p className="ml-2 text-xs font-medium">{name}</p>
+        {contacts
+          .slice(-20)
+          .reverse()
+          .map(({ name, message, profile_image, created_at }, indx) => (
+            <div
+              key={name + indx}
+              className={`${
+                contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
+              } flex flex-col items-start py-3`}
+            >
+              <div className="w-full flex justify-between items-center">
+                <div className="flex items-center">
+                  {profile_image ? (
+                    <img
+                      className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                      src={profile_image}
+                      alt="profile"
+                    />
+                  ) : (
+                    <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                      <FaUser />
+                    </div>
+                  )}
+                  <p className="ml-2 text-xs font-medium">{name}</p>
+                </div>
+                <p className="text-xs font-medium">
+                  {new Date(created_at).toLocaleString()}
+                </p>
               </div>
-              <p className="text-xs font-medium">
-                {new Date(created_at).toLocaleString()}
+              <p className="mt-2 ml-10 text-xs">
+                {toggleRead.includes(indx) && message.length > 25 ? (
+                  <>
+                    {message}
+                    &nbsp;
+                    <em
+                      onClick={() =>
+                        setToggleRead((prev) => prev.filter((e) => e !== indx))
+                      }
+                      className="text-blue-500 cursor-pointer hover:underline"
+                    >
+                      read less
+                    </em>
+                  </>
+                ) : message.length > 25 ? (
+                  <>
+                    {message.slice(0, message.length / 2) + "... "}
+                    <em
+                      onClick={() => setToggleRead((prev) => [...prev, indx])}
+                      className="text-blue-500 cursor-pointer hover:underline"
+                    >
+                      read more
+                    </em>
+                  </>
+                ) : (
+                  message
+                )}
               </p>
             </div>
-            <p className="mt-2 ml-10 text-xs">
-              {toggleRead.includes(indx) && message.length > 25 ? (
-                <>
-                  {message}
-                  &nbsp;
-                  <em
-                    onClick={() =>
-                      setToggleRead((prev) => prev.filter((e) => e !== indx))
-                    }
-                    className="text-blue-500 cursor-pointer hover:underline"
-                  >
-                    read less
-                  </em>
-                </>
-              ) : message.length > 25 ? (
-                <>
-                  {message.slice(0, message.length / 2) + "... "}
-                  <em
-                    onClick={() => setToggleRead((prev) => [...prev, indx])}
-                    className="text-blue-500 cursor-pointer hover:underline"
-                  >
-                    read more
-                  </em>
-                </>
-              ) : (
-                message
-              )}
-            </p>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
@@ -486,64 +508,67 @@ const FeedbackList = ({ feedbacks }) => {
       </div>
 
       <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
-        {feedbacks.map(({ name, text, profile_image, created_at }, indx) => (
-          <div
-            key={name + indx}
-            className={`${
-              feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-            } flex flex-col items-start py-3`}
-          >
-            <div className="w-full flex justify-between items-center">
-              <div className="flex items-center">
-                {profile_image ? (
-                  <img
-                    className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                    src={profile_image}
-                    alt="profile"
-                  />
-                ) : (
-                  <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                    <FaUser />
-                  </div>
-                )}
-                <p className="flex flex-col items-center ml-2 text-xs font-medium">
-                  {name}
+        {feedbacks
+          .slice(-20)
+          .reverse()
+          .map(({ name, text, profile_image, created_at }, indx) => (
+            <div
+              key={name + indx}
+              className={`${
+                feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
+              } flex flex-col items-start py-3`}
+            >
+              <div className="w-full flex justify-between items-center">
+                <div className="flex items-center">
+                  {profile_image ? (
+                    <img
+                      className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                      src={profile_image}
+                      alt="profile"
+                    />
+                  ) : (
+                    <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                      <FaUser />
+                    </div>
+                  )}
+                  <p className="flex flex-col items-center ml-2 text-xs font-medium">
+                    {name}
+                  </p>
+                </div>
+                <p className="text-xs font-medium">
+                  {new Date(created_at).toLocaleString()}
                 </p>
               </div>
-              <p className="text-xs font-medium">
-                {new Date(created_at).toLocaleString()}
+              <p className="mt-2 ml-10 text-xs">
+                {toggleRead.includes(indx) && text.length > 25 ? (
+                  <>
+                    {text}
+                    &nbsp;
+                    <em
+                      onClick={() =>
+                        setToggleRead((prev) => prev.filter((e) => e !== indx))
+                      }
+                      className="text-blue-500 cursor-pointer hover:underline"
+                    >
+                      read less
+                    </em>
+                  </>
+                ) : text.length > 25 ? (
+                  <>
+                    {text.slice(0, text.length / 2) + "... "}
+                    <em
+                      onClick={() => setToggleRead((prev) => [...prev, indx])}
+                      className="text-blue-500 cursor-pointer hover:underline"
+                    >
+                      read more
+                    </em>
+                  </>
+                ) : (
+                  text
+                )}
               </p>
             </div>
-            <p className="mt-2 ml-10 text-xs">
-              {toggleRead.includes(indx) && text.length > 25 ? (
-                <>
-                  {text}
-                  &nbsp;
-                  <em
-                    onClick={() =>
-                      setToggleRead((prev) => prev.filter((e) => e !== indx))
-                    }
-                    className="text-blue-500 cursor-pointer hover:underline"
-                  >
-                    read less
-                  </em>
-                </>
-              ) : text.length > 25 ? (
-                <>
-                  {text.slice(0, text.length / 2) + "... "}
-                  <em
-                    onClick={() => setToggleRead((prev) => [...prev, indx])}
-                    className="text-blue-500 cursor-pointer hover:underline"
-                  >
-                    read more
-                  </em>
-                </>
-              ) : (
-                text
-              )}
-            </p>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
