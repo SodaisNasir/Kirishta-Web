@@ -250,7 +250,7 @@ const PopupPromotion = () => {
 
                 {/* View modal */}
                 {viewModal.isVisible && (
-                  <ViewModal {...{ viewModal, setViewModal }} />
+                  <ViewModal {...{ viewModal, setViewModal, books }} />
                 )}
               </div>
             </div>

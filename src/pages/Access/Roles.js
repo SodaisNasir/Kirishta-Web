@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { adminPrivileges, privilegesStructure } from "../../constants/data";
+import { privilegesStructure } from "../../constants/data";
 import { NestedCheckbox, Page, Actions, Loader } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";

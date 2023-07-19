@@ -52,7 +52,7 @@ const Notification = () => {
         items: data.filter(
           (item) =>
             item.name.toLowerCase().includes(value.toLowerCase()) ||
-            item.id.toString().includes(value.toString())
+            item.u_id.toString().includes(value.toString())
         ),
       }));
     }
@@ -62,21 +62,20 @@ const Notification = () => {
     setNotificationModal((prev) => ({ ...prev, isVisible: true }));
 
   useEffect(() => {
-    if (curFilter.filter === "user" && curFilter.value === "Users") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter((item) => item.name !== "Guest"),
-      }));
-    } else if (curFilter.filter === "user" && curFilter.value === "Guest") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter((item) => item.name === "Guest"),
-      }));
+    const filterData = (cb) =>
+      setPaginatedData({
+        ...paginatedData,
+        items: data.filter(cb),
+      });
+
+    if (curFilter.filter === "user") {
+      filterData((item) =>
+        curFilter.value === "Users"
+          ? item.name !== "Guest"
+          : item.name === "Guest"
+      );
     } else if (curFilter.filter === "platform") {
-      setPaginatedData((prev) => ({
-        ...prev,
-        items: data.filter((item) => item.device_name === curFilter.value),
-      }));
+      filterData((item) => item.device_name === curFilter.value);
     } else if (curFilter.filter !== "searchInput") {
       setPaginatedData((prev) => ({
         ...prev,
@@ -133,7 +132,7 @@ const Notification = () => {
                 value={searchInput}
                 onChange={filterUsersBySearch}
                 className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search for names or ids"
+                placeholder="Search for names or user ids"
               />
             </div>
             {/* Search bar end */}
@@ -200,8 +199,6 @@ const Notification = () => {
             </div>
           </div>
         </AdvancedTable>
-
-        <div className="flex justify-end mt-3"></div>
       </main>
     </Page>
   );

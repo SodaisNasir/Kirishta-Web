@@ -161,9 +161,12 @@ export const PopupAppPage = ({ state, setState, radio, setRadio, books }) => {
 };
 
 export const MapField = ({ state, setState }) => {
-  const isStateString = typeof state === "string";
-  let stateCopy = isStateString && JSON.parse(state);
-  stateCopy = typeof stateCopy === "string" && JSON.parse(state);
+  let isStateString = typeof state === "string";
+  let stateCopy = isStateString ? JSON.parse(state) : state;
+  isStateString = typeof stateCopy === "string";
+  stateCopy = isStateString ? JSON.parse(stateCopy) : stateCopy;
+
+  console.log("stateCopy", stateCopy);
 
   return (
     <div>
@@ -173,36 +176,16 @@ export const MapField = ({ state, setState }) => {
       <div className="flex space-x-2">
         <input
           type="number"
-          value={
-            (isStateString ? JSON.parse(state)?.latitude : state?.latitude) ==
-            "undefined"
-              ? ""
-              : isStateString
-              ? JSON.parse(state)?.latitude
-              : state?.latitude
-          }
-          onChange={(e) =>
-            isStateString
-              ? setState({ ...stateCopy, latitude: e.target.value })
-              : setState({ ...state, latitude: e.target.value })
-          }
+          value={stateCopy?.latitude || ""}
+          onChange={(e) => setState({ ...stateCopy, latitude: e.target.value })}
           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
           placeholder="4.5461"
         />
         <input
           type="number"
-          value={
-            (isStateString ? JSON.parse(state)?.longitude : state?.longitude) ==
-            "undefined"
-              ? ""
-              : isStateString
-              ? JSON.parse(state)?.longitude
-              : state?.longitude
-          }
+          value={stateCopy?.longitude || ""}
           onChange={(e) =>
-            isStateString
-              ? setState({ ...stateCopy, longitude: e.target.value })
-              : setState({ ...state, longitude: e.target.value })
+            setState({ ...stateCopy, longitude: e.target.value })
           }
           className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
           placeholder="2.6436"
@@ -218,11 +201,6 @@ export const TimeField = ({ state, setState, title, required = true }) => {
   const modifiedTimeFormat = isTimeFormat12h
     ? convertAMPMto24HourTime(state)
     : state;
-
-  console.log({
-    state,
-    modifiedTimeFormat,
-  });
 
   return (
     <div>
@@ -449,8 +427,8 @@ export const PlatformField = ({ state, setState }) => {
         <option className="text-sm" value="">
           select an option
         </option>
-        {["Android", "iOS"].map((item, indx) => (
-          <option className="text-sm" key={item + indx} value={item}>
+        {["Android", "IOS"].map((item) => (
+          <option className="text-sm" key={item} value={item}>
             {item}
           </option>
         ))}

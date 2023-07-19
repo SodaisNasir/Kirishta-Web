@@ -23,7 +23,7 @@ import {
 import { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 
-export const ViewModal = ({ viewModal, setViewModal, page }) => {
+export const ViewModal = ({ viewModal, setViewModal, page, books }) => {
   const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
@@ -103,6 +103,8 @@ export const ViewModal = ({ viewModal, setViewModal, page }) => {
                         <img className="h-10" src={data[elem]} alt="cover" />
                       ) : elem === "start_date" || elem === "_end_date" ? (
                         data[elem].replace(/ ?00:00:00/, "")
+                      ) : elem === "book_name" && data[elem] ? (
+                        books.filter((e) => e.id == data[elem])[0].title
                       ) : elem === "_created_at" ? (
                         data[elem].replace("T", " ").replace(/.0*Z/, "")
                       ) : elem === "_map" ? (
@@ -959,7 +961,7 @@ export const CreateNewModal = ({
   const [curParishRegions, setCurParishRegions] = useState(parishRegions);
   const [curParishProvinces, setCurParishProvinces] = useState(parishProvinces);
 
-  console.log("state ========>", state);
+  console.log("state ========>", state, radio);
 
   const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
@@ -1002,11 +1004,7 @@ export const CreateNewModal = ({
                 )
           );
         } else if (key === "app_page" || key === "book_name") {
-          radio === key &&
-            formdata.append(
-              key,
-              key === "book_name" ? state[key].id : state[key]
-            );
+          radio === key && formdata.append(key, state[key] || "");
         } else {
           formdata.append(key.replace(/^_/, ""), state[key]);
         }
@@ -1376,8 +1374,11 @@ export const CreateNewModal = ({
                             : ""
                         }
                         required={
-                          page === "Parish Management" &&
-                          (elem.includes("email") || elem.includes("_website"))
+                          (page === "Parish Management" ||
+                            page === "Banner Promotion") &&
+                          (elem.includes("email") ||
+                            elem.includes("_website") ||
+                            elem.includes("app_page"))
                             ? false
                             : true
                         }

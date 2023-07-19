@@ -158,9 +158,8 @@ const Actions = ({
         redirect: "follow",
       };
       const res = await fetch(`${deleteUrl}/${id}`, requestOptions);
-      const json = await res.json();
 
-      if (json.success) {
+      if (res.status === 200) {
         setData((prev) => prev.filter((e) => e.id !== id));
         setPaginatedData((prev) => ({
           ...prev,

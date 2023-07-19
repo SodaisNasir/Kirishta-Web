@@ -234,28 +234,6 @@ const Users = ({
       ));
 };
 
-// const privilageObjToText = (obj) => {
-//   const roles = obj.Access.Roles;
-//   const subadmin = obj.Access.Roles;
-//   const users = obj['Users Management'];
-//   const banner = obj['Promotion Management'].Banner;
-//   const popup = obj['Promotion Management']['Pop-up'];
-
-//   return `${obj.Dashboard ? "Dashboard, " : ""}${roles.Create || roles.Edit || roles.Delete ? `Roles (${
-//     roles.Create ? "create, " : ""
-//   }${roles.Edit ? "edit, " : ""}${
-//     roles.Delete ? "delete, " : ""
-//   }), ` : ''}${subadmin.Create || subadmin.Edit || subadmin.Delete ? `Roles (${
-//     subadmin.Create ? "create, " : ""
-//   }${subadmin.Edit ? "edit, " : ""}${
-//     subadmin.Delete ? "delete, " : ""
-//   }), ` : ''}${users.Create || users.Edit || users.Delete ? `Roles (${
-//     users.Create ? "create, " : ""
-//   }${users.Edit ? "edit, " : ""}${
-//     users.Delete ? "delete, " : ""
-//   }), ` : ''}`;
-// };
-
 const SingleUser = ({
   page,
   tableStructure,
@@ -273,6 +251,7 @@ const SingleUser = ({
   Actions,
   props,
 }) => {
+  const [toggleText, setToggleText] = useState(false);
   const handleCheckChange = (e) => {
     selectedUsers.includes(id)
       ? setSelectedUsers((prev) => prev.filter((e) => e !== id))
@@ -311,7 +290,7 @@ const SingleUser = ({
                   <img
                     className="w-10 mx-auto"
                     src={data[key]}
-                    alt={data.Title || data.title}
+                    alt={data.title}
                   />
                 ) : (
                   "No Image!"
@@ -329,10 +308,38 @@ const SingleUser = ({
                 </a>
               ) : key === "start_date" || key === "_end_date" ? (
                 data[key].replace(/ ?00:00:00/, "")
-              ) : key === "book_name" && !data["app_page"] ? (
-                books.filter((e) => e.id == data[key])[0].title
+              ) : key === "book_name" && data[key] ? (
+                books.filter((e) => e.id == data[key])[0].title ||
+                "Book name not found!"
               ) : key === "app_page" && !data[key] ? (
-                "No Data!"
+                "No data!"
+              ) : (key === "text" || key === "subject") &&
+                (page === "Feedbacks Management" ||
+                  page === "Contact Management") ? (
+                data[key].length > 30 && !toggleText ? (
+                  <>
+                    {`${data[key].slice(0, 30)}...`}{" "}
+                    <em
+                      onClick={() => setToggleText(!toggleText)}
+                      className="text-blue-500 cursor-pointer"
+                    >
+                      read more
+                    </em>
+                  </>
+                ) : data[key].length > 30 ? (
+                  <>
+                    {data[key]}
+                    {"... "}
+                    <em
+                      onClick={() => setToggleText(!toggleText)}
+                      className="text-blue-500 cursor-pointer"
+                    >
+                      read less
+                    </em>
+                  </>
+                ) : (
+                  data[key]
+                )
               ) : Array.isArray(data[key]) ? (
                 data[key].join(", ")
               ) : data[key] === null ? (

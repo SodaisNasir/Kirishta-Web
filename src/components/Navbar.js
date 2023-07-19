@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Logo from "../assets/images/logo.png";
 import { NavLink } from "react-router-dom";
 import { navLinks } from "../constants/data";
+import { AppContext } from "../context";
 import { VscClose } from "react-icons/vsc";
 
 const Navbar = ({ toggle, setToggle }) => {
+  const { user } = useContext(AppContext);
+  let privilages =
+    user &&
+    (typeof user.privilage === "string"
+      ? JSON.parse(user.privilage)
+      : user.privilage);
+
   return (
     <>
       <nav
@@ -25,7 +33,7 @@ const Navbar = ({ toggle, setToggle }) => {
 
         <div className="">
           {navLinks.map((data) => (
-            <NavItem key={data.title} {...{ data }} />
+            <NavItem key={data.title} {...{ data, privilages }} />
           ))}
         </div>
       </nav>
@@ -35,6 +43,18 @@ const Navbar = ({ toggle, setToggle }) => {
 
 const NavItem = ({ data, privilages }) => {
   const [toggle, setToggle] = useState(false);
+
+  // if Nav item is Notifcation page && if user has no access to this page
+  if (data.title === "Notification" && !privilages[data.title]) return;
+
+  // if Nav item is a link && if user has no access to this page
+  if (
+    data.path &&
+    data.title !== "Dashboard" &&
+    data.title !== "Notification" &&
+    !privilages[data.title].View
+  )
+    return;
 
   // if Nav item is a link
   if (data.path) {
@@ -54,6 +74,13 @@ const NavItem = ({ data, privilages }) => {
     );
   }
 
+  // if Nav item is a Dropdown && user has no access to any page inside it
+  if (
+    data.items &&
+    Object.values(privilages[data.title]).every((e) => e.View === false)
+  )
+    return;
+
   // if Nav item is a Dropdown
   return (
     <>
@@ -67,26 +94,30 @@ const NavItem = ({ data, privilages }) => {
       </div>
       <div className={`${toggle ? "block" : "hidden"} relative ml-7 text-xs`}>
         <div className="absolute left-[3px] bg-[#909090] w-0.5 h-full -z-10" />
-        {data.items.map(({ path, title }) => (
-          <NavLink
-            key={title}
-            to={path}
-            className={({ isActive }) => {
-              return `${
-                isActive ? "font-semibold" : "font-normal"
-              } group flex items-center max-w-fit transition-all duration-300 hover:font-semibold text-[#909090] z-10`;
-            }}
-          >
-            <div
-              className={`${
-                window.location.pathname === path
-                  ? "bg-[#909090] scale-110"
-                  : "bg-[#D9D9D9]"
-              } group-hover:bg-[#909090] group-hover:scale-125 rounded-full transition-all duration-300 w-2 h-2 mr-2 my-2`}
-            />
-            {title}
-          </NavLink>
-        ))}
+        {data.items.map(({ path, title }) => {
+          if (!privilages[data.title][title].View) return;
+
+          return (
+            <NavLink
+              key={title}
+              to={path}
+              className={({ isActive }) => {
+                return `${
+                  isActive ? "font-semibold" : "font-normal"
+                } group flex items-center max-w-fit transition-all duration-300 hover:font-semibold text-[#909090] z-10`;
+              }}
+            >
+              <div
+                className={`${
+                  window.location.pathname === path
+                    ? "bg-[#909090] scale-110"
+                    : "bg-[#D9D9D9]"
+                } group-hover:bg-[#909090] group-hover:scale-125 rounded-full transition-all duration-300 w-2 h-2 mr-2 my-2`}
+              />
+              {title}
+            </NavLink>
+          );
+        })}
       </div>
     </>
   );

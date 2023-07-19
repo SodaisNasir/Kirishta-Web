@@ -222,6 +222,7 @@ const BannerPromotion = () => {
                       setData,
                       setPaginatedData,
                       statusType: "active/inactive",
+                      page: "Banner Promotion",
                     }}
                   />
                 )}
@@ -236,6 +237,7 @@ const BannerPromotion = () => {
                       setData,
                       setPaginatedData,
                       statusType: "active/inactive",
+                      page: "Banner Promotion",
                     }}
                   />
                 )}

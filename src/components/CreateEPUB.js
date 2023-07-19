@@ -1,7 +1,8 @@
-import { VscClose } from "react-icons/vsc";
+import { VscChevronDown, VscClose } from "react-icons/vsc";
 import Editor from "./Editor";
 import { excludeTags } from "../utils";
 import { toast } from "react-hot-toast";
+import { VscChevronUp } from "react-icons/vsc";
 import Loader from "./Loaders/Loader";
 
 const CreateEPUB = ({
@@ -9,6 +10,7 @@ const CreateEPUB = ({
   setState,
   addSection = true,
   deleteChapter = false,
+  moveableSections = false,
 }) => {
   const handleTitleChange = (value, index) => {
     let updatedState = [...state];
@@ -67,6 +69,32 @@ const CreateEPUB = ({
     }
   };
 
+  const moveSectionUp = (index) => {
+    if (state.length <= 1 || index === 0) {
+      return;
+    }
+
+    const stateCopy = [...state];
+    const sectionBefore = stateCopy[index - 1];
+    stateCopy[index - 1] = stateCopy[index];
+    stateCopy[index] = sectionBefore;
+
+    setState(stateCopy);
+  };
+
+  const moveSectionDown = (index) => {
+    if (state.length <= 1 || index === state.length - 1) {
+      return;
+    }
+
+    const stateCopy = [...state];
+    const sectionAfter = stateCopy[index + 1];
+    stateCopy[index + 1] = stateCopy[index];
+    stateCopy[index] = sectionAfter;
+
+    setState(stateCopy);
+  };
+
   return (
     <div className="col-span-6">
       {state.length > 0 ? (
@@ -77,14 +105,31 @@ const CreateEPUB = ({
               index !== 0 ? "mt-6" : ""
             } border rounded-md overflow-hidden`}
           >
-            <header className="flex items-center justify-between font-semibold p-3 py-4 bg-gray-100">
+            <header className="flex items-center justify-between font-semibold p-3 py-2.5 bg-gray-100">
               Section #{index + 1}
-              <button
-                onClick={() => closeSection(index, item.id)}
-                className="text-lg text-gray-800 hover:text-gray-600"
-              >
-                <VscClose />
-              </button>
+              <div className="flex items-center">
+                <button
+                  onClick={() => moveSectionUp(index, item.id)}
+                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 mr-2 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
+                  disabled={index === 0}
+                >
+                  <VscChevronUp />
+                </button>
+                <button
+                  onClick={() => moveSectionDown(index, item.id)}
+                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 mr-2 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
+                  disabled={index === state.length - 1}
+                >
+                  <VscChevronDown />
+                </button>
+                <button
+                  onClick={() => closeSection(index, item.id)}
+                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 disabled:cursor-not-allowed"
+                  disabled={state.length === 1}
+                >
+                  <VscClose />
+                </button>
+              </div>
             </header>
             <main className="p-5">
               <div>
@@ -112,6 +157,7 @@ const CreateEPUB = ({
                 </label>
                 <Editor
                   {...{
+                    key: item.id,
                     id: index,
                     styles: "!pt-0",
                     state: item.description,

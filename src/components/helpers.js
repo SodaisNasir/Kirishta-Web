@@ -34,12 +34,12 @@ export const DropdownFilter = ({
         : title}
       <FaChevronUp className={`${toggle ? "" : "rotate-180"} ml-2`} />
       {toggle && (
-        <DropdownContainer extraStyles="text-black font-medium text-xs text-left">
+        <DropdownContainer extraStyles="w-full text-black font-medium text-xs text-left">
           <li
             onClick={() => handleClick(null)}
             role="option"
             aria-selected={curFilter.value === null}
-            className={`border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            className={`w-full border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
           >
             All
           </li>
@@ -51,7 +51,7 @@ export const DropdownFilter = ({
               aria-selected={elem === curFilter.value}
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
-              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+              } w-full p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
             >
               {elem}
             </li>
