@@ -138,8 +138,7 @@ const Dashboard = () => {
     <div
       className={`relative ${
         isLoading ? "flex justify-center items-center min-h-[90vh]" : ""
-      }`}
-    >
+      }`}>
       {isLoading ? (
         <Loader />
       ) : (
@@ -179,8 +178,7 @@ const DashboardCards = ({ arr, analytics }) => {
   return arr.map(({ title, icon, colSpan }) => (
     <div
       key={title}
-      className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}
-    >
+      className={`${colSpan} flex justify-between items-center px-6 py-4 bg-white rounded-xl`}>
       <div className="flex items-center">
         {icon}
         <span className="text-xs font-medium text-[#8B8B93] ml-2">
@@ -231,16 +229,14 @@ const Notifications = ({
     <div className="relative">
       <button
         className="flex items-center space-x-3"
-        onClick={() => setSingleToggle("notifications", !toggle.notifications)}
-      >
+        onClick={() => setSingleToggle("notifications", !toggle.notifications)}>
         <svg
           className="w-4 h-4"
           width="19"
           height="22"
           viewBox="0 0 19 22"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             d="M9.52022 19.5297C7.18539 19.5321 4.86549 19.1573 2.65022 18.4197C1.81022 18.1302 1.16972 17.5399 0.889973 16.7697C0.599723 16.0002 0.700224 15.1497 1.15997 14.3899L2.30972 12.4797C2.54972 12.0799 2.77022 11.2797 2.77022 10.8102V7.91969C2.77022 4.19969 5.80022 1.16969 9.52022 1.16969C13.2402 1.16969 16.2702 4.19969 16.2702 7.91969V10.8102C16.2702 11.2699 16.49 12.0799 16.73 12.4902L17.87 14.3899C18.2997 15.1099 18.38 15.9799 18.0897 16.7697C17.7995 17.5594 17.1702 18.1602 16.3797 18.4197C14.1682 19.158 11.8517 19.5329 9.52022 19.5297ZM9.52022 2.66969C6.62972 2.66969 4.27022 5.02019 4.27022 7.91969V10.8102C4.27022 11.5399 3.97022 12.6199 3.59972 13.2499L2.44997 15.1602C2.22947 15.5299 2.16947 15.9199 2.29997 16.2499C2.41997 16.5897 2.71997 16.8499 3.12947 16.9902C7.27803 18.3903 11.7714 18.3903 15.92 16.9902C16.28 16.8702 16.5597 16.6002 16.6902 16.2402C16.8207 15.8802 16.79 15.4902 16.5897 15.1602L15.44 13.2499C15.0597 12.5997 14.7695 11.5302 14.7695 10.7997V7.91969C14.7695 6.5273 14.2164 5.19194 13.2318 4.20738C12.2472 3.22281 10.9119 2.66969 9.51947 2.66969H9.52022ZM11.3802 2.93969C11.3097 2.93969 11.2392 2.92994 11.1702 2.90969C10.8941 2.83267 10.6136 2.77256 10.3302 2.72969C9.51313 2.6169 8.68142 2.67824 7.88972 2.90969C7.60922 2.99969 7.30922 2.90969 7.11947 2.69969C6.92972 2.48969 6.86972 2.18969 6.97922 1.91969C7.38947 0.869687 8.38922 0.179688 9.52922 0.179688C10.6692 0.179688 11.6697 0.859937 12.0792 1.91969C12.1797 2.18969 12.1295 2.48969 11.9397 2.69969C11.7897 2.86019 11.5805 2.93969 11.3802 2.93969ZM9.51947 21.8097C8.52947 21.8097 7.56947 21.4099 6.86972 20.7102C6.1673 20.0067 5.77176 19.0538 5.76947 18.0597H7.26947C7.26947 18.6499 7.50947 19.2297 7.92947 19.6497C8.34947 20.0697 8.92922 20.3097 9.51947 20.3097C10.7592 20.3097 11.7695 19.3002 11.7695 18.0597H13.2695C13.2695 20.1297 11.5895 21.8097 9.51947 21.8097Z"
             fill="#212121"
@@ -252,8 +248,7 @@ const Notifications = ({
             <div
               className={`absolute -top-[4px] -right-[4px] w-3.5 h-3.5 tracking-tighter text-[9.5px] ${
                 notifications?.length > 9 ? "pl-0.5" : ""
-              } flex items-center justify-center text-white rounded-full bg-red-500`}
-            >
+              } flex items-center justify-center text-white rounded-full bg-red-500`}>
               {notifications?.length > 9 ? "9+" : notifications?.length}
             </div>
           </>
@@ -266,8 +261,7 @@ const Notifications = ({
           <div
             className={`${
               !notifications?.length ? "flex justify-center items-center" : ""
-            } overflow-y-scroll overflow-x-auto w-full min-[930px]:min-w-[300px] min-h-[150px] max-h-[200px] pr-3.5`}
-          >
+            } overflow-y-scroll overflow-x-auto w-full min-[930px]:min-w-[300px] min-h-[150px] max-h-[200px] pr-3.5`}>
             {notifications?.length
               ? notifications.map((elem, indx) => {
                   const notificationType = elem.message
@@ -321,8 +315,7 @@ const Notifications = ({
                           : ""
                       } flex py-2 ${
                         elem?.markAsRead ? "font-semibold" : ""
-                      } cursor-pointer text-gray-600 hover:text-black`}
-                    >
+                      } cursor-pointer text-gray-600 hover:text-black`}>
                       {icon}
                       <span className="ml-2 whitespace-nowrap">{`${
                         elem.message
@@ -339,8 +332,7 @@ const Notifications = ({
               <button
                 onClick={handleReadAll}
                 type="button"
-                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center"
-              >
+                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center">
                 <MdOutlineDoneAll />
                 <span className="text-xs ml-1">Read All</span>
               </button>
@@ -355,14 +347,12 @@ const Notifications = ({
         extraStyles={`!p-0 min-[930px]:hidden !fixed !inset-0 ${
           toggle.notifications
             ? "!bg-black/50"
-            : "bg-black/0 pointer-events-none"
-        } transition-all duration-500 !border-0 border-l !rounded-none`}
-      >
+            : "!bg-transparent !pointer-events-none"
+        } transition-all duration-500 !border-0 border-l !rounded-none`}>
         <div
           className={`fixed top-0 ${
             toggle.notifications ? "!right-0" : "!-right-full"
-          } w-full xs:max-w-max h-screen bg-white transition-all duration-500 pointer-events-none`}
-        >
+          } w-full min-[550px]:max-w-max h-screen bg-white transition-all duration-500 pointer-events-none`}>
           <div className="h-full px-4 py-2 pt-4 pointer-events-auto overflow-y-scroll overflow-x-hidden">
             <div className="w-full flex justify-between items-center mb-3">
               <h2 className="text-lg font-medium">Notificaitons</h2>
@@ -370,16 +360,14 @@ const Notifications = ({
                 onClick={() =>
                   setSingleToggle("notifications", !toggle.notifications)
                 }
-                className="text-lg hover:text-gray-600"
-              >
+                className="text-lg hover:text-gray-600">
                 <VscClose />
               </button>
             </div>
             <div
               className={`${
                 !notifications?.length ? "flex justify-center items-center" : ""
-              } w-full min-h-[150px]`}
-            >
+              } w-full min-h-[150px]`}>
               {notifications?.length
                 ? notifications.map((elem, indx) => {
                     const notificationType = elem.message
@@ -433,8 +421,7 @@ const Notifications = ({
                             : ""
                         } flex py-2 ${
                           elem?.markAsRead ? "font-semibold" : ""
-                        } cursor-pointer text-gray-600 hover:text-black`}
-                      >
+                        } cursor-pointer text-gray-600 hover:text-black`}>
                         {icon}
                         <span className="ml-2 whitespace-nowrap">{`${
                           elem.message
@@ -450,8 +437,7 @@ const Notifications = ({
               <button
                 onClick={handleReadAll}
                 type="button"
-                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center"
-              >
+                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center">
                 <MdOutlineDoneAll />
                 <span className="text-xs ml-1">Read All</span>
               </button>
@@ -477,8 +463,7 @@ const ContactList = ({ contacts }) => {
           height="16"
           viewBox="0 0 13 16"
           fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             d="M6.4 6.4C8.16731 6.4 9.6 4.96731 9.6 3.2C9.6 1.43269 8.16731 0 6.4 0C4.63269 0 3.2 1.43269 3.2 3.2C3.2 4.96731 4.63269 6.4 6.4 6.4Z"
             fill="currentColor"
@@ -500,8 +485,7 @@ const ContactList = ({ contacts }) => {
               key={name + indx}
               className={`${
                 contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-              } flex flex-col items-start py-3`}
-            >
+              } flex flex-col items-start py-3`}>
               <div className="w-full flex justify-between items-center">
                 <div className="flex items-center">
                   {profile_image ? (
@@ -530,8 +514,7 @@ const ContactList = ({ contacts }) => {
                       onClick={() =>
                         setToggleRead((prev) => prev.filter((e) => e !== indx))
                       }
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
+                      className="text-blue-500 cursor-pointer hover:underline">
                       read less
                     </em>
                   </>
@@ -540,8 +523,7 @@ const ContactList = ({ contacts }) => {
                     {message.slice(0, message.length / 2) + "... "}
                     <em
                       onClick={() => setToggleRead((prev) => [...prev, indx])}
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
+                      className="text-blue-500 cursor-pointer hover:underline">
                       read more
                     </em>
                   </>
@@ -575,8 +557,7 @@ const FeedbackList = ({ feedbacks }) => {
               key={name + indx}
               className={`${
                 feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-              } flex flex-col items-start py-3`}
-            >
+              } flex flex-col items-start py-3`}>
               <div className="w-full flex justify-between items-center">
                 <div className="flex items-center">
                   {profile_image ? (
@@ -607,8 +588,7 @@ const FeedbackList = ({ feedbacks }) => {
                       onClick={() =>
                         setToggleRead((prev) => prev.filter((e) => e !== indx))
                       }
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
+                      className="text-blue-500 cursor-pointer hover:underline">
                       read less
                     </em>
                   </>
@@ -617,8 +597,7 @@ const FeedbackList = ({ feedbacks }) => {
                     {text.slice(0, text.length / 2) + "... "}
                     <em
                       onClick={() => setToggleRead((prev) => [...prev, indx])}
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
+                      className="text-blue-500 cursor-pointer hover:underline">
                       read more
                     </em>
                   </>
