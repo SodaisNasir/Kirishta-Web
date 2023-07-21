@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LanguageSelector } from "../../components/helpers";
+import { Account, LanguageSelector } from "../../components/helpers";
 import Editor from "../../components/Editor";
 import { Loader, OtherPage } from "../../components";
 import { base_url } from "../../utils/url";
@@ -11,12 +11,23 @@ const AboutRCCGContinent2 = () => {
   const hasEditAccess =
     user.privilage["Settings Management"]["About RCCG Continent 2"].Edit;
   const type = "RCCG Continent 2";
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
   const [toggleBtn, setToggleBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState({ value: "" });
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
+  const [toggleAccount, setToggleAccount] = useState(false);
   const [language, setLanguage] = useState({ state: false, value: "English" });
+
+  const setSingleState = (name, value) => {
+    if (name === "language") {
+      setLanguage(value);
+      setToggleAccount(false);
+    } else if (name === "account") {
+      setToggleAccount(value);
+      setLanguage({ ...language, state: false });
+    }
+  };
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = async () => {
@@ -64,17 +75,26 @@ const AboutRCCGContinent2 = () => {
       title="About RCCG Continent 2"
       extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
     >
-      <header className="flex justify-between">
-        <h1 className="font-semibold text-xl text-[#44403C]">
+      <header className="flex justify-between items-center">
+        <h1 className="font-semibold text-xl text-[#44403C] truncate mr-2">
           About RCCG Continent 2
         </h1>
 
-        <LanguageSelector
-          {...{
-            language,
-            setLanguage,
-          }}
-        />
+        <div className="flex items-center">
+          <LanguageSelector
+            {...{
+              language,
+              setLanguage: (state) => setSingleState("language", state),
+            }}
+          />
+
+          <Account
+            {...{
+              toggle: toggleAccount,
+              setToggle: (val) => setSingleState("account", val),
+            }}
+          />
+        </div>
       </header>
       <main className={"relative min-h-[70vh]"}>
         {isLoading ? (

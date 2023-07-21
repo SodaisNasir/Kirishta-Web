@@ -1,11 +1,16 @@
-import React from "react";
-import { FaChevronUp } from "react-icons/fa";
+import React, { useContext } from "react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { languages } from "../constants/data";
+import { MdLock, MdLogout } from "react-icons/md";
+import { RiEdit2Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context";
 
-export const DropdownContainer = ({ extraStyles = "", children }) => {
+export const DropdownContainer = ({ extraStyles = "", onClick, children }) => {
   return (
     <ul
-      className={`absolute top-[140%] right-0 flex flex-col max-w-max text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}
+      onClick={onClick}
+      className={`absolute top-[130%] right-0 flex flex-col text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}
     >
       {children}
     </ul>
@@ -65,11 +70,13 @@ export const DropdownFilter = ({
 export const LanguageSelector = ({ language, setLanguage }) => {
   return (
     <button
-      onClick={() => setLanguage((prev) => ({ ...prev, state: !prev.state }))}
-      className={`relative flex items-center text-black bg-gray-50 hover:bg-gray-100 text-center`}
+      onClick={() => setLanguage({ ...language, state: !language.state })}
+      className={`relative flex items-center text-black bg-gray-50 hover:bg-gray-100 text-center text-sm px-3 py-1.5 mr-2.5 rounded-md`}
     >
       {language.value}
-      <FaChevronUp className={`${language.state ? "" : "rotate-180"} ml-1`} />
+      <FaChevronUp
+        className={`${language.state ? "" : "rotate-180"} text-xs ml-1`}
+      />
       {language.state && (
         <DropdownContainer extraStyles="text-black font-medium text-xs text-left">
           {languages.map((elem, indx) => (
@@ -88,5 +95,69 @@ export const LanguageSelector = ({ language, setLanguage }) => {
         </DropdownContainer>
       )}
     </button>
+  );
+};
+
+export const Account = ({ toggle, setToggle }) => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(AppContext);
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
+  const arr = [
+    {
+      title: "Change Password",
+      icon: <MdLock className="text-base text-blue-500" />,
+      clickHandler: () => navigate("/change-password/" + user.email),
+    },
+    {
+      title: "Edit Profile",
+      icon: <RiEdit2Fill className="text-base text-blue-500" />,
+      clickHandler: () => navigate("/edit-profile"),
+    },
+    {
+      title: "Log out",
+      icon: <MdLogout className="text-base text-red-600" />,
+      clickHandler: logout,
+    },
+  ];
+
+  return (
+    <div className="relative">
+      <div
+        className="min-w-max flex items-center bg-gray-50 hover:bg-gray-100 p-1.5 px-2.5 rounded-md space-x-3 cursor-pointer"
+        onClick={() => setToggle(!toggle)}
+      >
+        <img
+          className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+          src={user.profile_image}
+          alt="profile"
+        />
+        <p className="flex flex-col text-xs font-medium whitespace-nowrap capitalize">
+          {user.name}
+          <span className="text-[10px] font-light capitalize">{user.role}</span>
+        </p>
+        <FaChevronDown className={`text-sm ${toggle ? "rotate-180" : ""}`} />
+      </div>
+      {toggle && (
+        <DropdownContainer extraStyles="!w-full">
+          {arr.map((elem, indx) => (
+            <li
+              key={elem.title}
+              onClick={elem.clickHandler}
+              className={`${
+                arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
+              } w-full flex py-2 cursor-pointer text-gray-600 hover:text-black`}
+            >
+              {elem.icon}
+              <span className="ml-2 whitespace-nowrap">{elem.title}</span>
+            </li>
+          ))}
+        </DropdownContainer>
+      )}
+    </div>
   );
 };

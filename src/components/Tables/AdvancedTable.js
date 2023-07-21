@@ -328,8 +328,7 @@ const SingleUser = ({
                   </>
                 ) : data[key].length > 30 ? (
                   <>
-                    {data[key]}
-                    {"... "}
+                    {data[key]}{" "}
                     <em
                       onClick={() => setToggleText(!toggleText)}
                       className="text-blue-500 cursor-pointer"

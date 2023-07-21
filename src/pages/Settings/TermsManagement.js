@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Editor from "../../components/Editor";
 import { useEffect } from "react";
-import { LanguageSelector } from "../../components/helpers";
+import { Account, LanguageSelector } from "../../components/helpers";
 import { Loader, OtherPage } from "../../components";
 import { base_url } from "../../utils/url";
 import { fetchDataByLang, replaceParaWithDivs } from "../../utils";
@@ -11,10 +11,21 @@ const TermsManagement = () => {
   const { user } = useContext(AppContext);
   const hasEditAccess = user.privilage["Settings Management"].Terms.Edit;
   const type = "Terms";
+  const [toggleAccount, setToggleAccount] = useState(false);
   const [toggleBtn, setToggleBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState({ value: "" });
   const [language, setLanguage] = useState({ state: false, value: "English" });
+
+  const setSingleState = (name, value) => {
+    if (name === "language") {
+      setLanguage(value);
+      setToggleAccount(false);
+    } else if (name === "account") {
+      setToggleAccount(value);
+      setLanguage({ ...language, state: false });
+    }
+  };
 
   const handleChange = (value) => setState({ value });
   const handleSubmit = async () => {
@@ -60,17 +71,26 @@ const TermsManagement = () => {
       title="Terms Management"
       extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
     >
-      <header className="flex justify-between">
-        <h1 className="font-semibold text-xl text-[#44403C]">
+      <header className="flex justify-between items-center">
+        <h1 className="font-semibold text-xl text-[#44403C] truncate mr-2">
           Terms Management
         </h1>
 
-        <LanguageSelector
-          {...{
-            language,
-            setLanguage,
-          }}
-        />
+        <div className="flex items-center">
+          <LanguageSelector
+            {...{
+              language,
+              setLanguage: (state) => setSingleState("language", state),
+            }}
+          />
+
+          <Account
+            {...{
+              toggle: toggleAccount,
+              setToggle: (val) => setSingleState("account", val),
+            }}
+          />
+        </div>
       </header>
       <main className={"relative min-h-[70vh]"}>
         {isLoading ? (

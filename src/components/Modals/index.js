@@ -482,14 +482,12 @@ export const EditModal = ({
       let formdata = new FormData();
       keys.forEach((key) => {
         if (key === "_map") {
-          const latitude = state[key].latitude;
-          const longitude = state[key].longitude;
+          const isStateString = typeof state[key] === "string";
+          const mapValues = isStateString ? JSON.parse(state[key]) : state[key];
+          const latitude = mapValues.latitude;
+          const longitude = mapValues.longitude;
 
           formdata.append("map", `${latitude || ""},${longitude || ""}`);
-          console.log(
-            "map2 ======> ",
-            `${state[key].latitude},${state[key].longitude}`
-          );
         } else if (key === "start_date" || key === "_end_date") {
           formdata.append(
             key.replace(/^_/, ""),

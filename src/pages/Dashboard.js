@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DropdownContainer } from "../components/helpers";
+import { Account, DropdownContainer } from "../components/helpers";
 import { MdFeedback, MdLock, MdLogout, MdOutlineDoneAll } from "react-icons/md";
 import { FaChevronDown, FaUser } from "react-icons/fa";
 import { RiEdit2Fill } from "react-icons/ri";
@@ -8,6 +8,7 @@ import { dashboardCards, notificationIcons } from "../constants/data";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../utils/url";
 import { Loader } from "../components";
+import { VscClose } from "react-icons/vsc";
 
 const Dashboard = () => {
   const initialCounter = 20;
@@ -154,7 +155,12 @@ const Dashboard = () => {
                   setNotifications,
                 }}
               />
-              <Account {...{ toggle, setSingleToggle }} />
+              <Account
+                {...{
+                  toggle: toggle.account,
+                  setToggle: (val) => setSingleToggle("account", val),
+                }}
+              />
             </div>
           </header>
 
@@ -186,71 +192,6 @@ const DashboardCards = ({ arr, analytics }) => {
       <span className="text-base font-semibold">{analytics[title]}</span>
     </div>
   ));
-};
-
-const Account = ({ toggle, setSingleToggle }) => {
-  const navigate = useNavigate();
-  const { user, setUser } = useContext(AppContext);
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-  };
-
-  const arr = [
-    {
-      title: "Change Password",
-      icon: <MdLock className="text-base text-blue-500" />,
-      clickHandler: () => navigate("/change-password/" + user.email),
-    },
-    {
-      title: "Edit Profile",
-      icon: <RiEdit2Fill className="text-base text-blue-500" />,
-      clickHandler: () => navigate("/edit-profile"),
-    },
-    {
-      title: "Log out",
-      icon: <MdLogout className="text-base text-red-600" />,
-      clickHandler: logout,
-    },
-  ];
-
-  return (
-    <div
-      className="relative flex items-center space-x-3 cursor-pointer"
-      onClick={() => setSingleToggle("account", !toggle.account)}
-    >
-      <img
-        className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-        src={user.profile_image}
-        alt="profile"
-      />
-      <p className="flex flex-col text-xs font-medium capitalize">
-        {user.name}
-        <span className="text-[10px] font-light capitalize">{user.role}</span>
-      </p>
-      <FaChevronDown
-        className={`text-xs ${toggle.account ? "rotate-180" : ""}`}
-      />
-
-      {toggle.account && (
-        <DropdownContainer>
-          {arr.map((elem, indx) => (
-            <li
-              key={elem.title}
-              onClick={elem.clickHandler}
-              className={`${
-                arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
-              } flex py-2 cursor-pointer text-gray-600 hover:text-black`}
-            >
-              {elem.icon}
-              <span className="ml-2 whitespace-nowrap">{elem.title}</span>
-            </li>
-          ))}
-        </DropdownContainer>
-      )}
-    </div>
-  );
 };
 
 const Notifications = ({
@@ -321,11 +262,11 @@ const Notifications = ({
         )}
       </button>
       {toggle.notifications && (
-        <DropdownContainer extraStyles="pr-0.5">
+        <DropdownContainer extraStyles="pr-0.5 hidden min-[930px]:block !-z-0">
           <div
             className={`${
               !notifications?.length ? "flex justify-center items-center" : ""
-            } overflow-y-scroll h-full min-w-[300px] min-h-[150px] max-h-[200px] pr-3.5`}
+            } overflow-y-scroll overflow-x-auto w-full min-[930px]:min-w-[300px] min-h-[150px] max-h-[200px] pr-3.5`}
           >
             {notifications?.length
               ? notifications.map((elem, indx) => {
@@ -375,7 +316,7 @@ const Notifications = ({
                       key={elem.id}
                       onClick={() => handleClick(elem.id)}
                       className={`${
-                        notifications?.length !== indx
+                        notifications?.length - 1 !== indx
                           ? "border-b border-[#efefef]"
                           : ""
                       } flex py-2 ${
@@ -394,19 +335,132 @@ const Notifications = ({
               : "No notifications found!"}
           </div>
           {notifications?.length ? (
-            <button
-              onClick={handleReadAll}
-              type="button"
-              className="flex justify-center items-center hover:text-blue-600 focus:outline-none font-medium text-base m-1 mr-5 text-center"
-            >
-              <MdOutlineDoneAll />
-              <span className="text-xs ml-1">Read All</span>
-            </button>
+            <div className="pr-3.5">
+              <button
+                onClick={handleReadAll}
+                type="button"
+                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center"
+              >
+                <MdOutlineDoneAll />
+                <span className="text-xs ml-1">Read All</span>
+              </button>
+            </div>
           ) : (
             ""
           )}
         </DropdownContainer>
       )}
+      <DropdownContainer
+        onClick={() => setSingleToggle("notifications", !toggle.notifications)}
+        extraStyles={`!p-0 min-[930px]:hidden !fixed !inset-0 ${
+          toggle.notifications
+            ? "!bg-black/50"
+            : "bg-black/0 pointer-events-none"
+        } transition-all duration-500 !border-0 border-l !rounded-none`}
+      >
+        <div
+          className={`fixed top-0 ${
+            toggle.notifications ? "!right-0" : "!-right-full"
+          } w-full xs:max-w-max h-screen bg-white transition-all duration-500 pointer-events-none`}
+        >
+          <div className="h-full px-4 py-2 pt-4 pointer-events-auto overflow-y-scroll overflow-x-hidden">
+            <div className="w-full flex justify-between items-center mb-3">
+              <h2 className="text-lg font-medium">Notificaitons</h2>
+              <button
+                onClick={() =>
+                  setSingleToggle("notifications", !toggle.notifications)
+                }
+                className="text-lg hover:text-gray-600"
+              >
+                <VscClose />
+              </button>
+            </div>
+            <div
+              className={`${
+                !notifications?.length ? "flex justify-center items-center" : ""
+              } w-full min-h-[150px]`}
+            >
+              {notifications?.length
+                ? notifications.map((elem, indx) => {
+                    const notificationType = elem.message
+                      .toLowerCase()
+                      .includes("new user")
+                      ? "user"
+                      : elem.message.toLowerCase().includes("new contact")
+                      ? "contact"
+                      : "feedback";
+                    const navigateTo =
+                      notificationType === "user"
+                        ? "/users-management"
+                        : notificationType === "contact"
+                        ? "/contact-management"
+                        : "/feedback-management";
+                    const icon =
+                      notificationType === "user"
+                        ? notificationIcons.user
+                        : notificationType === "contact"
+                        ? notificationIcons.contact
+                        : notificationIcons.feedback;
+
+                    const handleClick = async (id) => {
+                      const url = `${base_url}/edit-admin-notification/${id}`;
+
+                      try {
+                        const requestOptions = {
+                          headers: {
+                            Accept: "application/json",
+                          },
+                          method: "POST",
+                          redirect: "follow",
+                        };
+                        const res = await fetch(url, requestOptions);
+                        const json = await res.json();
+                        console.log("json", json);
+
+                        if (json.success) navigate(navigateTo);
+                      } catch (err) {
+                        console.error(err);
+                      }
+                    };
+
+                    return (
+                      <li
+                        key={elem.id}
+                        onClick={() => handleClick(elem.id)}
+                        className={`${
+                          notifications?.length - 1 !== indx
+                            ? "border-b border-[#efefef]"
+                            : ""
+                        } flex py-2 ${
+                          elem?.markAsRead ? "font-semibold" : ""
+                        } cursor-pointer text-gray-600 hover:text-black`}
+                      >
+                        {icon}
+                        <span className="ml-2 whitespace-nowrap">{`${
+                          elem.message
+                        } - ${elem.name} - ${elem.user_id} - ${new Date(
+                          elem.created_at
+                        ).toLocaleDateString()}`}</span>
+                      </li>
+                    );
+                  })
+                : "No notifications found!"}
+            </div>
+            {notifications?.length ? (
+              <button
+                onClick={handleReadAll}
+                type="button"
+                className="w-full flex justify-center items-center hover:text-blue-600 border-t focus:outline-none font-medium text-base py-1 pt-1.5 mr-5 text-center"
+              >
+                <MdOutlineDoneAll />
+                <span className="text-xs ml-1">Read All</span>
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      </DropdownContainer>
     </div>
   );
 };
