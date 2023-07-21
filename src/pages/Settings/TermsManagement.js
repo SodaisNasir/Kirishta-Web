@@ -69,8 +69,7 @@ const TermsManagement = () => {
   return (
     <OtherPage
       title="Terms Management"
-      extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}
-    >
+      extraClasses={`font-poppins p-3 pt-2 md:pt-9 md:px-5`}>
       <header className="flex justify-between items-center">
         <h1 className="font-semibold text-xl text-[#44403C] truncate mr-2">
           Terms Management
@@ -113,8 +112,7 @@ const TermsManagement = () => {
               } mt-3 text-center ${
                 toggleBtn ? "disabled:py-1" : ""
               } disabled:cursor-not-allowed`}
-              disabled={!hasEditAccess || toggleBtn}
-            >
+              disabled={!hasEditAccess || toggleBtn}>
               {toggleBtn ? (
                 <>
                   <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent" />
