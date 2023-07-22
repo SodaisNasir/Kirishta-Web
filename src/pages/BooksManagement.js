@@ -130,6 +130,7 @@ const BooksManagement = () => {
       neededProps,
       url: showAllBooks,
       setIsDataFetched,
+      sort: (data) => data.sort((a, b) => b.id - a.id),
     });
   }, []);
 
@@ -731,7 +732,7 @@ const EditModal = ({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (

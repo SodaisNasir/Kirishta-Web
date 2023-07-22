@@ -95,6 +95,7 @@ const Notification = () => {
       neededProps,
       url: showAllNotifications,
       setIsDataFetched,
+      sort: (data) => data.sort((a, b) => b.id - a.id),
     });
   }, []);
 
@@ -117,7 +118,7 @@ const Notification = () => {
             props: { setNotificationModal },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -131,14 +132,14 @@ const Notification = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for names or user ids"
               />
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+              <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length <= 1
                   ? `${paginatedData.items.length} result`
                   : `${paginatedData.items.length} results`}
@@ -147,13 +148,13 @@ const Notification = () => {
               {selected.length > 1 && (
                 <button
                   onClick={handleNotification}
-                  className="justify-self-end text-xs text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-4 py-2 text-center disabled:cursor-not-allowed"
+                  className="px-4 py-2 text-xs font-medium text-center text-white bg-blue-500 rounded-lg justify-self-end hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:cursor-not-allowed"
                 >
                   Send Bulk Notification
                 </button>
               )}
 
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+              <div className="flex justify-between w-full xs:w-auto xs:justify-normal">
                 <DropdownFilter
                   arr={["Users", "Guest"]}
                   title={"User"}

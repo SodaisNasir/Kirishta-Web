@@ -50,33 +50,24 @@ export const convertAMPMto24HourTime = (timeString) =>
   moment(timeString, "h:mm A").format("HH:mm");
 
 export const modifyData = (data, neededProps) => {
-  let keys = Object.keys(data[0]).filter(
-    (e) =>
-      (!neededProps.includes("_created_at") ? e !== "created_at" : true) &&
-      e !== "updated_at" &&
-      // e !== "about" &&
-      (!neededProps.includes("privilage") ? e !== "_privilage" : true)
-  );
+  let keys = Object.keys(data[0]);
 
-  if (keys.includes("undefined")) {
-    keys = keys.filter((e) => e !== "undefined");
-  }
+  const updateObj = (obj) =>
+    neededProps
+      .map((e) => [e, ""])
+      .map(([key, value]) => {
+        console.log({
+          key,
+          value: obj[key.replace(/^_/, "")],
+        });
+        if (keys.includes(key.replace(/^_/, ""))) {
+          return [key, obj[key.replace(/^_/, "")]];
+        } else {
+          return [key, obj[key]];
+        }
+      });
 
-  const updateObj = (obj) => {
-    let newObj = {};
-    keys.forEach((key) => {
-      const index =
-        neededProps?.indexOf(key) !== -1
-          ? neededProps?.indexOf(key)
-          : neededProps?.indexOf(`_${key}`);
-
-      return index !== -1 ? (newObj[neededProps[index]] = obj[key]) : null;
-    });
-
-    return newObj;
-  };
-
-  return data.map((obj) => updateObj(obj));
+  return data.map((obj) => Object.fromEntries(updateObj(obj)));
 };
 
 export const excludeTags = (htmlString, resultType = "boolean") => {
@@ -100,13 +91,15 @@ export const fetchData = async ({
   url,
   page,
   setIsDataFetched,
+  sort,
 }) => {
   try {
     const res = await fetch(url);
     const json = await res.json();
-    const data = json.success.data.length
+    let data = json.success.data.length
       ? modifyData(json.success.data, neededProps)
       : json.success.data;
+    data = sort ? sort(data) : data;
 
     console.log("response =>", json.success.data);
 

@@ -200,7 +200,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
             </button>
           </div>
           {/* Modal content */}
-          <div className="grid grid-cols-1 gap-4 overflow-y-scroll p-5">
+          <div className="grid grid-cols-1 gap-4 p-5 overflow-y-scroll">
             <div>
               <label
                 htmlFor="message"
@@ -338,7 +338,7 @@ export const NotificationModal = ({
             </button>
           </div>
           {/* Modal content */}
-          <div className="grid grid-cols-1 gap-4 overflow-y-scroll p-5">
+          <div className="grid grid-cols-1 gap-4 p-5 overflow-y-scroll">
             <div>
               <label
                 htmlFor="message"
@@ -411,7 +411,7 @@ export const NotificationModal = ({
 //           </div>
 //           {/* Modal content */}
 //           <div className="overflow-y-scroll h-[50vh] p-2">
-//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+//             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 //               {mediaModal.media.map((url, indx) => (
 //                 <div
 //                   key={"media" + indx}
@@ -427,7 +427,7 @@ export const NotificationModal = ({
 //           <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
 //             <button
 //               onClick={close}
-//               className="w-full text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
+//               className="w-full px-5 py-3 text-xs font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-200"
 //             >
 //               Close
 //             </button>
@@ -508,10 +508,9 @@ export const EditModal = ({
                   }
                 )
           );
-        } else if (key === "app_page" || key === "book_name") {
-          radio === key && formdata.append(key, state[key]);
         } else {
-          formdata.append(key.replace(/^_/, ""), state[key]);
+          formdata.append(key.replace(/^_/, ""), state[key] || "");
+          key === "app_page" && console.log("state[key]", state[key]);
         }
       });
 
@@ -527,12 +526,20 @@ export const EditModal = ({
       const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
 
+      console.log("json =====>", json);
+
       if (json.success) {
-        const updatedData = json.success.data;
+        const updatedData =
+          page === "Popup Promotion" ? json.success.popup : json.success.data;
         let data = { ...state };
         updatedData &&
           Object.keys(data).forEach(
-            (key) => (data[key] = updatedData[key.replace(/^_/, "")])
+            (key) =>
+              (data[key] =
+                key === "image" && page === "Popup Promotion"
+                  ? updatedData[key.replace(/^_/, "")] ||
+                    updatedData["cover_image"]
+                  : updatedData[key.replace(/^_/, "")])
           );
 
         console.log("response =============>", updatedData);
@@ -661,7 +668,15 @@ export const EditModal = ({
                           state: state[radio],
                           setState: (val) => setValue(radio, val),
                           radio,
-                          setRadio,
+                          setRadio: (val) => {
+                            setRadio(val);
+
+                            if (val === "app_page") {
+                              setValue("book_name", "");
+                            } else if (val === "book_name") {
+                              setValue("app_page", "");
+                            }
+                          },
                           books,
                         }}
                       />
@@ -911,7 +926,7 @@ export const EditModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
@@ -1001,8 +1016,6 @@ export const CreateNewModal = ({
                   }
                 )
           );
-        } else if (key === "app_page" || key === "book_name") {
-          radio === key && formdata.append(key, state[key] || "");
         } else {
           formdata.append(key.replace(/^_/, ""), state[key]);
         }
@@ -1155,7 +1168,15 @@ export const CreateNewModal = ({
                           state: state[radio],
                           setState: (val) => setValue(radio, val),
                           radio,
-                          setRadio,
+                          setRadio: (val) => {
+                            setRadio(val);
+
+                            if (val === "app_page") {
+                              setValue("book_name", "");
+                            } else if (val === "book_name") {
+                              setValue("app_page", "");
+                            }
+                          },
                           books,
                         }}
                       />
@@ -1390,7 +1411,7 @@ export const CreateNewModal = ({
             <div className="flex items-center p-4 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
