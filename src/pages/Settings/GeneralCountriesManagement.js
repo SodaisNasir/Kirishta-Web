@@ -81,6 +81,8 @@ const GeneralCountriesManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"General Countries Management"}>
       <main>
@@ -89,6 +91,7 @@ const GeneralCountriesManagement = () => {
             data,
             setData,
             paginatedData,
+            tableTemplate,
             setPaginatedData,
             deleteUrl,
             isDataFetched,
@@ -97,7 +100,7 @@ const GeneralCountriesManagement = () => {
             props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -111,20 +114,20 @@ const GeneralCountriesManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for general countries"
               />
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+              <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length <= 1
                   ? `${paginatedData.items.length} result`
                   : `${paginatedData.items.length} results`}
               </div>
 
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+              <div className="flex justify-between w-full xs:w-auto xs:justify-normal">
                 <button
                   onClick={() =>
                     hasCreateAccess
@@ -465,7 +468,7 @@ const GeneralCountriesManagement = () => {
 
 //   return (
 //     <>
-//       <td className="text-center text-base px-6 py-4">
+//       <td className="px-6 py-4 text-base text-center">
 //         <button
 //           onClick={() => setEditModal({ isVisible: true, data })}
 //           className="font-medium text-gray-600 hover:text-gray-800"
@@ -473,7 +476,7 @@ const GeneralCountriesManagement = () => {
 //           <MdModeEdit />
 //         </button>
 //       </td>
-//       <td className="text-center text-base px-6 py-4">
+//       <td className="px-6 py-4 text-base text-center">
 //         <button
 //           onClick={remove}
 //           className="font-medium text-gray-600 hover:text-gray-800"

@@ -120,6 +120,8 @@ const PopupPromotion = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Popup Promotion"}>
       <main>
@@ -128,6 +130,7 @@ const PopupPromotion = () => {
             data,
             setData,
             paginatedData,
+            tableTemplate,
             books,
             isDataFetched,
             setPaginatedData,

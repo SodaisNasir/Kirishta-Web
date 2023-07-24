@@ -17,10 +17,10 @@ const deleteUrl = `${base_url}/delete-faq`;
 
 const FAQManagement = () => {
   const { user } = useContext(AppContext);
-  const countries = user.privilage["Settings Management"].FAQ;
-  const hasDeleteAccess = countries.Delete;
-  const hasEditAccess = countries.Edit;
-  const hasCreateAccess = countries.Create;
+  const faq = user.privilage["Settings Management"].FAQ;
+  const hasDeleteAccess = faq.Delete;
+  const hasEditAccess = faq.Edit;
+  const hasCreateAccess = faq.Create;
   const initial_filters = {
     searchInput: "",
     toggleLanguage: false,
@@ -109,6 +109,8 @@ const FAQManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"FAQ Management"}>
       <main>
@@ -118,6 +120,7 @@ const FAQManagement = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -125,7 +128,7 @@ const FAQManagement = () => {
             props: { setEditModal, hasDeleteAccess, hasEditAccess },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -139,20 +142,20 @@ const FAQManagement = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for FAQs"
               />
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+              <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length <= 1
                   ? `${paginatedData.items.length} result`
                   : `${paginatedData.items.length} results`}
               </div>
 
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+              <div className="flex justify-between w-full xs:w-auto xs:justify-normal">
                 <LanguageFilter
                   {...{
                     toggle: toggleLanguage,

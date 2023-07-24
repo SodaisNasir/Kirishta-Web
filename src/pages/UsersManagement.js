@@ -105,6 +105,8 @@ const UsersManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Users Management"}>
       <main>
@@ -114,6 +116,7 @@ const UsersManagement = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             page: "Users Management",

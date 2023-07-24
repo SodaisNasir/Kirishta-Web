@@ -118,6 +118,8 @@ const BannerPromotion = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Banner Promotion"}>
       <main>
@@ -125,6 +127,7 @@ const BannerPromotion = () => {
           {...{
             data,
             setData,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             deleteUrl,

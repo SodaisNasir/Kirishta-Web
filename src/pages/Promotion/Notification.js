@@ -99,6 +99,8 @@ const Notification = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Notification Promotion"}>
       <main>
@@ -107,6 +109,7 @@ const Notification = () => {
             data,
             setData,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             selected,

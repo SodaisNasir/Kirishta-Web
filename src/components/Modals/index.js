@@ -1049,10 +1049,10 @@ export const CreateNewModal = ({
 
         console.log("createNewModal =============>", data);
 
-        setData((prev) => [...prev, data]);
+        setData((prev) => [data, ...prev]);
         setPaginatedData((prev) => ({
           ...prev,
-          items: [...prev.items, data],
+          items: [data, ...prev.items],
         }));
       }
     } catch (err) {

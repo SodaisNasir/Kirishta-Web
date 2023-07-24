@@ -134,6 +134,8 @@ const BooksManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Books Management"}>
       <main>
@@ -143,6 +145,7 @@ const BooksManagement = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             Actions,

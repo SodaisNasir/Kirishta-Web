@@ -96,31 +96,41 @@ export const fetchData = async ({
   try {
     const res = await fetch(url);
     const json = await res.json();
-    let data = json.success.data.length
-      ? modifyData(json.success.data, neededProps)
-      : json.success.data;
-    data = sort ? sort(data) : data;
 
-    console.log("response =>", json.success.data);
+    console.log("response =>", json);
+    if (json.success) {
+      let data = json.success.data.length
+        ? modifyData(json.success.data, neededProps)
+        : json.success.data;
+      data = sort ? sort(data) : data;
 
-    setPaginatedData((prev) => ({
-      ...prev,
-      items:
+      console.log("response =>", json.success.data);
+
+      setPaginatedData((prev) => ({
+        ...prev,
+        items:
+          page === "Roles"
+            ? data.map((elem) => ({
+                ...elem,
+                _privilage: JSON.parse(elem._privilage),
+              }))
+            : data,
+      }));
+      setData(
         page === "Roles"
           ? data.map((elem) => ({
               ...elem,
               _privilage: JSON.parse(elem._privilage),
             }))
-          : data,
-    }));
-    setData(
-      page === "Roles"
-        ? data.map((elem) => ({
-            ...elem,
-            _privilage: JSON.parse(elem._privilage),
-          }))
-        : data
-    );
+          : data
+      );
+    } else if (json.error) {
+      setPaginatedData((prev) => ({
+        ...prev,
+        items: [],
+      }));
+      setData([]);
+    }
   } catch (err) {
     console.error(err);
   } finally {

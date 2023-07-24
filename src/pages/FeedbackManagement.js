@@ -103,6 +103,8 @@ const FeedbackManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Feedbacks Management"}>
       <main>
@@ -112,6 +114,7 @@ const FeedbackManagement = () => {
             data,
             setData,
             deleteUrl,
+            tableTemplate,
             isDataFetched,
             statusChangeUrl,
             paginatedData,

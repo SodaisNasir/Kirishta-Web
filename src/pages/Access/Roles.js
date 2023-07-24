@@ -104,6 +104,8 @@ const Roles = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Roles"}>
       <main>
@@ -113,6 +115,7 @@ const Roles = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             Actions,
@@ -124,7 +127,7 @@ const Roles = () => {
             },
           }}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-4 bg-white">
+          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
             {/* Search bar start */}
             <label htmlFor="table-search" className="sr-only">
               Search
@@ -138,20 +141,20 @@ const Roles = () => {
                 id="table-search-users"
                 value={searchInput}
                 onChange={filterUsersBySearch}
-                className="block w-full md:w-80 p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full p-2 pl-10 text-xs text-gray-900 border border-gray-300 rounded-lg md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search for roles"
               />
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex justify-between items-center w-full self-end lg:self-auto lg:w-auto mt-3 lg:mt-0">
-              <div className="hidden xs:block lg:hidden text-xs font-medium text-gray-700">
+            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+              <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length <= 1
                   ? `${paginatedData.items.length} result`
                   : `${paginatedData.items.length} results`}
               </div>
 
-              <div className="w-full flex justify-between xs:w-auto xs:justify-normal">
+              <div className="flex justify-between w-full xs:w-auto xs:justify-normal">
                 <DropdownFilter
                   arr={roles}
                   title={"Role"}
@@ -357,7 +360,7 @@ const EditModal = ({
             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (
@@ -507,7 +510,7 @@ const CreateNewModal = ({
             <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
               <button
                 type="submit"
-                className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-full px-5 py-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                 disabled={toggleBtn}
               >
                 {toggleBtn ? (

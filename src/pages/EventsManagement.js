@@ -132,6 +132,8 @@ const EventsManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Events Management"}>
       <main>
@@ -141,6 +143,7 @@ const EventsManagement = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             Actions,

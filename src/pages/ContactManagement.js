@@ -100,6 +100,8 @@ const ContactManagement = () => {
     });
   }, []);
 
+  const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));
+
   return (
     <Page title={"Contact Management"}>
       <main>
@@ -110,6 +112,7 @@ const ContactManagement = () => {
             setData,
             deleteUrl,
             isDataFetched,
+            tableTemplate,
             paginatedData,
             setPaginatedData,
             Actions,

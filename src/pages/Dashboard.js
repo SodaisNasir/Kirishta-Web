@@ -35,6 +35,8 @@ const Dashboard = () => {
         const data = json.success.data;
         return data;
       }
+
+      return [];
     } catch (err) {
       console.error(err);
     }
@@ -51,6 +53,8 @@ const Dashboard = () => {
         const data = json.success.data;
         return data;
       }
+
+      return [];
     } catch (err) {
       console.error(err);
     }
@@ -63,10 +67,12 @@ const Dashboard = () => {
       const res = await fetch(url);
       const json = await res.json();
 
-      if (json.success.status == 200) {
+      if (json.success) {
         const data = json.success.data;
         return data;
       }
+
+      return [];
     } catch (err) {
       console.error(err);
     }
@@ -83,6 +89,8 @@ const Dashboard = () => {
         const data = json.success.data;
         return data;
       }
+
+      return [];
     } catch (err) {
       console.error(err);
     }
@@ -102,7 +110,7 @@ const Dashboard = () => {
     setAnalytics(analytics);
     setContacts(contacts);
     setFeedbacks(feedbacks);
-    setNotifications(notifications || []);
+    setNotifications(notifications);
 
     if (analytics && feedbacks && contacts) setIsLoading(false);
   };
@@ -495,66 +503,78 @@ const ContactList = ({ contacts }) => {
         Contact ({contacts.length})
       </div>
 
-      <div className="w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto">
-        {contacts
-          .slice(-20)
-          .reverse()
-          .map(({ name, message, profile_image, created_at }, indx) => (
-            <div
-              key={name + indx}
-              className={`${
-                contacts.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-              } flex flex-col items-start py-3`}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center">
-                  {profile_image ? (
-                    <img
-                      className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                      src={profile_image}
-                      alt="profile"
-                    />
-                  ) : (
-                    <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                      <FaUser />
+      <div
+        className={`w-full h-full min-h-[300px] max-h-[400px] pl-2 pr-4 overflow-y-auto ${
+          !contacts.length ? "flex justify-center items-center text-sm" : ""
+        }`}
+      >
+        {contacts.length
+          ? contacts
+              .slice(-20)
+              .reverse()
+              .map(({ name, message, profile_image, created_at }, indx) => (
+                <div
+                  key={name + indx}
+                  className={`${
+                    contacts.length - 1 !== indx
+                      ? "border-b border-[#F2F2F2]"
+                      : ""
+                  } flex flex-col items-start py-3`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center">
+                      {profile_image ? (
+                        <img
+                          className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                          src={profile_image}
+                          alt="profile"
+                        />
+                      ) : (
+                        <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                          <FaUser />
+                        </div>
+                      )}
+                      <p className="ml-2 text-xs font-medium">{name}</p>
                     </div>
-                  )}
-                  <p className="ml-2 text-xs font-medium">{name}</p>
+                    <p className="text-xs font-medium">
+                      {new Date(created_at).toLocaleString()}
+                    </p>
+                  </div>
+                  <p className="mt-2 ml-10 text-xs">
+                    {toggleRead.includes(indx) && message.length > 25 ? (
+                      <>
+                        {message}
+                        &nbsp;
+                        <em
+                          onClick={() =>
+                            setToggleRead((prev) =>
+                              prev.filter((e) => e !== indx)
+                            )
+                          }
+                          className="text-blue-500 cursor-pointer hover:underline"
+                        >
+                          read less
+                        </em>
+                      </>
+                    ) : message.length > 25 ? (
+                      <>
+                        {message.slice(0, message.length / 2) + "... "}
+                        <em
+                          onClick={() =>
+                            setToggleRead((prev) => [...prev, indx])
+                          }
+                          className="text-blue-500 cursor-pointer hover:underline"
+                        >
+                          read more
+                        </em>
+                      </>
+                    ) : (
+                      message
+                    )}
+                  </p>
                 </div>
-                <p className="text-xs font-medium">
-                  {new Date(created_at).toLocaleString()}
-                </p>
-              </div>
-              <p className="mt-2 ml-10 text-xs">
-                {toggleRead.includes(indx) && message.length > 25 ? (
-                  <>
-                    {message}
-                    &nbsp;
-                    <em
-                      onClick={() =>
-                        setToggleRead((prev) => prev.filter((e) => e !== indx))
-                      }
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
-                      read less
-                    </em>
-                  </>
-                ) : message.length > 25 ? (
-                  <>
-                    {message.slice(0, message.length / 2) + "... "}
-                    <em
-                      onClick={() => setToggleRead((prev) => [...prev, indx])}
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
-                      read more
-                    </em>
-                  </>
-                ) : (
-                  message
-                )}
-              </p>
-            </div>
-          ))}
+              ))
+          : "No contacts found!"}
       </div>
     </div>
   );
@@ -570,68 +590,80 @@ const FeedbackList = ({ feedbacks }) => {
         Feedback ({feedbacks.length})
       </div>
 
-      <div className="w-full h-full max-h-[400px] pl-2 pr-4  overflow-y-auto">
-        {feedbacks
-          .slice(-20)
-          .reverse()
-          .map(({ name, text, profile_image, created_at }, indx) => (
-            <div
-              key={name + indx}
-              className={`${
-                feedbacks.length - 1 !== indx ? "border-b border-[#F2F2F2]" : ""
-              } flex flex-col items-start py-3`}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center">
-                  {profile_image ? (
-                    <img
-                      className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
-                      src={profile_image}
-                      alt="profile"
-                    />
-                  ) : (
-                    <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
-                      <FaUser />
+      <div
+        className={`w-full h-full max-h-[400px] pl-2 pr-4 overflow-y-auto ${
+          !feedbacks.length ? "flex justify-center items-center text-sm" : ""
+        }`}
+      >
+        {feedbacks.length
+          ? feedbacks
+              .slice(-20)
+              .reverse()
+              .map(({ name, text, profile_image, created_at }, indx) => (
+                <div
+                  key={name + indx}
+                  className={`${
+                    feedbacks.length - 1 !== indx
+                      ? "border-b border-[#F2F2F2]"
+                      : ""
+                  } flex flex-col items-start py-3`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center">
+                      {profile_image ? (
+                        <img
+                          className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
+                          src={profile_image}
+                          alt="profile"
+                        />
+                      ) : (
+                        <div className="flex justify-center items-center w-[30px] h-[30px] rounded-full text-gray-400/40 bg-gray-100">
+                          <FaUser />
+                        </div>
+                      )}
+                      <p className="flex flex-col items-center ml-2 text-xs font-medium">
+                        {name}
+                      </p>
                     </div>
-                  )}
-                  <p className="flex flex-col items-center ml-2 text-xs font-medium">
-                    {name}
+                    <p className="text-xs font-medium">
+                      {new Date(created_at).toLocaleString()}
+                    </p>
+                  </div>
+                  <p className="mt-2 ml-10 text-xs">
+                    {toggleRead.includes(indx) && text.length > 25 ? (
+                      <>
+                        {text}
+                        &nbsp;
+                        <em
+                          onClick={() =>
+                            setToggleRead((prev) =>
+                              prev.filter((e) => e !== indx)
+                            )
+                          }
+                          className="text-blue-500 cursor-pointer hover:underline"
+                        >
+                          read less
+                        </em>
+                      </>
+                    ) : text.length > 25 ? (
+                      <>
+                        {text.slice(0, text.length / 2) + "... "}
+                        <em
+                          onClick={() =>
+                            setToggleRead((prev) => [...prev, indx])
+                          }
+                          className="text-blue-500 cursor-pointer hover:underline"
+                        >
+                          read more
+                        </em>
+                      </>
+                    ) : (
+                      text
+                    )}
                   </p>
                 </div>
-                <p className="text-xs font-medium">
-                  {new Date(created_at).toLocaleString()}
-                </p>
-              </div>
-              <p className="mt-2 ml-10 text-xs">
-                {toggleRead.includes(indx) && text.length > 25 ? (
-                  <>
-                    {text}
-                    &nbsp;
-                    <em
-                      onClick={() =>
-                        setToggleRead((prev) => prev.filter((e) => e !== indx))
-                      }
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
-                      read less
-                    </em>
-                  </>
-                ) : text.length > 25 ? (
-                  <>
-                    {text.slice(0, text.length / 2) + "... "}
-                    <em
-                      onClick={() => setToggleRead((prev) => [...prev, indx])}
-                      className="text-blue-500 cursor-pointer hover:underline"
-                    >
-                      read more
-                    </em>
-                  </>
-                ) : (
-                  text
-                )}
-              </p>
-            </div>
-          ))}
+              ))
+          : "No feedbacks found!"}
       </div>
     </div>
   );

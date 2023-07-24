@@ -35,15 +35,15 @@ const AdvancedTable = ({
   };
 
   useEffect(() => {
-    if (data.length) {
-      setTableStructure(
-        typeof tableTemplate === "object"
-          ? Object.keys(tableTemplate)
-          : Object.keys(data[0])
-      );
+    setTableStructure(
+      typeof tableTemplate === "object"
+        ? Object.keys(tableTemplate)
+        : data.length && Object.keys(data[0])
+    );
+
+    if (isDataFetched) {
       setIsLoading(false);
     }
-    // } else if (isDataFetched && !data.length) setIsLoading(false);
   }, [data]);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const AdvancedTable = ({
                             selectedUsers.includes(e.id)
                           )
                         }
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
                       />
                       <label htmlFor="checkbox-all-search" className="sr-only">
                         checkbox
@@ -95,14 +95,14 @@ const AdvancedTable = ({
                   </th>
                 )}
                 {/* Other Columns */}
-                {tableStructure.map(
+                {tableStructure?.map(
                   (key) =>
                     key !== "Images" &&
                     key[0] !== "_" && (
                       <th
                         key={key}
                         scope="col"
-                        className="text-center px-6 py-3"
+                        className="px-6 py-3 text-center"
                       >
                         {key === "id" &&
                         page !== "Notification Promotion" &&
@@ -118,8 +118,8 @@ const AdvancedTable = ({
                 )}
 
                 {/* Action Columns */}
-                {actionCols.map((elem) => (
-                  <th key={elem} scope="col" className="text-center px-6 py-3">
+                {actionCols?.map((elem) => (
+                  <th key={elem} scope="col" className="px-6 py-3 text-center">
                     {elem}
                   </th>
                 ))}
@@ -147,8 +147,11 @@ const AdvancedTable = ({
               ) : (
                 <tr className="bg-white border-b">
                   <td
-                    colSpan={tableStructure.length + actionCols.length + 1}
-                    className="text-center w-4 p-4"
+                    colSpan={
+                      tableStructure?.length + actionCols?.length + 1 ||
+                      Object.keys(tableTemplate).length
+                    }
+                    className="w-4 p-4 text-center"
                   >
                     No data found!
                   </td>
@@ -268,7 +271,7 @@ const SingleUser = ({
               type="checkbox"
               checked={selectedUsers.includes(id)}
               onChange={handleCheckChange}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
             />
             <label htmlFor={"checkbox-table-search-" + id} className="sr-only">
               checkbox
