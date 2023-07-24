@@ -10,7 +10,8 @@ export const DropdownContainer = ({ extraStyles = "", onClick, children }) => {
   return (
     <ul
       onClick={onClick}
-      className={`absolute top-[130%] right-0 flex flex-col text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}>
+      className={`absolute top-[130%] right-0 flex flex-col text-xs bg-white rounded-xl px-4 py-1 shadow-xl shadow-gray-300 border z-10 ${extraStyles}`}
+    >
       {children}
     </ul>
   );
@@ -31,7 +32,8 @@ export const DropdownFilter = ({
         curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
           ? "bg-blue-100 hover:bg-blue-200"
           : "bg-gray-50 hover:bg-gray-100"
-      } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center capitalize`}>
+      } focus:outline-1 focus:outline-gray-800 font-medium rounded-lg text-xs px-4 py-1.5 ml-3 text-center capitalize`}
+    >
       {curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
         ? curFilter.value
         : title}
@@ -42,7 +44,8 @@ export const DropdownFilter = ({
             onClick={() => handleClick(null)}
             role="option"
             aria-selected={curFilter.value === null}
-            className={`w-full border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+            className={`w-full border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+          >
             All
           </li>
           {arr.map((elem, indx) => (
@@ -53,7 +56,8 @@ export const DropdownFilter = ({
               aria-selected={elem === curFilter.value}
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
-              } w-full p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+              } w-full p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
               {elem}
             </li>
           ))}
@@ -68,7 +72,8 @@ export const LanguageSelector = ({ language, setLanguage }) => {
     <div className="relative mr-2.5">
       <button
         onClick={() => setLanguage({ ...language, state: !language.state })}
-        className={`flex items-center text-black bg-gray-50 hover:bg-gray-100 text-center text-sm px-3 py-1.5 rounded-md`}>
+        className={`flex items-center text-black bg-gray-50 hover:bg-gray-100 text-center text-sm px-3 py-1.5 rounded-md`}
+      >
         {language.value}
         <FaChevronUp
           className={`${language.state ? "" : "rotate-180"} text-xs ml-1`}
@@ -84,7 +89,8 @@ export const LanguageSelector = ({ language, setLanguage }) => {
               aria-selected={elem === language.value}
               className={`${
                 indx !== languages.length - 1 ? "border-b" : ""
-              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}>
+              } p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            >
               {elem}
             </li>
           ))}
@@ -107,7 +113,7 @@ export const Account = ({ toggle, setToggle }) => {
     {
       title: "Change Password",
       icon: <MdLock className="text-base text-blue-500" />,
-      clickHandler: () => navigate("/change-password/" + user.email),
+      clickHandler: () => navigate("/change-password/"),
     },
     {
       title: "Edit Profile",
@@ -125,13 +131,14 @@ export const Account = ({ toggle, setToggle }) => {
     <div className="relative">
       <div
         className="min-w-max flex items-center bg-gray-50 hover:bg-gray-100 p-1.5 px-2.5 rounded-md space-x-3 cursor-pointer"
-        onClick={() => setToggle(!toggle)}>
+        onClick={() => setToggle(!toggle)}
+      >
         <img
           className="w-[30px] h-[30px] rounded-full text-xs bg-gray-100"
           src={user.profile_image}
           alt="profile"
         />
-        <p className="flex flex-col text-xs font-medium whitespace-nowrap capitalize">
+        <p className="flex flex-col text-xs font-medium capitalize whitespace-nowrap">
           {user.name}
           <span className="text-[10px] font-light capitalize">{user.role}</span>
         </p>
@@ -145,7 +152,8 @@ export const Account = ({ toggle, setToggle }) => {
               onClick={elem.clickHandler}
               className={`${
                 arr.length - 1 !== indx ? "border-b border-[#efefef]" : ""
-              } w-full flex py-2 cursor-pointer text-gray-600 hover:text-black`}>
+              } w-full flex py-2 cursor-pointer text-gray-600 hover:text-black`}
+            >
               {elem.icon}
               <span className="ml-2 whitespace-nowrap">{elem.title}</span>
             </li>

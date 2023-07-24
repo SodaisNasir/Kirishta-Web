@@ -1,13 +1,13 @@
 import React from "react";
 
-const Loader = ({ extraStyles }) => {
+const Loader = ({ extraStyles, loaderColor = "fill-blue-600" }) => {
   return (
     <div
       role="status"
       className={`absolute inset-0 bg-white/50 flex justify-center items-center ${extraStyles}`}
     >
       <svg
-        className="inline w-8 h-8 mr-2 text-gray-200 animate-spin fill-blue-600"
+        className={`inline w-8 h-8 mr-2 text-gray-200 animate-spin ${loaderColor}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

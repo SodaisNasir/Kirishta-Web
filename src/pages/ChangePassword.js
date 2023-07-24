@@ -124,7 +124,7 @@ const ChangePassword = () => {
     >
       <main className="flex justify-center w-full h-full p-3 font-poppins">
         <div className="w-full max-w-md p-4">
-          <h2 className="font-semibold text-lg mb-2">Change Password</h2>
+          <h2 className="mb-2 text-lg font-semibold">Change Password</h2>
 
           <p className="text-[11px] mb-3">
             Please fill these feilds to finish.
@@ -142,7 +142,7 @@ const ChangePassword = () => {
             <div>
               <label
                 htmlFor="newPassword"
-                className="w-full block mb-1 text-xs font-medium text-gray-900"
+                className="block w-full mb-1 text-xs font-medium text-gray-900"
               >
                 New Password
               </label>
@@ -175,7 +175,7 @@ const ChangePassword = () => {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="w-full block mb-1 text-xs font-medium text-gray-900"
+                className="block w-full mb-1 text-xs font-medium text-gray-900"
               >
                 Confirm Password
               </label>
@@ -208,12 +208,15 @@ const ChangePassword = () => {
 
             <button
               type="submit"
-              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center disabled:cursor-not-allowed"
+              className="flex justify-center items-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-2.5 mt-2 text-center disabled:bg-blue-300 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (
                 <>
-                  <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                  <Loader
+                    extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100"
+                    loaderColor={toggleBtn ? "fill-blue-300" : ""}
+                  />
                   Changing
                 </>
               ) : (

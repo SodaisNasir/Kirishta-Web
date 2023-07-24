@@ -124,7 +124,7 @@ const EmailVerification = () => {
     >
       <main className="flex justify-center w-full h-full p-3 font-poppins">
         <div className="w-full max-w-md p-4">
-          <h2 className="font-semibold text-lg mb-2">Email Verification</h2>
+          <h2 className="mb-2 text-lg font-semibold">Email Verification</h2>
 
           {message.value && (
             <p
@@ -134,7 +134,7 @@ const EmailVerification = () => {
             </p>
           )}
 
-          <p className="text-xs mb-3">
+          <p className="mb-3 text-xs">
             We have sent one-time password to{" "}
             <span className="font-semibold">{otpData.email}</span>
           </p>
@@ -161,11 +161,14 @@ const EmailVerification = () => {
             <button
               type="submit"
               id="continue"
-              className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-full px-5 py-3 mt-3.5 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:bg-blue-300 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn && (
-                <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                <Loader
+                  extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100"
+                  loaderColor={toggleBtn ? "fill-blue-300" : ""}
+                />
               )}
               Continue
             </button>
