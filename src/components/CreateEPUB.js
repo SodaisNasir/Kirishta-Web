@@ -4,6 +4,7 @@ import { excludeTags } from "../utils";
 import { toast } from "react-hot-toast";
 import { VscChevronUp } from "react-icons/vsc";
 import Loader from "./Loaders/Loader";
+import { base_url } from "../utils/url";
 
 const CreateEPUB = ({
   state,
@@ -54,7 +55,7 @@ const CreateEPUB = ({
         };
 
         const res = await fetch(
-          "http://api.kirista.com/api/delete-chapter/" + id,
+          `${base_url}/delete-chapter/` + id,
           requestOptions
         );
         const json = await res.json();
@@ -110,21 +111,21 @@ const CreateEPUB = ({
               <div className="flex items-center">
                 <button
                   onClick={() => moveSectionUp(index, item.id)}
-                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 mr-2 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
+                  className="p-1 mr-2 text-xl text-gray-800 transition-all duration-300 bg-gray-200 rounded-full hover:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
                   disabled={index === 0}
                 >
                   <VscChevronUp />
                 </button>
                 <button
                   onClick={() => moveSectionDown(index, item.id)}
-                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 mr-2 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
+                  className="p-1 mr-2 text-xl text-gray-800 transition-all duration-300 bg-gray-200 rounded-full hover:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:opacity-80"
                   disabled={index === state.length - 1}
                 >
                   <VscChevronDown />
                 </button>
                 <button
                   onClick={() => closeSection(index, item.id)}
-                  className="text-xl text-gray-800 bg-gray-200 hover:bg-gray-300 transition-all duration-300 rounded-full p-1 disabled:cursor-not-allowed"
+                  className="p-1 text-xl text-gray-800 transition-all duration-300 bg-gray-200 rounded-full hover:bg-gray-300 disabled:cursor-not-allowed"
                   disabled={state.length === 1}
                 >
                   <VscClose />

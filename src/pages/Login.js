@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Loader, OtherPage } from "../components";
 import { themes } from "../constants/data";
+import { base_url } from "../utils/url";
 
 const Login = () => {
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -48,10 +49,7 @@ const Login = () => {
         redirect: "follow",
       };
 
-      const res = await fetch(
-        "http://api.kirista.com/api/admin-login",
-        requestOptions
-      );
+      const res = await fetch(`${base_url}/admin-login`, requestOptions);
       json = await res.json();
 
       console.log(json);
@@ -93,10 +91,10 @@ const Login = () => {
     >
       <div className="flex justify-center items-center bg-[url('../src/assets/images/login_bg.webp')] bg-cover bg-top w-full h-full font-poppins">
         <main className="w-full max-w-sm mx-4">
-          <div className="relative h-16 bg-transparent mb-10 w-48 mx-auto">
+          <div className="relative w-48 h-16 mx-auto mb-10 bg-transparent">
             <img className="w-full" src={Logo} alt="kirista logo" />
           </div>
-          <section className="w-full bg-white rounded-xl px-6 pt-8 pb-9">
+          <section className="w-full px-6 pt-8 bg-white rounded-xl pb-9">
             <h1 className="text-xl text-center font-[700] mb-8">
               Welcome Back, Admin.
             </h1>

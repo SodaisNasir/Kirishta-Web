@@ -4,6 +4,7 @@ import { ConfirmationCodeFeilds, Loader, OtherPage } from "../components";
 import { useContext } from "react";
 import { AppContext } from "../context";
 import { themes } from "../constants/data";
+import { base_url } from "../utils/url";
 
 const EmailVerification = () => {
   const navigate = useNavigate();
@@ -37,10 +38,7 @@ const EmailVerification = () => {
         redirect: "follow",
       };
 
-      const res = await fetch(
-        "http://api.kirista.com/api/adminEmail",
-        requestOptions
-      );
+      const res = await fetch(`${base_url}/adminEmail`, requestOptions);
       const json = await res.json();
 
       console.log(json);

@@ -56,10 +56,7 @@ const Actions = ({
         method: "POST",
         redirect: "follow",
       };
-      const res = await fetch(
-        `http://api.kirista.com/api/block/${id}`,
-        requestOptions
-      );
+      const res = await fetch(`${base_url}/block/${id}`, requestOptions);
       console.log("res status =======>", res.status);
 
       if (res.status === 200) {
@@ -176,7 +173,7 @@ const Actions = ({
   return (
     <>
       {actionCols.includes("status") && (
-        <td className="text-center text-xs px-6 py-4">
+        <td className="px-6 py-4 text-xs text-center">
           <StatusDropdown
             {...{
               id,
@@ -189,7 +186,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Details") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={redirect}
             className="font-medium text-gray-600 hover:text-gray-800"
@@ -199,7 +196,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("View") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={() => setViewModal({ isVisible: true, data })}
             className="font-medium text-gray-600 hover:text-gray-800"
@@ -209,7 +206,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Submit") && (
-        <td className="text-center text-lg px-6 py-4">
+        <td className="px-6 py-4 text-lg text-center">
           <button
             onClick={() => alert("clicked on submit.")}
             className="font-medium text-gray-600 hover:text-gray-800"
@@ -219,22 +216,22 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Actions") && (
-        <td className="flex text-center text-base px-6 py-4">
-          <button className="text-xs mr-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
+        <td className="flex px-6 py-4 text-base text-center">
+          <button className="mr-1 text-xs font-medium text-gray-600 hover:text-blue-500 hover:underline">
             Yes
           </button>
           <span className="text-base text-gray-800"> | </span>
-          <button className="text-xs mx-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
+          <button className="mx-1 text-xs font-medium text-gray-600 hover:text-blue-500 hover:underline">
             No
           </button>
           <span className="text-base text-gray-800"> | </span>
-          <button className="text-xs ml-1 hover:text-blue-500 hover:underline font-medium text-gray-600">
+          <button className="ml-1 text-xs font-medium text-gray-600 hover:text-blue-500 hover:underline">
             Maybe
           </button>
         </td>
       )}
       {actionCols.includes("Images") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={() =>
               setIsViewerOpen({ isVisible: true, images: data._images })
@@ -246,7 +243,7 @@ const Actions = ({
         </td>
       )}
       {(actionCols.includes("Media") || actionCols.includes("Media Files")) && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={() =>
               setMediaModal({ isVisible: true, media: data._media })
@@ -258,7 +255,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Reply") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={() =>
               setReplyModal((prev) => ({
@@ -274,7 +271,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Push Notification") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={() =>
               setNotificationModal((prev) => ({
@@ -290,7 +287,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Edit") && (
-        <td className="text-center text-lg px-6 py-4">
+        <td className="px-6 py-4 text-lg text-center">
           <button
             onClick={() =>
               hasEditAccess
@@ -306,7 +303,7 @@ const Actions = ({
         </td>
       )}
       {(actionCols.includes("Delete") || actionCols.includes("Remove")) && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={remove}
             className="font-medium text-gray-600 hover:text-gray-800"
@@ -316,7 +313,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Block/Unblock") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={handleBlock}
             className="font-medium text-red-500 hover:text-red-700"
@@ -328,7 +325,7 @@ const Actions = ({
         </td>
       )}
       {actionCols.includes("Publish") && (
-        <td className="text-center text-base px-6 py-4">
+        <td className="px-6 py-4 text-base text-center">
           <button
             onClick={handlePublish}
             className="font-medium text-gray-600 hover:text-gray-800"
@@ -396,7 +393,7 @@ const StatusDropdown = ({
   return (
     <div
       onClick={() => setToggle(!toggle)}
-      className="relative inline-block text-blue-500 hover:underline cursor-pointer"
+      className="relative inline-block text-blue-500 cursor-pointer hover:underline"
     >
       {value}
 
