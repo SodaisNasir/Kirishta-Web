@@ -49,7 +49,7 @@ const Login = () => {
       };
 
       const res = await fetch(
-        "https://sassolution.org/kirista/api/admin-login",
+        "http://api.kirista.com/api/admin-login",
         requestOptions
       );
       json = await res.json();

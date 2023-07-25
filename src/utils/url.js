@@ -1,1 +1,1 @@
-export const base_url = "https://sassolution.org/kirista/api";
+export const base_url = "https://api.kirista.com/api";

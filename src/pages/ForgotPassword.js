@@ -39,7 +39,7 @@ const ForgotPassword = () => {
       };
 
       const res = await fetch(
-        "https://sassolution.org/kirista/api/adminEmail",
+        "http://api.kirista.com/api/adminEmail",
         requestOptions
       );
       json = await res.json();

@@ -54,7 +54,7 @@ const CreateEPUB = ({
         };
 
         const res = await fetch(
-          "https://sassolution.org/kirista/api/delete-chapter/" + id,
+          "http://api.kirista.com/api/delete-chapter/" + id,
           requestOptions
         );
         const json = await res.json();

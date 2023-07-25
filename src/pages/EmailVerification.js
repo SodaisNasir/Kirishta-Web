@@ -38,7 +38,7 @@ const EmailVerification = () => {
       };
 
       const res = await fetch(
-        "https://sassolution.org/kirista/api/adminEmail",
+        "http://api.kirista.com/api/adminEmail",
         requestOptions
       );
       const json = await res.json();

@@ -57,7 +57,7 @@ const Actions = ({
         redirect: "follow",
       };
       const res = await fetch(
-        `https://sassolution.org/kirista/api/block/${id}`,
+        `http://api.kirista.com/api/block/${id}`,
         requestOptions
       );
       console.log("res status =======>", res.status);
