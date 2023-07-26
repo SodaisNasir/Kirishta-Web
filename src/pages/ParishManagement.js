@@ -132,26 +132,26 @@ const ParishManagement = () => {
     "_featured",
   ];
 
-  useEffect(() => {
-    fetchParishRegions(setParishRegions, (data) =>
+  const getData = async () => {
+    await fetchParishRegions(setParishRegions, (data) =>
       setCreateNewModal((prev) => ({
         ...prev,
         data: { ...prev.data, _region: data[0].region },
       }))
     );
-    fetchParishProvinces(setParishProvinces, (data) =>
+    await fetchParishProvinces(setParishProvinces, (data) =>
       setCreateNewModal((prev) => ({
         ...prev,
         data: { ...prev.data, _province: data[0].province },
       }))
     );
-    fetchParishCountries(setParishCountries, (data) =>
+    await fetchParishCountries(setParishCountries, (data) =>
       setCreateNewModal((prev) => ({
         ...prev,
         data: { ...prev.data, country: data[0].country },
       }))
     );
-    fetchData({
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
@@ -159,6 +159,10 @@ const ParishManagement = () => {
       setIsDataFetched,
       sort: (data) => data.sort((a, b) => b.id - a.id),
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

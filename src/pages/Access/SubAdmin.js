@@ -101,7 +101,7 @@ const SubAdmin = () => {
     "role",
   ];
 
-  useEffect(() => {
+  const getData = async () => {
     const func = (data) => {
       setRoles(data.map((e) => e.role));
       setCreateNewModal((prev) => ({
@@ -109,14 +109,18 @@ const SubAdmin = () => {
         data: { ...prev.data, role: data[0].role },
       }));
     };
-    fetchRoles(null, func);
-    fetchData({
+    await fetchRoles(null, func);
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
       url: showAllAdmins,
       setIsDataFetched,
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

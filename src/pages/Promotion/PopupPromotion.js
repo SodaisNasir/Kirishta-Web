@@ -108,9 +108,9 @@ const PopupPromotion = () => {
     "status",
   ];
 
-  useEffect(() => {
-    fetchBooks(setBooks);
-    fetchData({
+  const getData = async () => {
+    await fetchBooks(setBooks);
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
@@ -118,6 +118,10 @@ const PopupPromotion = () => {
       setIsDataFetched,
       sort: (data) => data.sort((a, b) => b.id - a.id),
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

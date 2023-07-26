@@ -225,7 +225,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
           <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
             <button
               type="submit"
-              className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:cursor-not-allowed"
+              className="flex justify-center items-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (
@@ -363,7 +363,7 @@ export const NotificationModal = ({
           <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
             <button
               type="submit"
-              className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-full text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
               disabled={toggleBtn}
             >
               {toggleBtn ? (

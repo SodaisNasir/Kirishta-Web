@@ -120,11 +120,11 @@ const BooksManagement = () => {
     "read",
   ];
 
-  useEffect(() => {
-    fetchBookCategories();
-    fetchGeneralCountries(setGeneralCountries);
-    fetchBookLanguages(setBookLanguages);
-    fetchData({
+  const getData = async () => {
+    await fetchBookCategories();
+    await fetchGeneralCountries(setGeneralCountries);
+    await fetchBookLanguages(setBookLanguages);
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
@@ -132,6 +132,10 @@ const BooksManagement = () => {
       setIsDataFetched,
       sort: (data) => data.sort((a, b) => b.id - a.id),
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

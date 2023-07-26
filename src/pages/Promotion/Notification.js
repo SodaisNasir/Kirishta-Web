@@ -52,7 +52,10 @@ const Notification = () => {
         items: data.filter(
           (item) =>
             item.name.toLowerCase().includes(value.toLowerCase()) ||
-            item.u_id.toString().includes(value.toString())
+            item.u_id
+              .toString()
+              .toLowerCase()
+              .includes(value.toString().toLowerCase())
         ),
       }));
     }

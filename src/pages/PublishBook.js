@@ -206,11 +206,11 @@ const PublishBook = () => {
     }
   };
 
-  useEffect(() => {
-    fetchBookCategories();
-    fetchBookLanguages();
-    fetchGeneralCountries(setGeneralCountries);
-    fetchBooks(null, (data) =>
+  const getData = async () => {
+    await fetchBookCategories();
+    await fetchBookLanguages();
+    await fetchGeneralCountries(setGeneralCountries);
+    await fetchBooks(null, (data) =>
       setSavedBooks(
         data
           .filter((e) => e.status.toLowerCase() === "inactive")
@@ -222,6 +222,10 @@ const PublishBook = () => {
           })
       )
     );
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   return (
@@ -501,7 +505,7 @@ const PublishBook = () => {
                   <button
                     onClick={handlePublish}
                     type="button"
-                    className="flex items-center justify-center w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-5 py-3 m-3 text-center disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-full px-5 py-3 m-3 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:opacity-50 disabled:saturate-30 disabled:py-1 disabled:cursor-not-allowed"
                     disabled={togglePublishBtn}
                   >
                     {togglePublishBtn ? (

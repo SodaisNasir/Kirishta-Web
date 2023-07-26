@@ -312,7 +312,7 @@ const SingleUser = ({
               ) : key === "start_date" || key === "_end_date" ? (
                 data[key].replace(/ ?00:00:00/, "")
               ) : key === "book_name" && data[key] ? (
-                books.filter((e) => e.id == data[key])[0].title ||
+                books?.filter((e) => e.id == data[key])[0]?.title ||
                 "Book name not found!"
               ) : key === "app_page" && !data[key] ? (
                 "No data!"

@@ -93,9 +93,9 @@ const UsersManagement = () => {
     "status",
   ];
 
-  useEffect(() => {
-    fetchGeneralCountries(setGeneralCountries);
-    fetchData({
+  const getData = async () => {
+    await fetchGeneralCountries(setGeneralCountries);
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
@@ -103,6 +103,10 @@ const UsersManagement = () => {
       setIsDataFetched,
       sort: (data) => data.sort((a, b) => b.id - a.id),
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

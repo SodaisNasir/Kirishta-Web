@@ -84,15 +84,19 @@ const ParishCountriesManagement = () => {
 
   const neededProps = ["id", "country", "category"];
 
-  useEffect(() => {
-    fetchCategories();
-    fetchData({
+  const getData = async () => {
+    await fetchCategories();
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
       url: showAllCountries,
       setIsDataFetched,
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

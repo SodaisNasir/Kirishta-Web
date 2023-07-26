@@ -62,8 +62,8 @@ const ProvincesManagement = () => {
 
   const neededProps = ["id", "code", "province", "region"];
 
-  useEffect(() => {
-    fetchParishRegions(setParishRegions, (data) =>
+  const getData = async () => {
+    await fetchParishRegions(setParishRegions, (data) =>
       setCreateNewModal({
         isVisible: false,
         data: {
@@ -73,13 +73,17 @@ const ProvincesManagement = () => {
         },
       })
     );
-    fetchData({
+    await fetchData({
       setPaginatedData,
       setData,
       neededProps,
       url: showAllProvinces,
       setIsDataFetched,
     });
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const tableTemplate = Object.fromEntries(neededProps.map((e) => [e, ""]));

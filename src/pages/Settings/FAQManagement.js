@@ -94,12 +94,6 @@ const FAQManagement = () => {
   const neededProps = ["id", "question", "answer", "language"];
 
   useEffect(() => {
-    // fetchBookLanguages(setLanguages, (data) =>
-    //   setCreateNewModal((prev) => ({
-    //     ...prev,
-    //     data: { ...prev.data, language: data[0].language },
-    //   }))
-    // );
     fetchData({
       setPaginatedData,
       setData,
