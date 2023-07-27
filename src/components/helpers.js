@@ -128,7 +128,7 @@ export const Account = ({ toggle, setToggle }) => {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative w-full min-w-max">
       <div
         className="min-w-max flex items-center bg-gray-50 hover:bg-gray-100 p-1.5 px-2.5 rounded-md space-x-3 cursor-pointer"
         onClick={() => setToggle(!toggle)}
@@ -145,7 +145,7 @@ export const Account = ({ toggle, setToggle }) => {
         <FaChevronDown className={`text-sm ${toggle ? "rotate-180" : ""}`} />
       </div>
       {toggle && (
-        <DropdownContainer extraStyles="!w-full">
+        <DropdownContainer extraStyles="!w-full !min-w-max">
           {arr.map((elem, indx) => (
             <li
               key={elem.title}
