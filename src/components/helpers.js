@@ -128,7 +128,7 @@ export const Account = ({ toggle, setToggle }) => {
   ];
 
   return (
-    <div className="relative w-full min-w-max">
+    <div className="relative min-w-max">
       <div
         className="min-w-max flex items-center bg-gray-50 hover:bg-gray-100 p-1.5 px-2.5 rounded-md space-x-3 cursor-pointer"
         onClick={() => setToggle(!toggle)}
