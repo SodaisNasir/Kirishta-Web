@@ -28,7 +28,7 @@ export const DropdownFilter = ({
   return (
     <button
       onClick={setToggle}
-      className={`relative flex items-center text-black ${
+      className={`relative min-w-max flex items-center text-black ${
         curFilter.filter?.toLowerCase().includes(title?.toLowerCase())
           ? "bg-blue-100 hover:bg-blue-200"
           : "bg-gray-50 hover:bg-gray-100"
@@ -39,12 +39,12 @@ export const DropdownFilter = ({
         : title}
       <FaChevronUp className={`${toggle ? "" : "rotate-180"} ml-2`} />
       {toggle && (
-        <DropdownContainer extraStyles="w-full text-black font-medium text-xs text-left">
+        <DropdownContainer extraStyles="min-w-max text-black font-medium text-xs text-left">
           <li
             onClick={() => handleClick(null)}
             role="option"
             aria-selected={curFilter.value === null}
-            className={`w-full border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+            className={`min-w-max border-b p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
           >
             All
           </li>
@@ -56,7 +56,7 @@ export const DropdownFilter = ({
               aria-selected={elem === curFilter.value}
               className={`${
                 indx !== arr.length - 1 ? "border-b" : ""
-              } w-full p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
+              } min-w-max p-1 hover:text-gray-600 cursor-pointer whitespace-nowrap`}
             >
               {elem}
             </li>

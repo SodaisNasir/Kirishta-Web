@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AdvancedTable from "../../components/Tables/AdvancedTable";
-import { Page, Actions, NotificationModal } from "../../components";
+import { Page, Actions, NotificationModal, Loader } from "../../components";
 import { BiSearch } from "react-icons/bi";
 import { DropdownFilter } from "../../components/helpers";
 import { base_url } from "../../utils/url";
 import { fetchData } from "../../utils";
+import { toast } from "react-hot-toast";
+import { AppContext } from "../../context";
 
 const showAllNotifications = `${base_url}/make-notification`;
+const deleteUrl = `${base_url}/delete-device-token`;
+const deleteBulkNotificationUrl = `${base_url}/delete-bulk-device-token`;
 const notificationUrl = `${base_url}/notification/`;
 const notificationUrlBulk = `${base_url}/notification-bulk`;
 
 const Notification = () => {
+  const { user } = useContext(AppContext);
+  const notification = user.privilage.Notification;
+  const hasDeleteAccess = notification.Delete;
   const initial_filters = {
     searchInput: "",
     toggleUser: false,
@@ -30,9 +37,10 @@ const Notification = () => {
     data: null,
     message: null,
   });
+  const [selected, setSelected] = useState([]);
   const [filters, setFilters] = useState(initial_filters);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [toggleBulkDeleteBtn, setToggleBulkDeleteBtn] = useState(false);
   const { searchInput, toggleUser, togglePlatform } = filters;
 
   const setSingleFilter = (key, value) => {
@@ -61,7 +69,40 @@ const Notification = () => {
     }
   };
 
-  const handleNotification = () =>
+  const handleDeleteBulkNotification = async () => {
+    setToggleBulkDeleteBtn(true);
+
+    const deviceTokens = paginatedData.items
+      .filter((e) => selected.includes(e.id))
+      .map((e) => e.device_token);
+
+    try {
+      let formdata = new FormData();
+      formdata.append("device_token", JSON.stringify(deviceTokens));
+
+      let requestOptions = {
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      const res = await fetch(deleteBulkNotificationUrl, requestOptions);
+      const json = await res.json();
+
+      if (res.status == 200) {
+        console.log("deleteBulkNotification =============>", json);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setToggleBulkDeleteBtn(false);
+    }
+  };
+
+  const handleBulkNotification = () =>
     setNotificationModal((prev) => ({ ...prev, isVisible: true }));
 
   useEffect(() => {
@@ -115,20 +156,24 @@ const Notification = () => {
             tableTemplate,
             paginatedData,
             setPaginatedData,
+            deleteUrl,
             selected,
             setSelected,
             Actions,
             page: "Notification Promotion",
             checkboxesEnabled: true,
-            actionCols: ["Push Notification"],
-            props: { setNotificationModal },
+            actionCols: ["Push Notification", "Delete"],
+            props: { setNotificationModal, hasDeleteAccess },
           }}
         >
-          <div className="flex flex-col py-4 bg-white lg:flex-row lg:items-center lg:justify-between">
+          <div
+            className={`flex flex-col py-4 bg-white ${
+              selected.length > 1
+                ? ""
+                : "lg:flex-row lg:items-center lg:justify-between"
+            }`}
+          >
             {/* Search bar start */}
-            <label htmlFor="table-search" className="sr-only">
-              Search
-            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <BiSearch />
@@ -144,7 +189,11 @@ const Notification = () => {
             </div>
             {/* Search bar end */}
             {/* Dropdown Filters Start */}
-            <div className="flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto lg:mt-0">
+            <div
+              className={`flex items-center self-end justify-between w-full mt-3 lg:self-auto lg:w-auto ${
+                selected.length > 1 ? "" : "lg:mt-0"
+              }`}
+            >
               <div className="hidden text-xs font-medium text-gray-700 xs:block lg:hidden">
                 {paginatedData.items.length <= 1
                   ? `${paginatedData.items.length} result`
@@ -152,12 +201,35 @@ const Notification = () => {
               </div>
 
               {selected.length > 1 && (
-                <button
-                  onClick={handleNotification}
-                  className="px-4 py-2 text-xs font-medium text-center text-white bg-blue-500 rounded-lg justify-self-end hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 disabled:cursor-not-allowed"
-                >
-                  Send Bulk Notification
-                </button>
+                <div className="flex items-center">
+                  <button
+                    onClick={
+                      hasDeleteAccess
+                        ? handleDeleteBulkNotification
+                        : toast.error(
+                            "You don't have access to delete on this page!",
+                            { duration: 2000 }
+                          )
+                    }
+                    className="flex items-center justify-center px-5 py-2 text-xs font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 disabled:opacity-50 disabled:saturate-30 disabled:py-[1px] disabled:pl-1 disabled:hover:bg-blue-500 disabled:cursor-not-allowed"
+                    disabled={toggleBulkDeleteBtn}
+                  >
+                    {toggleBulkDeleteBtn ? (
+                      <>
+                        <Loader extraStyles="!static !inset-auto !block !scale-50 !bg-transparent !saturate-100" />
+                        Deleting Notifications
+                      </>
+                    ) : (
+                      "Delete Bulk Notifications"
+                    )}
+                  </button>
+                  <button
+                    onClick={handleBulkNotification}
+                    className="px-4 py-2 ml-2 text-xs font-medium text-center text-white truncate bg-blue-500 rounded-lg justify-self-end hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 disabled:cursor-not-allowed"
+                  >
+                    Send Bulk Notification
+                  </button>
+                </div>
               )}
 
               <div className="flex justify-between w-full xs:w-auto xs:justify-normal">

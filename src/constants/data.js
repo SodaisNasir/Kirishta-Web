@@ -120,7 +120,7 @@ export const navLinks = [
     title: "Promotion Management",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="17"
         height="20"
         viewBox="0 0 17 20"
@@ -176,7 +176,7 @@ export const navLinks = [
     path: "/publish-book",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="18"
         height="20"
         viewBox="0 0 18 20"
@@ -213,7 +213,7 @@ export const navLinks = [
     path: "/parish-management",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="22"
         height="21"
         viewBox="0 0 22 21"
@@ -255,7 +255,7 @@ export const navLinks = [
     path: "/feedback-management",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="16"
         height="16"
         viewBox="0 0 16 16"
@@ -276,7 +276,7 @@ export const navLinks = [
     path: "/contact-management",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="13"
         height="16"
         viewBox="0 0 13 16"
@@ -298,7 +298,7 @@ export const navLinks = [
     title: "Settings Management",
     icon: (
       <svg
-        className="h-4 w-4"
+        className="w-4 h-4"
         width="19"
         height="20"
         viewBox="0 0 19 20"
@@ -550,7 +550,7 @@ export const dashboardCards = [
     title: "Contacts",
     icon: (
       <svg
-        className="h-4 w-4 text-blue-500"
+        className="w-4 h-4 text-blue-500"
         width="13"
         height="16"
         viewBox="0 0 13 16"
@@ -1394,7 +1394,10 @@ export const privilegesStructure = {
       Delete: false,
     },
   },
-  Notification: false,
+  Notification: {
+    View: false,
+    Delete: false,
+  },
   "Users Management": {
     View: false,
     Edit: false,

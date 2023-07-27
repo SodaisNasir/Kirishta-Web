@@ -99,7 +99,7 @@ const Router = () => {
           <Route
             path="/notification"
             element={
-              user && privilages.Notification ? (
+              user && privilages.Notification.View ? (
                 <Notification />
               ) : (
                 <AccessDenied />

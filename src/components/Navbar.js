@@ -24,7 +24,7 @@ const Navbar = ({ toggle, setToggle }) => {
         {/* close btn (inside navbar) */}
         <button
           onClick={() => setToggle(false)}
-          className="md:hidden mt-3 text-lg"
+          className="mt-3 text-lg md:hidden"
         >
           <VscClose />
         </button>
@@ -45,7 +45,7 @@ const NavItem = ({ data, privilages }) => {
   const [toggle, setToggle] = useState(false);
 
   // if Nav item is Notifcation page && if user has no access to this page
-  if (data.title === "Notification" && !privilages[data.title]) return;
+  if (data.title === "Notification" && !privilages[data.title].View) return;
 
   // if Nav item is a link && if user has no access to this page
   if (
@@ -69,7 +69,7 @@ const NavItem = ({ data, privilages }) => {
       >
         {/* <img className="w-4" src={data.icon} alt="icon" /> */}
         {data.icon}
-        <span className="text-xs ml-3">{data.title}</span>
+        <span className="ml-3 text-xs">{data.title}</span>
       </NavLink>
     );
   }
@@ -90,7 +90,7 @@ const NavItem = ({ data, privilages }) => {
       >
         {/* <img className="w-4" src={data.icon} alt="icon" /> */}
         {data.icon}
-        <span className="text-xs ml-3">{data.title}</span>
+        <span className="ml-3 text-xs">{data.title}</span>
       </div>
       <div className={`${toggle ? "block" : "hidden"} relative ml-7 text-xs`}>
         <div className="absolute left-[3px] bg-[#909090] w-0.5 h-full -z-10" />
