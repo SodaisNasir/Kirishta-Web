@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Account, DropdownContainer } from "../components/helpers";
-import { MdFeedback, MdLock, MdLogout, MdOutlineDoneAll } from "react-icons/md";
-import { FaChevronDown, FaUser } from "react-icons/fa";
-import { RiEdit2Fill } from "react-icons/ri";
-import { AppContext } from "../context";
+import { MdFeedback, MdOutlineDoneAll } from "react-icons/md";
 import { dashboardCards, notificationIcons } from "../constants/data";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../utils/url";
 import { Loader } from "../components";
 import { VscClose } from "react-icons/vsc";
+import { FaUser } from "react-icons/fa";
+import { AppContext } from "../context";
 
 const Dashboard = () => {
-  const initialCounter = 20;
+  const { user } = useContext(AppContext);
+  const userId = user?.id;
   const initialState = { notifications: false, account: false };
   const [toggle, setToggle] = useState(initialState);
   const [contacts, setContacts] = useState(null);
@@ -19,7 +19,6 @@ const Dashboard = () => {
   const [analytics, setAnalytics] = useState(null);
   const [notifications, setNotifications] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [counter, setCounter] = useState(initialCounter);
 
   const setSingleToggle = (key, value) =>
     setToggle({ ...initialState, [key]: value });
@@ -79,7 +78,7 @@ const Dashboard = () => {
   };
 
   const fetchNotifications = async () => {
-    const url = base_url + "/show-admin-notification";
+    const url = `${base_url}/show-admin-notification/${userId}`;
 
     try {
       const res = await fetch(url);
@@ -102,10 +101,10 @@ const Dashboard = () => {
     const feedbacks = await fetchFeedbacks();
     const notifications = await fetchNotifications();
 
-    // console.log("Analytics =============>", analytics);
-    // console.log("Feedbacks ========>", feedbacks);
-    // console.log("Contacts ========>", contacts);
-    console.log("reversedNotifications ========>", notifications);
+    //* console.log("Analytics =============>", analytics);
+    //* console.log("Feedbacks ========>", feedbacks);
+    //* console.log("Contacts ========>", contacts);
+    //* console.log("notifications ========>", notifications);
 
     setAnalytics(analytics);
     setContacts(contacts);
@@ -122,25 +121,16 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    let interval = setInterval(
-      async () => setCounter((prev) => prev - 1),
-      1000
-    );
+    let interval = setInterval(async () => {
+      const notifications = await fetchNotifications();
+      //* console.log("notifications", notifications);
+      setNotifications(notifications);
+    }, 20000);
 
     return () => {
       clearInterval(interval);
     };
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (counter < 1) {
-        setCounter(initialCounter);
-        const notifications = await fetchNotifications();
-        setNotifications(notifications);
-      }
-    })();
-  }, [counter]);
 
   return (
     <div
@@ -161,6 +151,7 @@ const Dashboard = () => {
                   setSingleToggle,
                   notifications,
                   setNotifications,
+                  userId,
                 }}
               />
               <Account
@@ -207,11 +198,12 @@ const Notifications = ({
   setSingleToggle,
   notifications,
   setNotifications,
+  userId,
 }) => {
   const navigate = useNavigate();
 
   const handleReadAll = async () => {
-    const url = `${base_url}/read-admin-notification`;
+    const url = `${base_url}/read-admin-notification/${userId}`;
 
     try {
       const requestOptions = {
@@ -224,7 +216,7 @@ const Notifications = ({
 
       const res = await fetch(url, requestOptions);
       const json = await res.json();
-      console.log("json", json);
+      //* console.log("json", json);
 
       if (res.status === 200) {
         setNotifications([]);
@@ -313,7 +305,7 @@ const Notifications = ({
                         };
                         const res = await fetch(url, requestOptions);
                         const json = await res.json();
-                        console.log("json", json);
+                        //* console.log("json", json);
 
                         if (json.success) navigate(navigateTo);
                       } catch (err) {
@@ -427,7 +419,7 @@ const Notifications = ({
                           };
                           const res = await fetch(url, requestOptions);
                           const json = await res.json();
-                          console.log("json", json);
+                          //* console.log("json", json);
 
                           if (json.success) navigate(navigateTo);
                         } catch (err) {

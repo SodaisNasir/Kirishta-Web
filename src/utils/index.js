@@ -56,10 +56,6 @@ export const modifyData = (data, neededProps) => {
     neededProps
       .map((e) => [e, ""])
       .map(([key, value]) => {
-        console.log({
-          key,
-          value: obj[key.replace(/^_/, "")],
-        });
         if (keys.includes(key.replace(/^_/, ""))) {
           return [key, obj[key.replace(/^_/, "")]];
         } else {
@@ -97,14 +93,14 @@ export const fetchData = async ({
     const res = await fetch(url);
     const json = await res.json();
 
-    console.log("response =>", json);
+    //* console.log("response =>", json);
     if (json.success) {
       let data = json.success.data.length
         ? modifyData(json.success.data, neededProps)
         : json.success.data;
       data = sort ? sort(data) : data;
 
-      console.log("response =>", json.success.data);
+      //* console.log("response =>", json.success.data);
 
       setPaginatedData((prev) => ({
         ...prev,
@@ -166,7 +162,7 @@ export const fetchDataByLang = async (
 
     if (json.success) {
       const data = json.success.data;
-      // console.log(data);
+      //* console.log(data);
       setState({ value: data.description });
       setTitle && setTitle(data.text);
     }
@@ -183,7 +179,7 @@ export const fetchChapters = async (setState, id) => {
     const json = await res.json();
 
     if (json.success) {
-      console.log("json.success.data", json.success.data);
+      //* console.log("json.success.data", json.success.data);
       const data =
         json.success.data.length === 0
           ? [{ title: "", description: "" }]
@@ -207,7 +203,7 @@ export const fetchBooks = async (setBooks, callback) => {
 
     if (json.success) {
       const data = json.success.data;
-      console.log("books ===>", data);
+      //* console.log("books ===>", data);
       setBooks &&
         setBooks(
           data.map((obj) => {

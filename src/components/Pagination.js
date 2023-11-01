@@ -20,7 +20,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
     const endOffset = itemOffset + itemsPerPageState;
     const curItems = paginatedData.items.slice(itemOffset, endOffset);
     setPageCount(Math.ceil(paginatedData.items.length / itemsPerPageState));
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    //* console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setPaginatedData((prev) => ({ ...prev, curItems }));
   }, [paginatedData.items, itemsPerPageState]);
 
@@ -28,7 +28,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
     const endOffset = itemOffset + itemsPerPageState;
     const curItems = paginatedData.items.slice(itemOffset, endOffset);
     setPageCount(Math.ceil(paginatedData.items.length / itemsPerPageState));
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    //* console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setPaginatedData((prev) => ({ ...prev, curItems }));
   }, [itemOffset]);
 
@@ -37,9 +37,7 @@ function Pagination({ paginatedData, setPaginatedData }) {
       (event.selected * itemsPerPageState) % paginatedData.items.length;
     setCurrentPage(event.selected);
     setItemOffset(newOffset);
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
+    //* console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
   };
 
   const handleSelect = (e) => {
@@ -51,9 +49,9 @@ function Pagination({ paginatedData, setPaginatedData }) {
   };
 
   return (
-    <div className="w-full flex items-center justify-between text-xs">
+    <div className="flex items-center justify-between w-full text-xs">
       {paginatedData.items.length ? (
-        <p className="flex items-center mb-2 mt-1">
+        <p className="flex items-center mt-1 mb-2">
           Show&nbsp;&nbsp;
           <select
             defaultValue={50}

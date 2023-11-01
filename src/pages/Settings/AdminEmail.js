@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Loader, Page } from "../../components";
-import { VscClose } from "react-icons/vsc";
 import { AppContext } from "../../context";
 import { base_url } from "../../utils/url";
 import { toast } from "react-hot-toast";
@@ -64,8 +63,8 @@ const AdminEmail = () => {
         setNames(names);
         setEmails(emails);
 
-        console.log("names", names);
-        console.log("emails", emails);
+        //* console.log("names", names);
+        //* console.log("emails", emails);
       }
     } catch (err) {
       console.error(err);
@@ -79,10 +78,10 @@ const AdminEmail = () => {
 
   return (
     <Page title={"Admin Email"}>
-      <main className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
+      <main className="p-6 space-y-6">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-6 gap-6 max-w-3xl mx-auto mt-3"
+          className="grid max-w-3xl grid-cols-6 gap-6 mx-auto mt-3"
         >
           {names.map((item, index) => (
             <>
@@ -174,155 +173,6 @@ const FormField = ({
         readOnly={readOnly}
       />
     </div>
-  );
-};
-
-const EditModal = ({ editModal, setEditModal }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEditModal({
-      isVisible: false,
-      data: {},
-    });
-  };
-
-  const close = () => setEditModal((prev) => ({ ...prev, isVisible: false }));
-
-  return (
-    <>
-      <div
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
-      />
-      <div
-        tabIndex="-1"
-        className={`${
-          editModal.isVisible ? "" : "hidden"
-        } fixed z-20 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <form
-            action="#"
-            onSubmit={handleSubmit}
-            className="relative bg-white rounded-lg shadow"
-          >
-            {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t">
-              <h3 className="text-xl font-semibold text-gray-900">Edit</h3>
-              <button
-                onClick={close}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-base p-1.5 ml-auto inline-flex items-center"
-              >
-                <VscClose />
-              </button>
-            </div>
-            {/* Modal body */}
-            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-scroll">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-xs font-medium text-gray-900"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={editModal.data.Name}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="John Doe"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="email-1"
-                    className="block mb-2 text-xs font-medium text-gray-900"
-                  >
-                    Email 1
-                  </label>
-                  <input
-                    type="email"
-                    name="email-1"
-                    id="email-1"
-                    value={editModal.data["Email 1"]}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="example@gmail.com"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="email-2"
-                    className="block mb-2 text-xs font-medium text-gray-900"
-                  >
-                    Email 2
-                  </label>
-                  <input
-                    type="email"
-                    name="email-2"
-                    id="email-2"
-                    value={editModal.data["Email 2"]}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="example@gmail.com"
-                    required={true}
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="email-3"
-                    className="block mb-2 text-xs font-medium text-gray-900"
-                  >
-                    Email 3
-                  </label>
-                  <input
-                    type="email"
-                    name="email-3"
-                    id="email-3"
-                    value={editModal.data["Email 3"]}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="example@gmail.com"
-                    required={true}
-                  />
-                </div>
-                {/* <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-xs font-medium text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    value={editModal.data.Password}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-                    placeholder="••••••••••••"
-                    required={true}
-                  />
-                </div> */}
-              </div>
-            </div>
-            {/* Modal footer */}
-            <div className="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-5 py-3 text-center"
-              >
-                Update
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
   );
 };
 

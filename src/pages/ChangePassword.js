@@ -88,7 +88,7 @@ const ChangePassword = () => {
         setTimeout(() => {
           navigate("/login");
         }, 1500);
-        console.log("data =============>", json);
+        //* console.log("data =============>", json);
       } else {
         setMessage({ theme: themes.error, value: json.error.message });
       }

@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 // import { replaceParaWithDivs } from "../../utils";
 
 export const Editor = ({ state, handleChange, id, styles = "", readOnly }) => {
-  // console.log("state", state);
+  //* console.log("state", state);
   return (
     <div className={`pt-8 ${styles}`}>
       <EditorToolbar id={id} />

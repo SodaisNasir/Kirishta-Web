@@ -93,7 +93,7 @@ const Notification = () => {
       const json = await res.json();
 
       if (res.status == 200) {
-        console.log("deleteBulkNotification =============>", json);
+        //* console.log("deleteBulkNotification =============>", json);
       }
     } catch (err) {
       console.error(err);

@@ -33,7 +33,7 @@ export const ViewModal = ({ viewModal, setViewModal, page, books }) => {
     let json = typeof data === "string" ? JSON.parse(data) : data;
     json = typeof json === "string" ? JSON.parse(json) : json;
 
-    console.log(data, json);
+    //* console.log(data, json);
     return `${json.latitude} - ${json.longitude}`;
   };
 
@@ -166,7 +166,7 @@ export const ReplyModal = ({ replyModal, setReplyModal, replyUrl }) => {
       if (json.success.status == 200) {
         close();
         setToggleBtn(false);
-        console.log("ReplyModal =============>", json);
+        //* console.log("ReplyModal =============>", json);
       }
     } catch (err) {
       console.error(err);
@@ -266,7 +266,7 @@ export const NotificationModal = ({
     e.preventDefault();
     setToggleBtn(true);
 
-    // console.log(
+    //* console.log(
     //   "first",
     //   JSON.stringify(
     //     paginatedData.items
@@ -302,7 +302,7 @@ export const NotificationModal = ({
 
       if (json.success) {
         close();
-        console.log("NotificationModal =============>", json);
+        //* console.log("NotificationModal =============>", json);
       }
     } catch (err) {
       console.error(err);
@@ -466,7 +466,7 @@ export const EditModal = ({
     initial_state.app_page ? "app_page" : "book_name"
   );
 
-  console.log("state", state);
+  //* console.log("state", state);
 
   const keys = Object.keys(initial_state).filter(
     (item) => item !== "id" && !item.includes("email_verified_at")
@@ -510,7 +510,7 @@ export const EditModal = ({
           );
         } else {
           formdata.append(key.replace(/^_/, ""), state[key] || "");
-          key === "app_page" && console.log("state[key]", state[key]);
+          //* key === "app_page" && console.log("state[key]", state[key]);
         }
       });
 
@@ -526,7 +526,7 @@ export const EditModal = ({
       const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
 
-      console.log("json =====>", json);
+      //* console.log("json =====>", json);
 
       if (json.success) {
         const updatedData =
@@ -542,7 +542,7 @@ export const EditModal = ({
                   : updatedData[key.replace(/^_/, "")])
           );
 
-        console.log("response =============>", updatedData);
+        //* console.log("response =============>", updatedData);
 
         setData((prev) =>
           prev.map((item) => (item.id === state.id ? data : item))
@@ -974,7 +974,7 @@ export const CreateNewModal = ({
   const [curParishRegions, setCurParishRegions] = useState(parishRegions);
   const [curParishProvinces, setCurParishProvinces] = useState(parishProvinces);
 
-  console.log("state ========>", state, radio);
+  //* console.log("state ========>", state, radio);
 
   const keys = Object.keys(initial_state).filter((e) => e !== "id");
 
@@ -992,10 +992,7 @@ export const CreateNewModal = ({
             "map",
             `${state[key].latitude},${state[key].longitude}`
           );
-          console.log(
-            "map2 ======> ",
-            `${state[key].latitude},${state[key].longitude}`
-          );
+          //* console.log("map2 ======> ",`${state[key].latitude},${state[key].longitude}`);
         } else if (key === "start_date" || key === "_end_date") {
           formdata.append(
             key.replace(/^_/, ""),
@@ -1033,7 +1030,7 @@ export const CreateNewModal = ({
       const res = await fetch(createUrl, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         const updatedData =
@@ -1047,7 +1044,7 @@ export const CreateNewModal = ({
                 (page === "Popup Promotion" && null))
           );
 
-        console.log("createNewModal =============>", data);
+        //* console.log("createNewModal =============>", data);
 
         setData((prev) => [data, ...prev]);
         setPaginatedData((prev) => ({

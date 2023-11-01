@@ -6,7 +6,7 @@ import { base_url } from "../utils/url";
 
 const EditProfile = () => {
   const { user, setUser } = useContext(AppContext);
-  console.log("user", user);
+  //* console.log("user", user);
   const [image, setImage] = useState("");
   const [state, setState] = useState(user);
   const [toggleBtn, setToggleBtn] = useState(false);
@@ -40,7 +40,7 @@ const EditProfile = () => {
 
         setUser(data);
         localStorage.setItem("user", JSON.stringify(data));
-        console.log("Response =============>", data);
+        //* console.log("Response =============>", data);
       }
     } catch (err) {
       console.error(err);

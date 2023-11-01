@@ -42,7 +42,7 @@ const ForgotPassword = () => {
       const res = await fetch(`${base_url}/adminEmail`, requestOptions);
       json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         const data = json.success;

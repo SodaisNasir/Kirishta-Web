@@ -51,7 +51,7 @@ const AboutKirista = () => {
 
       if (json.success) {
         const data = json.success.data;
-        console.log(data);
+        //* console.log(data);
         setState({ value: data.description });
       }
     } catch (error) {

@@ -52,7 +52,7 @@ const Login = () => {
       const res = await fetch(`${base_url}/admin-login`, requestOptions);
       json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success.status == 200) {
         let data = json.success.data;

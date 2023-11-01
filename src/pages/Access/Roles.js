@@ -244,7 +244,7 @@ const EditModal = ({
       ? transformBack(selectedChecks)
       : selectedChecks;
 
-    console.log("privilages ==========> ", privilage);
+    //* console.log("privilages ==========> ", privilage);
 
     try {
       let formdata = new FormData();
@@ -263,10 +263,7 @@ const EditModal = ({
       const res = await fetch(editUrl + editModal.data.id, requestOptions);
       const json = await res.json();
 
-      console.log(
-        "response ========> ",
-        JSON.parse(json.success.data.privilage)
-      );
+      //* console.log("response ========> ", JSON.parse(json.success.data.privilage));
 
       if (json.success) {
         const data = {
@@ -393,7 +390,7 @@ const CreateNewModal = ({
   const [toggleBtn, setToggleBtn] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState(null);
 
-  // console.log("selectedChecks", transformBack(selectedChecks));
+  //* console.log("selectedChecks", transformBack(selectedChecks));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -418,7 +415,7 @@ const CreateNewModal = ({
       const res = await fetch(createUrl, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         const data = {

@@ -41,8 +41,8 @@ const PublishBook = () => {
   const [editModal, setEditModal] = useState({ isVisible: false, data: null });
   const [state, setState] = useState(initialState);
 
-  console.log("state", state);
-  console.log("epub", epub);
+  //* console.log("state", state);
+  //* console.log("epub", epub);
 
   const handleChange = (e) => {
     const key = e.target.name;
@@ -97,7 +97,7 @@ const PublishBook = () => {
       const res = await fetch(saveBookUrl, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         const book = json.success.book;
@@ -106,7 +106,7 @@ const PublishBook = () => {
         setState(initialState);
         setEpub({ type: "epub", value: null });
 
-        console.log("handleSave =============>", json);
+        //* console.log("handleSave =============>", json);
       }
     } catch (err) {
       console.error(err);
@@ -161,13 +161,13 @@ const PublishBook = () => {
       const res = await fetch(publishBookUrl, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         setState(initialState);
         setEpub({ type: "epub", value: null });
 
-        console.log("publishBook =============>", json.success);
+        //* console.log("publishBook =============>", json.success);
       }
     } catch (err) {
       console.error(err);
@@ -544,7 +544,7 @@ const EditModal = ({
   const [editCheckbox, setEditCheckbox] = useState(false);
   const [epubState, setEpubState] = useState(initialState);
 
-  console.log("state", state);
+  //* console.log("state", state);
 
   const handleChange = (e) => {
     const key = e.target.name;
@@ -570,7 +570,7 @@ const EditModal = ({
     try {
       let formdata = new FormData();
       Object.keys(state).forEach((key) => {
-        console.log("key", key.replace(/^_/, ""), state[key]);
+        //* console.log("key", key.replace(/^_/, ""), state[key]);
         if (key.includes("read") || key.includes("download")) {
           formdata.append(key.replace(/^_/, ""), state[key] || "");
         } else {
@@ -587,7 +587,7 @@ const EditModal = ({
           epubState[key].description
         );
 
-        console.log("key 1", epubState[key].title);
+        //* console.log("key 1", epubState[key].title);
       });
 
       let requestOptions = {
@@ -601,7 +601,7 @@ const EditModal = ({
 
       const res = await fetch(`${editUrl}/${state.id}`, requestOptions);
       const json = await res.json();
-      console.log("json ====>", json);
+      //* console.log("json ====>", json);
     } catch (err) {
       console.error(err);
       setToggleBtn(false);

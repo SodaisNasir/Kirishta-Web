@@ -41,7 +41,7 @@ const EmailVerification = () => {
       const res = await fetch(`${base_url}/adminEmail`, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success) {
         const data = json.success;
@@ -67,7 +67,7 @@ const EmailVerification = () => {
     e.preventDefault();
     setToggleBtn(true);
 
-    console.log("state", state);
+    //* console.log("state", state);
 
     if (otpData.Reset_code == state) {
       setMessage({

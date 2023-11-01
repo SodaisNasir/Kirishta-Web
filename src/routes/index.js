@@ -56,7 +56,10 @@ const Router = () => {
           path="/"
           element={user ? <AdminLayout /> : <Navigate to="/login" />}
         >
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route
+            path="/edit-profile"
+            element={user ? <EditProfile /> : <Navigate to="/login" />}
+          />
           <Route
             index
             path="/dashboard"

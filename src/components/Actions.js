@@ -57,7 +57,7 @@ const Actions = ({
         redirect: "follow",
       };
       const res = await fetch(`${base_url}/block/${id}`, requestOptions);
-      console.log("res status =======>", res.status);
+      //* console.log("res status =======>", res.status);
 
       if (res.status === 200) {
         setBlockUser(!blockUser);
@@ -113,7 +113,7 @@ const Actions = ({
       formdata.append("featured", data.featured);
       formdata.append("country", data.country);
 
-      console.log("data", data);
+      //* console.log("data", data);
 
       const requestOptions = {
         headers: {
@@ -128,7 +128,7 @@ const Actions = ({
         requestOptions
       );
       const json = await res.json();
-      console.log("json =======>", json);
+      //* console.log("json =======>", json);
 
       if (json.success) {
         setSavedBooks((prev) => prev.filter((e) => e.id !== id));
@@ -367,7 +367,7 @@ const StatusDropdown = ({
       const res = await fetch(statusChangeUrl + id, requestOptions);
       const json = await res.json();
 
-      console.log(json);
+      //* console.log(json);
 
       if (json.success.status == 200) {
         setToggle(false);

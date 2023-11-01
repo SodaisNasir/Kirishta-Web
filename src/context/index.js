@@ -7,7 +7,7 @@ export const AppContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [otpData, setOtpData] = useState(null);
-  console.log(user);
+  //* console.log(user);
 
   useEffect(() => {
     if (otpData) {
@@ -17,7 +17,7 @@ export const ContextProvider = ({ children }) => {
     }
   }, [otpData]);
 
-  console.log("user privilage =======>", user && user.privilage);
+  //* console.log("user privilage =======>", user && user.privilage);
 
   return (
     <AppContext.Provider value={{ user, setUser, otpData, setOtpData }}>

@@ -62,7 +62,7 @@ const CreateEPUB = ({
 
         if (json.success) {
           setState(state.filter((_, idx) => idx !== index));
-          console.log("createEPUB =============>", json.success);
+          //* console.log("createEPUB =============>", json.success);
         }
       } catch (err) {
         console.error(err);

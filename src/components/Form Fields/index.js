@@ -166,7 +166,7 @@ export const MapField = ({ state, setState }) => {
   isStateString = typeof stateCopy === "string";
   stateCopy = isStateString ? JSON.parse(stateCopy) : stateCopy;
 
-  console.log("stateCopy", stateCopy);
+  //* console.log("stateCopy", stateCopy);
 
   return (
     <div>
