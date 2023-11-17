@@ -1,4 +1,5 @@
 import { VscClose } from "react-icons/vsc";
+import { RiErrorWarningFill } from "react-icons/ri";
 import { typeCheck } from "../../utils";
 import {
   DateField,
@@ -377,6 +378,56 @@ export const NotificationModal = ({
             </button>
           </div>
         </form>
+      </div>
+    </>
+  );
+};
+
+export const ConfirmationModal = ({
+  // confimationModal,
+  setConfimationModal,
+  onSubmit,
+}) => {
+  const close = () => setConfimationModal(false);
+
+  return (
+    <>
+      <div
+        onClick={close}
+        className={`fixed inset-0 flex justify-center items-center z-20 bg-black/50`}
+      />
+      <div
+        tabIndex="-1"
+        className={`fixed z-20 pointer-events-none flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto inset-0 h-[calc(100%-1rem)] max-h-full`}
+      >
+        <div className="relative w-full max-w-md max-h-full bg-gray-100 border rounded-lg shadow-md pointer-events-auto">
+          <button
+            onClick={close}
+            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 ml-auto inline-flex justify-center items-center"
+          >
+            <VscClose />
+            <span className="sr-only">Close modal</span>
+          </button>
+          <div className="p-6 text-center">
+            <RiErrorWarningFill className="mx-auto mb-2 text-6xl text-gray-400" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500">
+              Are you sure about this?
+            </h3>
+            <button
+              autoFocus={true}
+              onClick={onSubmit}
+              className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+            >
+              Yes
+            </button>
+            <button
+              onClick={close}
+              className="text-gray-500 bg-white hover:bg-gray-50 focus:border-gray-400 focus:outline-none rounded-lg border-2 border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
+            >
+              No
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

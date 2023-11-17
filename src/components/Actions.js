@@ -15,6 +15,7 @@ import { DropdownContainer } from "./helpers";
 import Loader from "./Loaders/Loader";
 import { toast } from "react-hot-toast";
 import { base_url } from "../utils/url";
+import { ConfirmationModal } from "./Modals";
 
 const Actions = ({
   page,
@@ -44,6 +45,7 @@ const Actions = ({
     page === "Users Management" && data.status.toLowerCase() == "inactive"
   );
   const [toggleBlockBtn, setToggleBlockBtn] = useState(false);
+  const [confimationDeleteModal, setConfimationDeleteModal] = useState(false);
 
   const handleBlock = async () => {
     setToggleBlockBtn(true);
@@ -140,12 +142,16 @@ const Actions = ({
     }
   };
 
-  const remove = async () => {
+  const handleDelete = () => {
     if (!hasDeleteAccess)
       return toast.error("You don't have access to delete on this page!", {
         duration: 2000,
       });
 
+    setConfimationDeleteModal(true);
+  };
+
+  const remove = async () => {
     try {
       const requestOptions = {
         headers: {
@@ -162,6 +168,7 @@ const Actions = ({
           ...prev,
           items: prev.items.filter((e) => e.id !== id),
         }));
+        setConfimationDeleteModal(false);
       }
     } catch (err) {
       console.error(err);
@@ -305,11 +312,17 @@ const Actions = ({
       {(actionCols.includes("Delete") || actionCols.includes("Remove")) && (
         <td className="px-6 py-4 text-base text-center">
           <button
-            onClick={remove}
+            onClick={handleDelete}
             className="font-medium text-gray-600 hover:text-gray-800"
           >
             <MdDelete />
           </button>
+          {confimationDeleteModal && (
+            <ConfirmationModal
+              onSubmit={remove}
+              setConfimationModal={setConfimationDeleteModal}
+            />
+          )}
         </td>
       )}
       {actionCols.includes("Block/Unblock") && (
