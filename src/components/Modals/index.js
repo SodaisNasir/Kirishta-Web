@@ -25,7 +25,9 @@ import { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 
 export const ViewModal = ({ viewModal, setViewModal, page, books }) => {
-  const keys = Object.keys(viewModal.data);
+  const keys = Object.keys(viewModal.data).filter(
+    (e) => e !== "id" && e !== "_id"
+  );
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -84,11 +86,7 @@ export const ViewModal = ({ viewModal, setViewModal, page, books }) => {
                     } flex flex-col justify-center p-2 border rounded-md bg-gray-50`}
                   >
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 capitalize">
-                      {elem === "id" && page === "Users Management"
-                        ? "ID"
-                        : elem === "id"
-                        ? "S/N"
-                        : elem === "_created_at"
+                      {elem === "_created_at"
                         ? "Date/Time"
                         : elem === "app_page"
                         ? "Web Link"

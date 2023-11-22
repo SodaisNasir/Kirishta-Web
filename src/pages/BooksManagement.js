@@ -245,7 +245,9 @@ const BooksManagement = () => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data);
+  const keys = Object.keys(viewModal.data).filter(
+    (key) => key !== "id" && key !== "_id"
+  );
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
@@ -284,7 +286,11 @@ const ViewModal = ({ viewModal, setViewModal }) => {
                 {keys.map((elem) => (
                   <div
                     key={elem}
-                    className="flex flex-col justify-center col-span-6 p-2 border rounded-md sm:col-span-3 bg-gray-50"
+                    className={`flex flex-col justify-center ${
+                      elem === "_about"
+                        ? "col-span-6"
+                        : "col-span-6 sm:col-span-3"
+                    } p-2 border rounded-md bg-gray-50`}
                   >
                     <p className="block mb-1.5 text-sm font-semibold text-gray-900 capitalize">
                       {elem === "id" ? "S/N" : elem.replace(/_/g, " ")}

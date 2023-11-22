@@ -98,6 +98,8 @@ const AdvancedTable = ({
                 {tableStructure?.map(
                   (key) =>
                     key !== "Images" &&
+                    key !== "id" &&
+                    key !== "_id" &&
                     key[0] !== "_" && (
                       <th
                         key={key}
@@ -281,7 +283,9 @@ const SingleUser = ({
       )}
       {tableStructure.map(
         (key) =>
-          key[0] !== "_" && (
+          key[0] !== "_" &&
+          key !== "id" &&
+          key !== "_id" && (
             <td
               key={key + id}
               className={`px-6 py-4 text-center ${
