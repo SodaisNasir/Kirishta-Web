@@ -111,8 +111,8 @@ const BooksManagement = () => {
     "cover_image",
     "category",
     "_release_year",
-    "_language",
     "_about",
+    "_language",
     "country",
     "_featured",
     "status",
@@ -245,9 +245,7 @@ const BooksManagement = () => {
 };
 
 const ViewModal = ({ viewModal, setViewModal }) => {
-  const keys = Object.keys(viewModal.data).filter(
-    (key) => key !== "id" && key !== "_id"
-  );
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));

@@ -25,9 +25,7 @@ import { useEffect, useState } from "react";
 import Loader from "../Loaders/Loader";
 
 export const ViewModal = ({ viewModal, setViewModal, page, books }) => {
-  const keys = Object.keys(viewModal.data).filter(
-    (e) => e !== "id" && e !== "_id"
-  );
+  const keys = Object.keys(viewModal.data);
   const data = viewModal.data;
 
   const close = () => setViewModal((prev) => ({ ...prev, isVisible: false }));
