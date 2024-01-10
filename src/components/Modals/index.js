@@ -861,6 +861,7 @@ export const EditModal = ({
                           state: state[key],
                           setState: (val) => setValue(key, val),
                           disabled: true,
+                          gridCols,
                         }}
                       />
                     );
@@ -1333,6 +1334,7 @@ export const CreateNewModal = ({
                           key: elem,
                           state: state[key],
                           setState: (val) => setValue(key, val),
+                          gridCols,
                         }}
                       />
                     );

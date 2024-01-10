@@ -437,9 +437,9 @@ export const PlatformField = ({ state, setState }) => {
   );
 };
 
-export const FAQLanguageField = ({ state, setState, disabled }) => {
+export const FAQLanguageField = ({ state, setState, disabled, gridCols }) => {
   return (
-    <div className="col-span-2 sm:col-span-1">
+    <div className={gridCols === 1 ? "col-span-1" : "col-span-2 sm:col-span-1"}>
       <label
         htmlFor="languages"
         className="block mb-2 text-xs font-medium text-gray-900"
@@ -605,7 +605,7 @@ export const TextArea = ({
   setState,
 }) => {
   return (
-    <div className={gridCols === 1 ? "col-span-1" : "col-span-2"}>
+    <div className={gridCols === 1 ? "col-span-1" : "col-span-1 sm:col-span-2"}>
       <label
         htmlFor={elem.toLowerCase()}
         className="block mb-2 text-xs font-medium text-gray-900 capitalize"
